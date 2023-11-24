@@ -1,16 +1,17 @@
-import React from "react";
 import { BiGroup } from "react-icons/bi";
 
 const StatCard = ({ color, value, label }) => {
   return (
     <div
-      className={`min-w-full h-32 mx-auto flex items-center justify-center ${color} text-white rounded-lg shadow gap-8`}>
+      className={`min-w-full h-28 mx-auto flex items-center justify-center ${color} text-white shadow gap-4`}
+      style={{ borderRadius: "15px" }}
+    >
       <div className="flex items-center justify-center">
-        <BiGroup className="w-14 h-14 bg-white rounded-3xl text-[#6148FF] p-1" />
+        <BiGroup className="w-12 h-12 bg-white rounded-2xl text-[#6148FF] p-1" />
       </div>
       <div className="flex flex-col">
-        <p className="text-2xl font-normal">{value}</p>
-        <h1 className="text-xl font-bold">{label}</h1>
+        <p className="text-xl font-normal font-inter">{value}</p>
+        <h1 className="text-lg font-semibold font-montserrat">{label}</h1>
       </div>
     </div>
   );

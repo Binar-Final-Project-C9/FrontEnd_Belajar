@@ -9,7 +9,8 @@ export default {
         "dark-blue": "#6148FF",
       },
       fontFamily: {
-        sans: ["Montserrat"],
+        poppins: ["Poppins", "sans-serif"],
+        montserrat: ["montserrat", "sans-serif"],
       },
     },
   },

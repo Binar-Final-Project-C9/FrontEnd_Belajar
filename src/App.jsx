@@ -1,14 +1,16 @@
-import React from "react";
-import Sidebar from "./Sidebar";
-import Home from "./Home";
-import Class from "./Class";
+import { Route, Routes } from "react-router-dom";
+import SidebarHome from "./components/SidebarHome";
+import SidebarClass from "./components/SidebarClass";
+import Login from "./components/Login";
 
 function App() {
   return (
     <>
-      <Sidebar>
-        <Home />
-      </Sidebar>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<SidebarHome />} />
+        <Route path="/course" element={<SidebarClass />} />
+      </Routes>
     </>
   );
 }
