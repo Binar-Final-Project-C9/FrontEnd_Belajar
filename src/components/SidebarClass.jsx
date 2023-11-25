@@ -6,7 +6,7 @@ const Sidebar = ({ children }) => {
   const Menus = [
     { title: "Dashboard", path: "/dashboard" },
     { title: "Kelola Kelas", path: "/course" },
-    { title: "Keluar", path: "/login" },
+    { title: "Keluar", path: "/" },
   ];
 
   return (
