@@ -11,7 +11,7 @@ const Home = () => {
           <h2 className="font-bold text-base mb-4 font-montserrat">
             Status Pembayaran
           </h2>
-          <div className="text-dark-blue flex items-center gap-3">
+          <div className="text-dark-blue flex items-center justify-center gap-3 my-2">
             <button className="flex items-center justify-center border-dark-blue border-2 rounded-full px-4 font-bold gap-2">
               <FiFilter />
               Filter

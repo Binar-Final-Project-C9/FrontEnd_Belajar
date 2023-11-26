@@ -3,9 +3,7 @@ import { BiGroup } from "react-icons/bi";
 const StatCard = ({ color, value, label }) => {
   return (
     <div
-      className={`min-w-full h-28 mx-auto flex items-center justify-center ${color} text-white shadow gap-4`}
-      style={{ borderRadius: "15px" }}
-    >
+      className={`min-w-full h-28 mx-auto flex items-center justify-center ${color} text-white shadow gap-4 rounded-2xl`}>
       <div className="flex items-center justify-center">
         <BiGroup className="w-12 h-12 bg-white rounded-2xl text-[#6148FF] p-1" />
       </div>

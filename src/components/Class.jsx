@@ -16,10 +16,8 @@ const Class = () => {
           </h2>
           <div className=" flex items-center justify-between gap-3">
             <button
-              className="flex text-white items-center justify-center bg-dark-blue rounded-full px-4 font-bold gap-2"
-              style={{ paddingTop: "2px", paddingBottom: "2px" }}
-              onClick={() => setShowModal(true)}
-            >
+              className="flex text-white items-center justify-center bg-dark-blue rounded-full px-4 font-bold gap-2 py-[2px]"
+              onClick={() => setShowModal(true)}>
               <FiPlusCircle />
               Tambah
             </button>

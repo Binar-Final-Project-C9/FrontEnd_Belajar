@@ -26,8 +26,7 @@ const Login = () => {
             <input
               type="text"
               id="username"
-              className="text-sm mt-1 w-full p-2 ps-4 border lg:w-[500px]"
-              style={{ borderRadius: "16px" }}
+              className="text-sm mt-1 w-full p-2 ps-4 border lg:w-[500px] rounded-2xl"
               placeholder="Masukkan username"
             />
           </div>
@@ -49,16 +48,14 @@ const Login = () => {
             <input
               type="text"
               id="password"
-              className="text-sm mt-1 w-full p-2 ps-4 border lg:w-[500px]"
-              style={{ borderRadius: "16px" }}
+              className="text-sm mt-1 w-full p-2 ps-4 border lg:w-[500px] rounded-2xl"
               placeholder="Masukkan Password"
             />
           </div>
           <Link to="/dashboard">
             <button
               href="/dashboard"
-              className="bg-dark-blue text-white w-full font-normal text-sm h-[50px] mt-5"
-              style={{ borderRadius: "16px" }}
+              className="bg-dark-blue text-white w-full font-normal text-sm h-[50px] mt-5 rounded-2xl"
               type="button">
               Masuk
             </button>
