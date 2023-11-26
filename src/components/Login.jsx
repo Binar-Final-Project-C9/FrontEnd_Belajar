@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import appLogo from "../assets/Belajar_white 3.png";
+import { useState } from "react";
 
 const Login = () => {
   return (
@@ -19,8 +20,7 @@ const Login = () => {
           <div className="mb-5">
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
+              className="block text-sm font-medium text-gray-700">
               Username
             </label>
             <input
@@ -35,15 +35,13 @@ const Login = () => {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+                className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <div className="text-sm">
                 <a
-                  href="#"
-                  className="text-sm font-semibold text-indigo-600 hover:text-indigo-500"
-                >
+                  href="/forgot-password"
+                  className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
                   Lupa Kata Sandi
                 </a>
               </div>
@@ -61,8 +59,7 @@ const Login = () => {
               href="/dashboard"
               className="bg-dark-blue text-white w-full font-normal text-sm h-[50px] mt-5"
               style={{ borderRadius: "16px" }}
-              type="button"
-            >
+              type="button">
               Masuk
             </button>
           </Link>
