@@ -21,7 +21,8 @@ const Sidebar = ({ children }) => {
                 <li key={index} className="hover:bg-[#489CFF]">
                   <a
                     href={menu.path}
-                    className="flex items-center px-8 py-2 space-x-3 rounded-md">
+                    className="flex items-center px-8 py-2 space-x-3 rounded-md"
+                  >
                     <span className="text-base font-semibold">
                       {menu.title}
                     </span>

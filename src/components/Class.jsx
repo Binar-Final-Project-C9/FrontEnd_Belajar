@@ -17,7 +17,8 @@ const Class = () => {
           <div className=" flex items-center justify-between gap-3">
             <button
               className="flex text-white items-center justify-center bg-dark-blue rounded-full px-4 font-bold gap-2 py-[2px]"
-              onClick={() => setShowModal(true)}>
+              onClick={() => setShowModal(true)}
+            >
               <FiPlusCircle />
               Tambah
             </button>
@@ -30,9 +31,9 @@ const Class = () => {
         </div>
         <div className="overflow-x-auto">
           <table className="table-auto w-full">
-            <thead className="bg-[#EBF3FC] text-center text-sm font-normal">
+            <thead className="bg-[#EBF3FC] text-left text-sm font-normal">
               <tr className="h-12">
-                <th>ID</th>
+                <th className="ps-3">ID</th>
                 <th>Kategori</th>
                 <th>Nama Kelas</th>
                 <th>Tipe Kelas</th>
@@ -42,8 +43,10 @@ const Class = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="h-12 text-center">
-                <td className="text-xs font-bold text-[#4E5566]">johndoe123</td>
+              <tr className="h-12 text-left">
+                <td className="text-xs font-bold text-[#4E5566] ps-3">
+                  johndoe123
+                </td>
                 <td className="text-xs font-bold text-[#4E5566]">
                   UI/UX Design
                 </td>
@@ -64,8 +67,10 @@ const Class = () => {
                   </button>
                 </td>
               </tr>
-              <tr className="h-14 text-center">
-                <td className="text-xs font-bold text-[#4E5566]">supermanxx</td>
+              <tr className="h-14 text-left">
+                <td className="text-xs font-bold text-[#4E5566] ps-3">
+                  supermanxx
+                </td>
                 <td className="text-xs font-bold text-[#4E5566]">
                   UI/UX Design
                 </td>

@@ -11,7 +11,7 @@ const Home = () => {
           <h2 className="font-bold text-base mb-4 font-montserrat">
             Status Pembayaran
           </h2>
-          <div className="text-dark-blue flex items-center justify-center gap-3 my-2">
+          <div className="text-dark-blue flex items-center justify-center gap-3">
             <button className="flex items-center justify-center border-dark-blue border-2 rounded-full px-4 font-bold gap-2">
               <FiFilter />
               Filter
@@ -21,9 +21,9 @@ const Home = () => {
         </div>
         <div className="overflow-x-auto">
           <table className="table-auto w-full">
-            <thead className="bg-[#EBF3FC] text-center text-sm font-normal">
+            <thead className="bg-[#EBF3FC] text-left text-sm font-normal">
               <tr className="h-12">
-                <th>ID</th>
+                <th className="ps-3">ID</th>
                 <th>Kategori</th>
                 <th>Kelas Premium</th>
                 <th>Status</th>
@@ -32,8 +32,10 @@ const Home = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="h-12 text-center">
-                <td className="text-xs font-bold text-[#4E5566]">johndoe123</td>
+              <tr className="h-12 text-left">
+                <td className="text-xs font-bold text-[#4E5566] ps-3">
+                  johndoe123
+                </td>
                 <td className="text-xs font-bold text-[#4E5566]">
                   UI/UX Design
                 </td>
@@ -50,8 +52,10 @@ const Home = () => {
                   21 Sep, 2023 at 2:00 AM
                 </td>
               </tr>
-              <tr className="h-14 text-center">
-                <td className="text-xs font-bold text-[#4E5566]">supermanxx</td>
+              <tr className="h-14 text-left">
+                <td className="text-xs font-bold text-[#4E5566] ps-3">
+                  supermanxx
+                </td>
                 <td className="text-xs font-bold text-[#4E5566]">
                   UI/UX Design
                 </td>
