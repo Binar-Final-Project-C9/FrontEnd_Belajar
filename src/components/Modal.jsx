@@ -10,7 +10,7 @@ const Modal = ({ showModal, setShowModal }) => {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white">
                 <div className="flex items-start justify-between p-2">
                   <button
-                    className="p-1 ml-auto  border-0 float-right text-3xl leading-none font-semibold"
+                    className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
                     onClick={() => setShowModal(false)}
                   >
                     <HiX className="text-black" />
