@@ -37,14 +37,12 @@ const ForgotPassword = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="text-sm mt-1 w-full p-2 ps-4 border lg:w-[500px]"
-              style={{ borderRadius: "16px" }}
+              className="text-sm mt-1 w-full p-2 ps-4 border lg:w-[500px] rounded-2xl"
               placeholder="Masukan email"
             />
           </div>
           <button
-            className="bg-dark-blue text-white w-full font-normal text-sm h-[50px] mt-5"
-            style={{ borderRadius: "16px" }}
+            className="bg-dark-blue text-white w-full font-normal text-sm h-[50px] mt-5 rounded-2xl"
             onClick={handleForgotPassword}>
             Send
           </button>

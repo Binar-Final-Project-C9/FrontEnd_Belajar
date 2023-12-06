@@ -1,5 +1,8 @@
 import Navbar from "./Navbar";
 import appLogo from "../assets/Belajar_white 3.png";
+import { useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { removeCredentials } from "../slices/auth";
 
 const Sidebar = ({ children }) => {
   const Menus = [
@@ -7,6 +10,14 @@ const Sidebar = ({ children }) => {
     { title: "Kelola Kelas", path: "/course" },
     { title: "Keluar", path: "/" },
   ];
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    dispatch(removeCredentials());
+    navigate("/");
+  };
 
   return (
     <div className="flex ">
@@ -19,14 +30,23 @@ const Sidebar = ({ children }) => {
             <ul className="pt-2 pb-4 space-y-1 text-sm font-semibold text-white">
               {Menus.map((menu, index) => (
                 <li key={index} className="hover:bg-[#489CFF]">
-                  <a
-                    href={menu.path}
-                    className="flex items-center px-8 py-2 space-x-3 rounded-md"
-                  >
-                    <span className="text-base font-semibold">
-                      {menu.title}
-                    </span>
-                  </a>
+                  {menu.title === "Keluar" ? (
+                    <button
+                      onClick={logoutHandler}
+                      className="flex items-center px-8 py-2 space-x-3 rounded-md cursor-pointer">
+                      <span className="text-base font-semibold">
+                        {menu.title}
+                      </span>
+                    </button>
+                  ) : (
+                    <Link
+                      to={menu.path}
+                      className="flex items-center px-8 py-2 space-x-3 rounded-md">
+                      <span className="text-base font-semibold">
+                        {menu.title}
+                      </span>
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
