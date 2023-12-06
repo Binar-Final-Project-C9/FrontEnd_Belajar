@@ -1,9 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
-import { FaRegEye } from "react-icons/fa6";
-import { FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { usePasswordVisibility } from "../context/PasswordVisibilityContext";
+import { FaRegEye, FaEyeSlash } from "react-icons/fa6";
 import appLogo from "../assets/Belajar_white 3.png";
 
 const Login = () => {
+  const { isPasswordVisible, togglePasswordVisibility } =
+    usePasswordVisibility();
+
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex items-center justify-center w-2/5 bg-dark-blue h-full">
@@ -51,13 +54,23 @@ const Login = () => {
           <div className="flex flex-wrap relative rounded-2xl items-center">
             <div className="relative w-full">
               <input
-                type="password"
-                id="search"
+                type={isPasswordVisible ? "text" : "password"}
+                id="password"
                 className="flex-shrink flex-grow text-sm flex-1 w-full p-2 ps-4 border rounded-2xl"
                 placeholder="Masukkan Password"
               />
               <div className="absolute top-1/2 transform -translate-y-1/2 right-6 cursor-pointer">
-                <FaRegEye className="text-gray-600" />
+                {isPasswordVisible ? (
+                  <FaEyeSlash
+                    className="text-gray-600"
+                    onClick={togglePasswordVisibility}
+                  />
+                ) : (
+                  <FaRegEye
+                    className="text-gray-600"
+                    onClick={togglePasswordVisibility}
+                  />
+                )}
               </div>
             </div>
           </div>
