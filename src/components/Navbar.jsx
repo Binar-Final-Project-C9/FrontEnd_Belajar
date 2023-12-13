@@ -1,9 +1,21 @@
-import { useState } from "react";
-import { BiSearchAlt, BiMenu, BiX } from "react-icons/bi";
-import { motion } from "framer-motion";
+import { useState } from 'react';
+import { BiSearchAlt, BiMenu, BiX } from 'react-icons/bi';
+import { motion } from 'framer-motion';
+import { useDispatch } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
+import { removeToken } from '../slices/authSlice';
 
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    dispatch(removeToken());
+    navigate('/');
+  };
+
   return (
     <>
       <nav className="flex items-center justify-between py-3 bg-[#EBF3FC] relative">
@@ -17,8 +29,7 @@ const Navbar = () => {
               <motion.div
                 animate={{ x: [-100, 0] }}
                 transition={{ duration: 0.3 }}
-                className="fixed top-0 left-0 right-0 z-10 lg:hidden w-1/2 h-screen flex flex-col bg-[#6148FF]"
-              >
+                className="fixed top-0 left-0 right-0 z-10 lg:hidden w-1/2 h-screen flex flex-col bg-[#6148FF]">
                 <BiX
                   className="w-10 h-10 lg:hidden relative top-5 left-4"
                   onClick={() => setToggle(false)}
@@ -27,16 +38,14 @@ const Navbar = () => {
                   <li className="hover:bg-[#489CFF]">
                     <a
                       href="/dashboard"
-                      className="flex items-center px-8 py-2 space-x-3 rounded-md"
-                    >
+                      className="flex items-center px-8 py-2 space-x-3 rounded-md">
                       <span className="text-base font-semibold">Dashboard</span>
                     </a>
                   </li>
                   <li className="hover:bg-[#489CFF]">
                     <a
                       href="/course"
-                      className="flex items-center px-8 py-2 space-x-3 rounded-md"
-                    >
+                      className="flex items-center px-8 py-2 space-x-3 rounded-md">
                       <span className="text-base font-semibold">
                         Kelola Kelas
                       </span>
@@ -44,9 +53,9 @@ const Navbar = () => {
                   </li>
                   <li className="hover:bg-[#489CFF]">
                     <a
-                      href="/"
-                      className="flex items-center px-8 py-2 space-x-3 rounded-md"
-                    >
+                      href=""
+                      onClick={logoutHandler}
+                      className="flex items-center px-8 py-2 space-x-3 rounded-md">
                       <span className="text-base font-semibold">Keluar</span>
                     </a>
                   </li>

@@ -1,8 +1,43 @@
-import { FiFilter } from "react-icons/fi";
-import { MdOutlineSearch } from "react-icons/md";
-import Card from "./Card";
+import { FiFilter } from 'react-icons/fi';
+import { MdOutlineSearch } from 'react-icons/md';
+import Card from './Card';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFetchPaymentQuery } from '../service/paymentApi';
+import { setPayment } from '../slices/paymentSlice';
+
+const formatDate = (isoDate) => {
+  const options = {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  };
+  return new Date(isoDate).toLocaleString('en-US', options);
+};
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const { data: paymentData, isError, isLoading } = useFetchPaymentQuery();
+
+  const payments = useSelector((state) => state.payment.items);
+
+  useEffect(() => {
+    if (paymentData) {
+      dispatch(setPayment(paymentData));
+    }
+  }, [dispatch, paymentData]);
+
+  if (isLoading) {
+    return <div className="text-center">Loading...</div>;
+  }
+
+  if (isError) {
+    return <div className="text-center">Error...</div>;
+  }
+
   return (
     <>
       <Card />
@@ -32,42 +67,43 @@ const Home = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="h-12 text-left">
-                <td className="text-xs font-bold text-[#4E5566] ps-3">
-                  johndoe123
-                </td>
-                <td className="text-xs font-bold text-[#4E5566]">
-                  UI/UX Design
-                </td>
-                <td className="text-xs font-bold text-[#202244] py-2">
-                  Belajar Web Designer dengan Figma
-                </td>
-                <td className="text-xs font-bold text-dark-green uppercase">
-                  SUDAH BAYAR
-                </td>
-                <td className="text-xs font-bold text-[#202244]">
-                  Credit Card
-                </td>
-                <td className="text-xs font-bold text-[#4E5566]">
-                  21 Sep, 2023 at 2:00 AM
-                </td>
-              </tr>
-              <tr className="h-14 text-left">
-                <td className="text-xs font-bold text-[#4E5566] ps-3">
-                  supermanxx
-                </td>
-                <td className="text-xs font-bold text-[#4E5566]">
-                  UI/UX Design
-                </td>
-                <td className="text-xs font-bold text-[#202244] py-2">
-                  Belajar Web Designer dengan Figma
-                </td>
-                <td className="text-xs font-bold text-red-500 uppercase">
-                  BELUM BAYAR
-                </td>
-                <td className="text-xs font-bold text-[#202244]">-</td>
-                <td className="text-xs font-bold text-[#4E5566]">-</td>
-              </tr>
+              {payments.map((payment) => (
+                <tr className="h-12 text-left" key={payment.id}>
+                  <td className="text-xs font-bold text-[#4E5566] ps-3">
+                    {payment.User.email}
+                  </td>
+                  <td className="text-xs font-bold text-[#4E5566]">
+                    {payment.Course.Category.name}
+                  </td>
+                  <td className="text-xs font-bold text-[#202244] py-2">
+                    {/* <Link to={`/course/${payment.id}`}>{payment.name}</Link> */}
+                    {payment.Course.type}
+                  </td>
+                  {payment.status === 'paid' ? (
+                    <td className="text-xs font-bold text-dark-green uppercase">
+                      {payment.status}
+                    </td>
+                  ) : (
+                    <td className="text-xs font-bold text-dark-red uppercase">
+                      {payment.status}
+                    </td>
+                  )}
+                  <td className="text-xs font-bold text-[#202244]">
+                    {payment.paymentType ? (
+                      <span>{payment.paymentType}</span>
+                    ) : (
+                      <span>-</span>
+                    )}
+                  </td>
+                  <td className="text-xs font-bold text-[#4E5566]">
+                    {payment.settlementTime ? (
+                      <span>{formatDate(payment.settlementTime)}</span>
+                    ) : (
+                      <span>-</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

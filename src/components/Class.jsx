@@ -1,11 +1,49 @@
-import { useState } from "react";
-import { FiFilter, FiPlusCircle } from "react-icons/fi";
-import { MdOutlineSearch } from "react-icons/md";
-import Modal from "./Modal";
-import Card from "./Card";
+import { useState, useEffect } from 'react';
+import { FiFilter, FiPlusCircle } from 'react-icons/fi';
+import { MdOutlineSearch } from 'react-icons/md';
+import Modal from './Modal';
+import Card from './Card';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  useFetchCoursesQuery,
+  useDeleteCourseMutation,
+} from '../service/courseApi';
+import { setCourse, removeCourse } from '../slices/courseSlice';
 
 const Class = () => {
   const [showModal, setShowModal] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const { data: courseData, isError, isLoading } = useFetchCoursesQuery();
+
+  const [deleteCourseMutation] = useDeleteCourseMutation();
+
+  const deleteCourseHandler = async (courseId) => {
+    try {
+      await deleteCourseMutation(courseId).unwrap();
+      dispatch(removeCourse(courseId));
+    } catch (error) {
+      console.error('Error deleting course:', error);
+    }
+  };
+
+  const courses = useSelector((state) => state.course.items);
+
+  useEffect(() => {
+    if (courseData) {
+      dispatch(setCourse(courseData));
+    }
+  }, [dispatch, courseData]);
+
+  if (isLoading) {
+    return <div className="text-center">Loading...</div>;
+  }
+
+  if (isError) {
+    return <div className="text-center">Error...</div>;
+  }
+
   return (
     <>
       <Card />
@@ -17,8 +55,7 @@ const Class = () => {
           <div className=" flex items-center justify-between gap-3">
             <button
               className="flex text-white items-center justify-center bg-dark-blue rounded-full px-4 font-bold gap-2 py-[2px]"
-              onClick={() => setShowModal(true)}
-            >
+              onClick={() => setShowModal(true)}>
               <FiPlusCircle />
               Tambah
             </button>
@@ -43,54 +80,38 @@ const Class = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="h-12 text-left">
-                <td className="text-xs font-bold text-[#4E5566] ps-3">
-                  johndoe123
-                </td>
-                <td className="text-xs font-bold text-[#4E5566]">
-                  UI/UX Design
-                </td>
-                <td className="text-xs font-bold text-[#202244] py-2">
-                  Belajar Web Designer dengan Figma
-                </td>
-                <td className="text-xs font-bold text-dark-green uppercase">
-                  Gratis
-                </td>
-                <td className="text-xs font-bold text-[#202244]">Beginner</td>
-                <td className="text-xs font-bold text-[#4E5566]">Rp 0</td>
-                <td className="text-xs font-bold">
-                  <button className="bg-dark-blue p-1 rounded-xl w-16 text-white mr-2">
-                    Ubah
-                  </button>
-                  <button className="bg-red-500 p-1 rounded-xl w-16 text-white">
-                    Hapus
-                  </button>
-                </td>
-              </tr>
-              <tr className="h-14 text-left">
-                <td className="text-xs font-bold text-[#4E5566] ps-3">
-                  supermanxx
-                </td>
-                <td className="text-xs font-bold text-[#4E5566]">
-                  UI/UX Design
-                </td>
-                <td className="text-xs font-bold text-[#202244] py-2">
-                  Belajar Web Designer dengan Figma
-                </td>
-                <td className="text-xs font-bold text-dark-blue uppercase">
-                  Premium
-                </td>
-                <td className="text-xs font-bold text-[#202244]">Advance</td>
-                <td className="text-xs font-bold text-[#4E5566]">Rp 199,000</td>
-                <td className="text-xs font-bold">
-                  <button className="bg-dark-blue p-1 rounded-xl w-16 text-white mr-2">
-                    Ubah
-                  </button>
-                  <button className="bg-red-500 p-1 rounded-xl w-16 text-white">
-                    Hapus
-                  </button>
-                </td>
-              </tr>
+              {courses.map((course, index) => (
+                <tr className="h-12 text-left" key={index}>
+                  <td className="text-xs font-bold text-[#4E5566] ps-3">
+                    {course.classCode}
+                  </td>
+                  <td className="text-xs font-bold text-[#4E5566]">
+                    {course?.Category?.name}
+                  </td>
+                  <td className="text-xs font-bold text-[#202244] py-2">
+                    {course.name}
+                  </td>
+                  <td className="text-xs font-bold text-dark-green uppercase">
+                    {course.type}
+                  </td>
+                  <td className="text-xs font-bold text-[#202244]">
+                    {course.level}
+                  </td>
+                  <td className="text-xs font-bold text-[#4E5566]">
+                    Rp {course.price}
+                  </td>
+                  <td className="text-xs font-bold">
+                    <button className="bg-dark-blue p-1 rounded-xl w-16 text-white mr-2">
+                      Ubah
+                    </button>
+                    <button
+                      className="bg-red-500 p-1 rounded-xl w-16 text-white"
+                      onClick={() => deleteCourseHandler(course.id)}>
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
