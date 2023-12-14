@@ -1,8 +1,7 @@
 import { FiFilter } from 'react-icons/fi';
 import { MdOutlineSearch } from 'react-icons/md';
 import Card from './Card';
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFetchPaymentQuery } from '../service/paymentApi';
 import { setPayment } from '../slices/paymentSlice';

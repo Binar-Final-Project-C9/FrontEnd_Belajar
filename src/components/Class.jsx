@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { FiFilter, FiPlusCircle } from 'react-icons/fi';
 import { MdOutlineSearch } from 'react-icons/md';
 import Modal from './Modal';
+import UpdateCourse from './UpdateCourse';
 import Card from './Card';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -12,6 +13,8 @@ import { setCourse, removeCourse } from '../slices/courseSlice';
 
 const Class = () => {
   const [showModal, setShowModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+  const [courseIdToUpdate, setCourseIdToUpdate] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -35,6 +38,11 @@ const Class = () => {
       dispatch(setCourse(courseData));
     }
   }, [dispatch, courseData]);
+
+  const handleUpdateClick = (courseId) => {
+    setCourseIdToUpdate(courseId);
+    setUpdateModal(true);
+  };
 
   if (isLoading) {
     return <div className="text-center">Loading...</div>;
@@ -101,7 +109,9 @@ const Class = () => {
                     Rp {course.price}
                   </td>
                   <td className="text-xs font-bold">
-                    <button className="bg-dark-blue p-1 rounded-xl w-16 text-white mr-2">
+                    <button
+                      className="bg-dark-blue p-1 rounded-xl w-16 text-white mr-2"
+                      onClick={() => handleUpdateClick(course.id)}>
                       Ubah
                     </button>
                     <button
@@ -117,6 +127,11 @@ const Class = () => {
         </div>
       </div>
       <Modal showModal={showModal} setShowModal={setShowModal} />
+      <UpdateCourse
+        showModal={updateModal}
+        setShowModal={setUpdateModal}
+        courseId={courseIdToUpdate}
+      />
     </>
   );
 };

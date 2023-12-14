@@ -19,11 +19,17 @@ export const courseApi = apiSlice.injectEndpoints({
       },
     }),
     updateCourse: builder.mutation({
-      query: ({ id, updateCourse }) => ({
-        url: `/course/${id}`,
-        method: 'PUT',
-        body: updateCourse,
-      }),
+      query: ({ id, updatedCourse }) => {
+        const formData = new FormData();
+        Object.entries(updatedCourse).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        return {
+          url: `/course/${id}`,
+          method: 'PATCH',
+          body: formData,
+        };
+      },
     }),
     deleteCourse: builder.mutation({
       query: (id) => ({

@@ -1,8 +1,8 @@
 import { HiX } from 'react-icons/hi';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useCreateCourseMutation } from '../service/courseApi';
-import { addCourse } from '../slices/courseSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useUpdateCourseMutation } from '../service/courseApi';
+import { updateCourse } from '../slices/courseSlice';
 import { useNavigate } from 'react-router-dom';
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
@@ -21,7 +21,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   </div>
 );
 
-const Modal = ({ showModal, setShowModal }) => {
+const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
   const initialState = {
     name: '',
     level: '',
@@ -32,27 +32,46 @@ const Modal = ({ showModal, setShowModal }) => {
     type: '',
     price: '',
     courseBy: '',
-    image: null,
+    image: '',
   };
+  const dispatch = useDispatch();
+  const courses = useSelector((state) => state.course.items);
 
   const navigate = useNavigate();
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [updatedCourse, setUpdatedCourse] = useState(initialState);
 
-  const [courseData, setCourseData] = useState(initialState);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [createCourse, { data, isLoading, isError }] =
-    useCreateCourseMutation(initialState);
+  const [updateDataCourse, { data, isLoading, isError }] =
+    useUpdateCourseMutation(initialState);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    if (courses && courseId) {
+      const selected = courses.find((course) => course.id === courseId);
+      setSelectedCourse(selected);
+      setUpdatedCourse({
+        name: selected?.name || '',
+        level: selected?.level || '',
+        categoryId: selected?.categoryId || '',
+        description: selected?.description || '',
+        benefits: selected?.benefits || '',
+        classCode: selected?.classCode || '',
+        type: selected?.type || '',
+        price: selected?.price || '',
+        courseBy: selected?.courseBy || '',
+        image: selected?.imageUrl || null,
+      });
+    }
+  }, [courses, courseId]);
 
   useEffect(() => {
     if (data) {
-      dispatch(addCourse(data));
+      dispatch(updateCourse(data));
     }
   }, [dispatch, data]);
 
   const handleInputChange = (e) => {
     const { id, value, files } = e.target;
-    setCourseData((prevData) => {
+    setUpdatedCourse((prevData) => {
       const newData = {
         ...prevData,
         [id]: id === 'image' ? files[0] : value,
@@ -64,17 +83,17 @@ const Modal = ({ showModal, setShowModal }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await createCourse(courseData).unwrap();
-      dispatch(addCourse(res));
+      const res = await updateDataCourse({
+        id: courseId,
+        updatedCourse,
+      }).unwrap();
+      dispatch(updateCourse(res));
       if (res.status === 'success') {
-        dispatch(addCourse(res));
         setShowModal(false);
         window.location.reload();
-      } else {
-        setErrorMessage(res.data.message);
       }
     } catch (error) {
-      setErrorMessage(error.data.message);
+      console.log(error.data);
     }
   };
 
@@ -99,17 +118,12 @@ const Modal = ({ showModal, setShowModal }) => {
                   <h2 className="text-center font-bold text-gray-800">
                     Tambah Kelas
                   </h2>
-                  {isError && (
-                    <h2 className="text-center font-bold text-dark-red">
-                      {errorMessage}
-                    </h2>
-                  )}
                   <InputField
                     label="Name"
                     id="name"
                     type="text"
                     placeholder="Course Name"
-                    value={courseData.name}
+                    value={updatedCourse.name}
                     onChange={handleInputChange}
                   />
                   <InputField
@@ -117,7 +131,7 @@ const Modal = ({ showModal, setShowModal }) => {
                     id="level"
                     type="text"
                     placeholder="Course Level"
-                    value={courseData.level}
+                    value={updatedCourse.level}
                     onChange={handleInputChange}
                   />
                   <InputField
@@ -125,7 +139,7 @@ const Modal = ({ showModal, setShowModal }) => {
                     id="categoryId"
                     type="number"
                     placeholder="Course Category"
-                    value={courseData.categoryId}
+                    value={updatedCourse.categoryId}
                     onChange={handleInputChange}
                   />
                   <InputField
@@ -133,7 +147,7 @@ const Modal = ({ showModal, setShowModal }) => {
                     id="description"
                     type="text"
                     placeholder="Course Description"
-                    value={courseData.description}
+                    value={updatedCourse.description}
                     onChange={handleInputChange}
                   />
                   <InputField
@@ -141,7 +155,7 @@ const Modal = ({ showModal, setShowModal }) => {
                     id="benefits"
                     type="text"
                     placeholder="Course Benefits"
-                    value={courseData.benefits}
+                    value={updatedCourse.benefits}
                     onChange={handleInputChange}
                   />
                   <InputField
@@ -149,7 +163,7 @@ const Modal = ({ showModal, setShowModal }) => {
                     id="classCode"
                     type="text"
                     placeholder="Class Code"
-                    value={courseData.classCode}
+                    value={updatedCourse.classCode}
                     onChange={handleInputChange}
                   />
                   <InputField
@@ -157,7 +171,7 @@ const Modal = ({ showModal, setShowModal }) => {
                     id="type"
                     type="text"
                     placeholder="Course Type"
-                    value={courseData.type}
+                    value={updatedCourse.type}
                     onChange={handleInputChange}
                   />
                   <InputField
@@ -165,7 +179,7 @@ const Modal = ({ showModal, setShowModal }) => {
                     id="price"
                     type="number"
                     placeholder="Course Price"
-                    value={courseData.price}
+                    value={updatedCourse.price}
                     onChange={handleInputChange}
                   />
                   <InputField
@@ -173,7 +187,7 @@ const Modal = ({ showModal, setShowModal }) => {
                     id="courseBy"
                     type="text"
                     placeholder="Course By"
-                    value={courseData.courseBy}
+                    value={updatedCourse.courseBy}
                     onChange={handleInputChange}
                   />
                   <InputField
@@ -186,9 +200,8 @@ const Modal = ({ showModal, setShowModal }) => {
                   <div className="flex items-center justify-between p-5 gap-5 w-full">
                     <button
                       className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
-                      type="submit"
-                      disabled={isLoading}>
-                      {isLoading ? 'Loading...' : 'Simpan'}
+                      type="submit">
+                      Simpan
                     </button>
                   </div>
                 </form>
@@ -202,4 +215,4 @@ const Modal = ({ showModal, setShowModal }) => {
   );
 };
 
-export default Modal;
+export default UpdateCourse;
