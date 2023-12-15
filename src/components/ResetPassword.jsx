@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [token, setToken] = useState("");
-  const [error, setError] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [token, setToken] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const tokenFromURL = urlParams.get("token");
+    const tokenFromURL = urlParams.get('token');
     if (tokenFromURL) {
       setToken(tokenFromURL);
     }
@@ -20,7 +20,7 @@ const ResetPassword = () => {
   const handleResetPassword = async () => {
     try {
       if (password !== confirmPassword) {
-        alert("Password and Confirm Password do not match");
+        alert('Password and Confirm Password do not match');
         return;
       }
 
@@ -31,8 +31,8 @@ const ResetPassword = () => {
           confirmPassword,
         }
       );
-      alert("Password reset successful");
-      navigate("/");
+      alert('Password reset successful');
+      navigate('/');
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -58,7 +58,7 @@ const ResetPassword = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="text-sm mt-1 w-full p-2 ps-4 border lg:w-[500px]"
-              style={{ borderRadius: "16px" }}
+              style={{ borderRadius: '16px' }}
               placeholder="Enter Password"
             />
           </div>
@@ -74,7 +74,7 @@ const ResetPassword = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="text-sm mt-1 w-full p-2 ps-4 border lg:w-[500px]"
-              style={{ borderRadius: "16px" }}
+              style={{ borderRadius: '16px' }}
               placeholder="Confirm Password"
             />
           </div>
@@ -82,7 +82,7 @@ const ResetPassword = () => {
             type="button"
             onClick={handleResetPassword}
             className="bg-dark-blue text-white w-full font-normal text-sm h-[50px] mt-5"
-            style={{ borderRadius: "16px" }}>
+            style={{ borderRadius: '16px' }}>
             Reset Password
           </button>
         </form>

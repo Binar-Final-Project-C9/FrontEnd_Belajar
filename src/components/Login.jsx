@@ -14,9 +14,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [login] = useLoginMutation();
-
   const { token } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -29,11 +27,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
-      dispatch(
-        setToken({
-          ...res,
-        })
-      );
+      dispatch(setToken(res));
       navigate('/');
     } catch (error) {
       setError(error.data.message);

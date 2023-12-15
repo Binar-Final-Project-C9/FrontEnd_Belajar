@@ -20,7 +20,6 @@ const formatDate = (isoDate) => {
 const Home = () => {
   const dispatch = useDispatch();
   const { data: paymentData, isError, isLoading } = useFetchPaymentQuery();
-
   const payments = useSelector((state) => state.payment.items);
 
   useEffect(() => {
@@ -29,13 +28,8 @@ const Home = () => {
     }
   }, [dispatch, paymentData]);
 
-  if (isLoading) {
-    return <div className="text-center">Loading...</div>;
-  }
-
-  if (isError) {
-    return <div className="text-center">Error...</div>;
-  }
+  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (isError) return <div className="text-center">Error...</div>;
 
   return (
     <>

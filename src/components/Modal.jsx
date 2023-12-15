@@ -35,8 +35,6 @@ const Modal = ({ showModal, setShowModal }) => {
     image: null,
   };
 
-  const navigate = useNavigate();
-
   const [courseData, setCourseData] = useState(initialState);
   const [errorMessage, setErrorMessage] = useState(null);
   const [createCourse, { data, isLoading, isError }] =
@@ -52,20 +50,16 @@ const Modal = ({ showModal, setShowModal }) => {
 
   const handleInputChange = (e) => {
     const { id, value, files } = e.target;
-    setCourseData((prevData) => {
-      const newData = {
-        ...prevData,
-        [id]: id === 'image' ? files[0] : value,
-      };
-      return newData;
-    });
+    setCourseData((prevData) => ({
+      ...prevData,
+      [id]: id === 'image' ? files[0] : value,
+    }));
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       const res = await createCourse(courseData).unwrap();
-      dispatch(addCourse(res));
       if (res.status === 'success') {
         dispatch(addCourse(res));
         setShowModal(false);
