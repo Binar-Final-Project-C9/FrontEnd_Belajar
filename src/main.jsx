@@ -17,6 +17,7 @@ import ForgotPassword from './components/ForgotPassword.jsx';
 import ResetPassword from './components/ResetPassword.jsx';
 import { Provider } from 'react-redux';
 import store from './store.jsx';
+import Course from './components/Course.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
         <Route path="" element={<Layout />}>
           <Route path="dashboard" element={<Home />} />
           <Route path="course" element={<Class />} />
+          <Route path="course/:id" element={<Course />} />
         </Route>
       </Route>
       <Route path="forgot-password" element={<ForgotPassword />} />

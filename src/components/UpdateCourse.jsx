@@ -37,8 +37,6 @@ const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state.course.items);
 
-  const navigate = useNavigate();
-  const [selectedCourse, setSelectedCourse] = useState(null);
   const [updatedCourse, setUpdatedCourse] = useState(initialState);
 
   const [updateDataCourse, { data, isLoading, isError }] =
@@ -47,18 +45,9 @@ const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
   useEffect(() => {
     if (courses && courseId) {
       const selected = courses.find((course) => course.id === courseId);
-      setSelectedCourse(selected);
       setUpdatedCourse({
-        name: selected?.name || '',
-        level: selected?.level || '',
-        categoryId: selected?.categoryId || '',
-        description: selected?.description || '',
-        benefits: selected?.benefits || '',
-        classCode: selected?.classCode || '',
-        type: selected?.type || '',
-        price: selected?.price || '',
-        courseBy: selected?.courseBy || '',
-        image: selected?.imageUrl || null,
+        ...selected,
+        image: selected?.imageUrl || '',
       });
     }
   }, [courses, courseId]);
@@ -71,13 +60,10 @@ const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
 
   const handleInputChange = (e) => {
     const { id, value, files } = e.target;
-    setUpdatedCourse((prevData) => {
-      const newData = {
-        ...prevData,
-        [id]: id === 'image' ? files[0] : value,
-      };
-      return newData;
-    });
+    setUpdatedCourse((prevData) => ({
+      ...prevData,
+      [id]: id === 'image' ? files[0] : value,
+    }));
   };
 
   const submitHandler = async (e) => {
@@ -87,7 +73,6 @@ const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
         id: courseId,
         updatedCourse,
       }).unwrap();
-      dispatch(updateCourse(res));
       if (res.status === 'success') {
         setShowModal(false);
         window.location.reload();

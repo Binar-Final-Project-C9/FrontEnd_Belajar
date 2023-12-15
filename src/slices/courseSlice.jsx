@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   items: [],
+  item: {},
 };
 
 const courseSlice = createSlice({
@@ -13,6 +14,9 @@ const courseSlice = createSlice({
     },
     addCourse(state, action) {
       state.items.push(action.payload.data.newCourse);
+    },
+    setCourseById(state, action) {
+      state.item = action.payload.data.course;
     },
     updateCourse(state, action) {
       const { id, updatedCourse } = action.payload;
@@ -31,6 +35,11 @@ const courseSlice = createSlice({
   },
 });
 
-export const { setCourse, addCourse, updateCourse, removeCourse } =
-  courseSlice.actions;
+export const {
+  setCourse,
+  setCourseById,
+  addCourse,
+  updateCourse,
+  removeCourse,
+} = courseSlice.actions;
 export default courseSlice.reducer;

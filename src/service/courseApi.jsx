@@ -5,6 +5,9 @@ export const courseApi = apiSlice.injectEndpoints({
     fetchCourses: builder.query({
       query: () => '/course',
     }),
+    fetchCourseById: builder.query({
+      query: (id) => `/course/${id}`,
+    }),
     createCourse: builder.mutation({
       query: (newCourse) => {
         const formData = new FormData();
@@ -42,6 +45,7 @@ export const courseApi = apiSlice.injectEndpoints({
 
 export const {
   useFetchCoursesQuery,
+  useFetchCourseByIdQuery,
   useCreateCourseMutation,
   useUpdateCourseMutation,
   useDeleteCourseMutation,

@@ -10,6 +10,7 @@ import {
   useDeleteCourseMutation,
 } from '../service/courseApi';
 import { setCourse, removeCourse } from '../slices/courseSlice';
+import { Link } from 'react-router-dom';
 
 const Class = () => {
   const [showModal, setShowModal] = useState(false);
@@ -17,10 +18,9 @@ const Class = () => {
   const [courseIdToUpdate, setCourseIdToUpdate] = useState(null);
 
   const dispatch = useDispatch();
-
   const { data: courseData, isError, isLoading } = useFetchCoursesQuery();
-
   const [deleteCourseMutation] = useDeleteCourseMutation();
+  const courses = useSelector((state) => state.course.items);
 
   const deleteCourseHandler = async (courseId) => {
     try {
@@ -30,8 +30,6 @@ const Class = () => {
       console.error('Error deleting course:', error);
     }
   };
-
-  const courses = useSelector((state) => state.course.items);
 
   useEffect(() => {
     if (courseData) {
@@ -44,13 +42,8 @@ const Class = () => {
     setUpdateModal(true);
   };
 
-  if (isLoading) {
-    return <div className="text-center">Loading...</div>;
-  }
-
-  if (isError) {
-    return <div className="text-center">Error...</div>;
-  }
+  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (isError) return <div className="text-center">Error...</div>;
 
   return (
     <>
@@ -97,7 +90,7 @@ const Class = () => {
                     {course?.Category?.name}
                   </td>
                   <td className="text-xs font-bold text-[#202244] py-2">
-                    {course.name}
+                    <Link to={`/course/${course.id}`}>{course.name}</Link>
                   </td>
                   <td className="text-xs font-bold text-dark-green uppercase">
                     {course.type}
