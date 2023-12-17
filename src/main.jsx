@@ -1,23 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import "./theme.css";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
-} from 'react-router-dom';
-import Login from './components/Login.jsx';
-import Private from './private/Private.jsx';
-import Layout from './components/Layout.jsx';
-import Home from './components/Home.jsx';
-import Class from './components/Class.jsx';
-import ForgotPassword from './components/ForgotPassword.jsx';
-import ResetPassword from './components/ResetPassword.jsx';
-import { Provider } from 'react-redux';
-import store from './store.jsx';
-import Course from './components/Course.jsx';
+} from "react-router-dom";
+import Login from "./components/Login.jsx";
+import Private from "./private/Private.jsx";
+import Layout from "./components/Layout.jsx";
+import Home from "./components/Home.jsx";
+import Class from "./components/Class.jsx";
+import ForgotPassword from "./components/ForgotPassword.jsx";
+import ResetPassword from "./components/ResetPassword.jsx";
+import { Provider } from "react-redux";
+import store from "./store.jsx";
+import Course from "./components/Course.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,7 +37,7 @@ const router = createBrowserRouter(
   )
 );
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <React.StrictMode>
       <RouterProvider router={router} />
