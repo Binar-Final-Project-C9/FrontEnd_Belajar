@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useFetchCourseByIdQuery } from '../service/courseApi';
-import { setCourseById } from '../slices/courseSlice';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useFetchCourseByIdQuery } from "../service/courseApi";
+import { setCourseById } from "../slices/courseSlice";
+import { useParams } from "react-router-dom";
+import "../colors.module.css";
 
 const Course = () => {
   const { id } = useParams();
