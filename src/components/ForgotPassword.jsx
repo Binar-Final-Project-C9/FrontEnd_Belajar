@@ -1,19 +1,47 @@
-import { useState } from 'react';
-import { useForgotPasswordMutation } from '../service/authApi';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useForgotPasswordMutation } from "../service/authApi";
+import { useNavigate, Link } from "react-router-dom";
+import "../colors.module.css";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [forgotPassword] = useForgotPasswordMutation();
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
+
+    // Trim whitespaces from the email
+    const trimmedEmail = email.trim();
+
+    // Check if the email is empty
+    if (!trimmedEmail) {
+      setEmailError("Email is required");
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      setEmailError("Invalid email format");
+      return;
+    }
+
     try {
-      await forgotPassword({ email }).unwrap();
-      navigate('/');
+      await forgotPassword({ email: trimmedEmail }).unwrap();
+      navigate("/");
     } catch (error) {
-      console.error('Error sending reset email', error);
+      console.error("Error sending reset email", error);
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    // Clear email error when the user starts typing
+    if (emailError && newEmail.trim()) {
+      setEmailError("");
     }
   };
 
@@ -21,29 +49,41 @@ const ForgotPassword = () => {
     <div className="flex items-center justify-center h-screen">
       <div className="flex items-center justify-center w-full">
         <form action="">
-          <h1 className="text-2xl font-bold text-dark-blue mb-5 text-center font-montserrat">
+          <h1 className="text-2xl font-bold primary-text mb-5 text-center font-montserrat">
             Forgot Password
           </h1>
-          <div className="mb-5">
+          <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700">
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
               type="text"
               id="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="text-sm mt-1 w-full p-2 ps-4 border lg:w-[500px] rounded-2xl"
+              onChange={handleEmailChange}
+              className={`text-sm mt-1 w-full p-2 ps-4 border lg:w-[500px] rounded-2xl ${
+                emailError ? "border-red-500" : ""
+              }`}
               placeholder="Masukan email"
             />
+            {emailError && (
+              <p className="text-red-500 text-sm mt-2">{emailError}</p>
+            )}
           </div>
           <button
-            className="bg-dark-blue text-white w-full font-normal text-sm h-[50px] mt-5 rounded-2xl"
-            onClick={handleForgotPassword}>
+            className="primary text-white w-full font-normal text-sm h-[50px] mt-5 rounded-2xl"
+            onClick={handleForgotPassword}
+          >
             Send
           </button>
+          <p className="text-sm text-center mt-3">
+            <Link to="/" className="on-primary-text hover:underline">
+              Back to Login
+            </Link>
+          </p>
         </form>
       </div>
     </div>
