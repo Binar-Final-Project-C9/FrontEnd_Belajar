@@ -1,32 +1,88 @@
-import { FiFilter } from 'react-icons/fi';
-import { MdOutlineSearch } from 'react-icons/md';
-import Card from './Card';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useFetchPaymentQuery } from '../service/paymentApi';
-import { setPayment } from '../slices/paymentSlice';
+import { useState, useEffect, useRef } from "react";
+import { FiFilter } from "react-icons/fi";
+import { MdOutlineSearch } from "react-icons/md";
+import Card from "./Card";
+import { useDispatch, useSelector } from "react-redux";
+import { useFetchPaymentQuery } from "../service/paymentApi";
+import { setPayment } from "../slices/paymentSlice";
+import "../colors.module.css";
 
 const formatDate = (isoDate) => {
   const options = {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   };
-  return new Date(isoDate).toLocaleString('en-US', options);
+  return new Date(isoDate).toLocaleString("en-US", options);
 };
 
 const Home = () => {
   const dispatch = useDispatch();
   const { data: paymentData, isError, isLoading } = useFetchPaymentQuery();
   const payments = useSelector((state) => state.payment.items);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     if (paymentData) {
       dispatch(setPayment(paymentData));
     }
   }, [dispatch, paymentData]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsFilterOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleFilterClick = () => {
+    setIsFilterOpen((prev) => !prev);
+  };
+
+  const handleFilterSelect = (filter) => {
+    if (selectedFilters.includes(filter)) {
+      setSelectedFilters(selectedFilters.filter((f) => f !== filter));
+    } else {
+      setSelectedFilters([...selectedFilters, filter]);
+    }
+  };
+
+  const handleSearchClick = () => {
+    setIsSearchActive(!isSearchActive);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    console.log("Search term:", searchTerm);
+  };
+
+  const handleSearchClear = () => {
+    setSearchTerm("");
+    setIsSearchActive(false);
+  };
+
+  const filteredPayments = selectedFilters.length
+    ? payments.filter((payment) =>
+        selectedFilters.includes(payment.status.toLowerCase())
+      )
+    : payments;
 
   if (isLoading) return <div className="text-center">Loading...</div>;
   if (isError) return <div className="text-center">Error...</div>;
@@ -39,12 +95,66 @@ const Home = () => {
           <h2 className="font-bold text-base mb-4 font-montserrat">
             Status Pembayaran
           </h2>
-          <div className="text-dark-blue flex items-center justify-center gap-3">
-            <button className="flex items-center justify-center border-dark-blue border-2 rounded-full px-4 font-bold gap-2">
-              <FiFilter />
-              Filter
-            </button>
-            <MdOutlineSearch className="w-7 h-7" />
+          <div className="flex items-center gap-3 relative">
+            <div className="relative inline-block">
+              <button
+                onClick={handleFilterClick}
+                className="flex items-center justify-center primary-text border-[#73daa4] border-2 rounded-full px-6 font-medium gap-2 focus:outline-none"
+              >
+                <FiFilter className="primary-text" />
+                Filter
+              </button>
+              {isFilterOpen && (
+                <div
+                  ref={dropdownRef}
+                  className="absolute top-full left-0 mt-2 p-2 pe-6 primary on-tertiary-text rounded-md shadow-md"
+                >
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedFilters.includes("paid")}
+                      onChange={() => handleFilterSelect("paid")}
+                      className="mr-4"
+                    />
+                    Paid
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedFilters.includes("unpaid")}
+                      onChange={() => handleFilterSelect("unpaid")}
+                      className="mr-4"
+                    />
+                    Unpaid
+                  </label>
+                </div>
+              )}
+            </div>
+            {isSearchActive ? (
+              <form onSubmit={handleSearchSubmit}>
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  placeholder="Search..."
+                  className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none"
+                />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={handleSearchClear}
+                    className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                  >
+                    &times;
+                  </button>
+                )}
+              </form>
+            ) : (
+              <MdOutlineSearch
+                className="w-6 h-6 primary-text cursor-pointer"
+                onClick={handleSearchClick}
+              />
+            )}
           </div>
         </div>
         <div className="overflow-x-auto">
@@ -60,19 +170,18 @@ const Home = () => {
               </tr>
             </thead>
             <tbody>
-              {payments.map((payment) => (
+              {filteredPayments.map((payment) => (
                 <tr className="h-12 text-left" key={payment.id}>
                   <td className="text-xs font-bold text-[#4E5566] ps-3">
                     {payment.User.email}
                   </td>
                   <td className="text-xs font-bold text-[#4E5566]">
-                    {payment.Course.Category.name}
+                    {/* {payment.Course.Category.name} */}
                   </td>
                   <td className="text-xs font-bold text-[#202244] py-2">
-                    {/* <Link to={`/course/${payment.id}`}>{payment.name}</Link> */}
-                    {payment.Course.type}
+                    {/* {payment.Course.type} */}
                   </td>
-                  {payment.status === 'paid' ? (
+                  {payment.status === "paid" ? (
                     <td className="text-xs font-bold text-dark-green uppercase">
                       {payment.status}
                     </td>
