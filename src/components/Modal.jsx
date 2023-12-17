@@ -1,9 +1,8 @@
-import { HiX } from 'react-icons/hi';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useCreateCourseMutation } from '../service/courseApi';
-import { addCourse } from '../slices/courseSlice';
-import { useNavigate } from 'react-router-dom';
+import { HiX } from "react-icons/hi";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useCreateCourseMutation } from "../service/courseApi";
+import { addCourse } from "../slices/courseSlice";
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   <div>
@@ -23,15 +22,15 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
 
 const Modal = ({ showModal, setShowModal }) => {
   const initialState = {
-    name: '',
-    level: '',
-    categoryId: '',
-    description: '',
-    benefits: '',
-    classCode: '',
-    type: '',
-    price: '',
-    courseBy: '',
+    name: "",
+    level: "",
+    categoryId: "",
+    description: "",
+    benefits: "",
+    classCode: "",
+    type: "",
+    price: "",
+    courseBy: "",
     image: null,
   };
 
@@ -52,7 +51,7 @@ const Modal = ({ showModal, setShowModal }) => {
     const { id, value, files } = e.target;
     setCourseData((prevData) => ({
       ...prevData,
-      [id]: id === 'image' ? files[0] : value,
+      [id]: id === "image" ? files[0] : value,
     }));
   };
 
@@ -60,7 +59,7 @@ const Modal = ({ showModal, setShowModal }) => {
     e.preventDefault();
     try {
       const res = await createCourse(courseData).unwrap();
-      if (res.status === 'success') {
+      if (res.status === "success") {
         dispatch(addCourse(res));
         setShowModal(false);
         window.location.reload();
@@ -82,14 +81,16 @@ const Modal = ({ showModal, setShowModal }) => {
                 <div className="flex items-start justify-between p-2">
                   <button
                     className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
-                    onClick={() => setShowModal(false)}>
+                    onClick={() => setShowModal(false)}
+                  >
                     <HiX className="text-black" />
                   </button>
                 </div>
                 <form
                   className="w-full px-6 space-y-4"
                   encType="multipart/form-data"
-                  onSubmit={submitHandler}>
+                  onSubmit={submitHandler}
+                >
                   <h2 className="text-center font-bold text-gray-800">
                     Tambah Kelas
                   </h2>
@@ -181,8 +182,9 @@ const Modal = ({ showModal, setShowModal }) => {
                     <button
                       className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
                       type="submit"
-                      disabled={isLoading}>
-                      {isLoading ? 'Loading...' : 'Simpan'}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Loading..." : "Simpan"}
                     </button>
                   </div>
                 </form>
