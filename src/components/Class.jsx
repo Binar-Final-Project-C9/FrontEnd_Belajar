@@ -193,7 +193,7 @@ const Class = () => {
         )}
         <div className="overflow-x-auto">
           <table className="table-auto w-full">
-            <thead className="bg-[#EBF3FC] text-left text-sm font-normal">
+            <thead className="bg-[#EBF3FC] text-sm font-normal">
               <tr className="h-12">
                 <th className="ps-3">ID</th>
                 <th>Kategori</th>
@@ -202,31 +202,40 @@ const Class = () => {
                 <th>Level</th>
                 <th>Harga Kelas</th>
                 <th>Aksi</th>
-                <th>Info</th>
               </tr>
             </thead>
             <tbody>
               {filteredCourses.map((course, index) => (
-                <tr className="h-12 text-left" key={index}>
-                  <td className="text-xs font-bold text-[#4E5566] ps-3">
+                <tr className="h-12" key={index}>
+                  <td className="text-center text-xs font-bold text-[#4E5566]">
                     {course.classCode}
                   </td>
-                  <td className="text-xs font-bold text-[#4E5566]">
+                  <td className="text-center text-xs font-bold text-[#4E5566]">
                     {course?.Category?.name}
                   </td>
-                  <td className="text-xs font-bold text-[#202244] py-2">
-                    <Link to={`/course/${course.id}`}>{course.name}</Link>
+                  <td className="text-center text-xs font-bold text-[#202244]">
+                    {course.name}
                   </td>
-                  <td className="text-xs font-bold text-dark-green uppercase">
+                  <td className="text-center text-xs font-bold text-dark-green uppercase">
                     {course.type}
                   </td>
-                  <td className="text-xs font-bold text-[#202244]">
+                  <td className="text-center text-xs font-bold text-[#202244]">
                     {course.level}
                   </td>
-                  <td className="text-xs font-bold text-[#4E5566]">
+                  <td className="text-center text-xs font-bold text-[#4E5566]">
                     Rp {course.price}
                   </td>
-                  <td className="text-xs font-bold">
+                  <td className="text-center text-xs font-bold">
+                    <Link to={`/course/${course.id}`}>
+                      <button className="bg-blue-500 p-1 rounded-xl w-16 text-white mr-2">
+                        Chapter
+                      </button>
+                    </Link>
+                    <Link to={`/course/${course.id}`}>
+                      <button className="secondary p-1 rounded-xl w-16 text-white mr-2">
+                        Detail
+                      </button>
+                    </Link>
                     <button
                       className="primary p-1 rounded-xl w-16 text-white mr-2"
                       onClick={() => handleUpdateClick(course.id)}
@@ -234,15 +243,10 @@ const Class = () => {
                       Ubah
                     </button>
                     <button
-                      className="bg-red-500 p-1 rounded-xl w-16 text-white"
+                      className="bg-red-500 p-1 rounded-xl w-16 text-white mr-2"
                       onClick={() => deleteCourseHandler(course.id)}
                     >
                       Hapus
-                    </button>
-                  </td>
-                  <td className="text-xs font-bold">
-                    <button className="secondary p-1 rounded-xl w-16 text-white mr-2">
-                      Detail
                     </button>
                   </td>
                 </tr>
