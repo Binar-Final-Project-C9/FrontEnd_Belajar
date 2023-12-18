@@ -1,4 +1,3 @@
-// Class.js
 import { useState, useEffect } from "react";
 import { FiFilter, FiPlusCircle } from "react-icons/fi";
 import { FaExclamationTriangle } from "react-icons/fa";
@@ -192,58 +191,58 @@ const Class = () => {
           </div>
         )}
         <div className="overflow-x-auto">
-          <table className="table-auto w-full">
-            <thead className="bg-[#EBF3FC] text-sm font-normal">
+          <table className="table-auto w-full border-collapse">
+            <thead className="bg-[#EBF3FC] on-primary-text text-sm font-normal">
               <tr className="h-12">
-                <th className="ps-3">ID</th>
-                <th>Kategori</th>
-                <th>Nama Kelas</th>
-                <th>Tipe Kelas</th>
-                <th>Level</th>
-                <th>Harga Kelas</th>
-                <th>Aksi</th>
+                <th className="px-3 py-2">ID</th>
+                <th className="px-3 py-2">Kategori</th>
+                <th className="px-3 py-2">Nama Kelas</th>
+                <th className="px-3 py-2">Tipe Kelas</th>
+                <th className="px-3 py-2">Level</th>
+                <th className="px-3 py-2">Harga Kelas</th>
+                <th className="px-3 py-2">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {filteredCourses.map((course, index) => (
                 <tr className="h-12" key={index}>
-                  <td className="text-center text-xs font-bold text-[#4E5566]">
+                  <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
                     {course.classCode}
                   </td>
-                  <td className="text-center text-xs font-bold text-[#4E5566]">
+                  <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
                     {course?.Category?.name}
                   </td>
-                  <td className="text-center text-xs font-bold text-[#202244]">
+                  <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
                     {course.name}
                   </td>
-                  <td className="text-center text-xs font-bold text-dark-green uppercase">
+                  <td className="text-center text-xs font-bold text-dark-green uppercase px-3 py-2">
                     {course.type}
                   </td>
-                  <td className="text-center text-xs font-bold text-[#202244]">
+                  <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
                     {course.level}
                   </td>
-                  <td className="text-center text-xs font-bold text-[#4E5566]">
+                  <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
                     Rp {course.price}
                   </td>
-                  <td className="text-center text-xs font-bold">
-                    <Link to={`/course/${course.id}`}>
-                      <button className="bg-blue-500 p-1 rounded-xl w-16 text-white mr-2">
+                  <td className="text-center text-xs font-bold px-3 py-2">
+                    <Link to={`/course/chapter${course.id}`}>
+                      <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
                         Chapter
                       </button>
                     </Link>
                     <Link to={`/course/${course.id}`}>
-                      <button className="secondary p-1 rounded-xl w-16 text-white mr-2">
+                      <button className="bg-gray-400 px-2 py-1 rounded-md text-white mr-2">
                         Detail
                       </button>
                     </Link>
                     <button
-                      className="primary p-1 rounded-xl w-16 text-white mr-2"
+                      className="bg-green-500 px-2 py-1 rounded-md text-white mr-2"
                       onClick={() => handleUpdateClick(course.id)}
                     >
-                      Ubah
+                      Edit
                     </button>
                     <button
-                      className="bg-red-500 p-1 rounded-xl w-16 text-white mr-2"
+                      className="bg-red-500 px-2 py-1 my-2 rounded-md text-white"
                       onClick={() => deleteCourseHandler(course.id)}
                     >
                       Hapus
@@ -254,6 +253,7 @@ const Class = () => {
             </tbody>
           </table>
         </div>
+
       </div>
       <Modal showModal={showModal} setShowModal={setShowModal} />
       <UpdateCourse
@@ -262,7 +262,6 @@ const Class = () => {
         courseId={courseIdToUpdate}
       />
 
-      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-8 rounded-md w-96">
