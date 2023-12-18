@@ -176,10 +176,10 @@ const Home = () => {
                     {payment.User.email}
                   </td>
                   <td className="text-xs font-bold text-[#4E5566]">
-                    {/* {payment.Course.Category.name} */}
+                    {payment.Course.Category.name}
                   </td>
                   <td className="text-xs font-bold text-[#202244] py-2">
-                    {/* {payment.Course.type} */}
+                    {payment.Course.type}
                   </td>
                   {payment.status === "paid" ? (
                     <td className="text-xs font-bold text-dark-green uppercase">

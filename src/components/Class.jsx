@@ -202,6 +202,7 @@ const Class = () => {
                 <th>Level</th>
                 <th>Harga Kelas</th>
                 <th>Aksi</th>
+                <th>Info</th>
               </tr>
             </thead>
             <tbody>
@@ -237,6 +238,11 @@ const Class = () => {
                       onClick={() => deleteCourseHandler(course.id)}
                     >
                       Hapus
+                    </button>
+                  </td>
+                  <td className="text-xs font-bold">
+                    <button className="secondary p-1 rounded-xl w-16 text-white mr-2">
+                      Detail
                     </button>
                   </td>
                 </tr>
