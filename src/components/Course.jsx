@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FiFilter, FiPlusCircle } from "react-icons/fi";
+import { IoDiamondOutline } from "react-icons/io5";
+import { FaArrowAltCircleLeft, FaStar, FaShieldAlt, FaBookOpen } from "react-icons/fa";
 import { useFetchCourseByIdQuery } from "../service/courseApi";
 import { setCourseById } from "../slices/courseSlice";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import "../colors.module.css";
 
 const Course = () => {
@@ -23,67 +24,60 @@ const Course = () => {
   if (isError) return <div className="text-center">Error...</div>;
 
   return (
-    // <div>
-    //   <div>
-    //     <button
-    //       className="flex text-white items-center justify-center primary rounded-full px-3 font-medium gap-2 py-[2px]"
-    //       onClick={() => setShowModal(true)}
-    //     >
-    //       <FiPlusCircle />
-    //       Tambah
-    //     </button>
-    //   </div>
-
-    //   <div className="overflow-x-auto">
-    //     <table className="table-auto w-full">
-    //       <thead className="bg-[#EBF3FC] text-left text-sm font-normal">
-    //         <tr className="h-12">
-    //           <th className="ps-3">No</th>
-    //           <th>Nama Chapter</th>
-    //           <th>Detail</th>
-    //         </tr>
-    //       </thead>
-    //       <tbody>
-    //         <tr className="h-12 text-left">
-    //           <td className="text-xs font-bold text-[#4E5566] ps-3"></td>
-    //           <td className="text-xs font-bold text-[#202244] py-2"></td>
-
-    //           <td className="text-xs font-bold">
-    //             <button className="secondary p-1 rounded-xl w-16 text-white mr-2">
-    //               Detail
-    //             </button>
-    //           </td>
-    //         </tr>
-    //       </tbody>
-    //     </table>
-    //   </div>
-    // </div>
-
-    <div>
-      <div>
-        <h2>Nama Course : {selectedCourse.name}</h2>
-        <h2>Level Course : {selectedCourse.level}</h2>
-        <h2>Deskripsi Course : {selectedCourse.description}</h2>
-        <h2>Benefit Course : {selectedCourse.benefits}</h2>
-        <h2>Kode Course : {selectedCourse.classCode}</h2>
-        <h2>Tipe Course : {selectedCourse.type}</h2>
-        <h2>Harga Course : {selectedCourse.price}</h2>
-        <h2>Author Course : {selectedCourse.courseBy}</h2>
-        <img src={selectedCourse.imageUrl} alt="" />
+    <div className="container mx-auto ">
+      <Link to="/course" className="flex primary-text font-medium mb-2 text-lg items-center">
+        <FaArrowAltCircleLeft className="me-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out" />
+        <button className="primary-text py-2 px-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out">Back to Course</button>
+      </Link>
+      <div className="bg-white p-6 rounded-lg shadow-xl">
+        <div className="flex justify-between">
+          <h3 className="text-3xl font-bold">{selectedCourse.name}</h3>
+          <div className="flex items-center me-4">
+            <FaStar className="text-yellow-300 me-2" />
+            <p className="font-semibold">5.0</p>
+          </div>
+        </div>
+        <p className="font-semibold text-md">by {selectedCourse.courseBy}</p>
+        <div className="flex gap-3 mt-4 mb-6">
+          <div className="flex items-center gap-3 secondary text-white px-3 rounded-full">
+            <FaBookOpen />
+            <p className="font-semibold">{selectedCourse.classCode}</p>
+          </div>
+          <div className="flex items-center bg-emerald-400 px-3 text-white rounded-full gap-3">
+            <FaShieldAlt />
+            <p className="font-semibold">{selectedCourse.level}</p>
+          </div>
+          <div className="flex items-center gap-3 bg-dark-blue px-3 text-white rounded-full">
+            <IoDiamondOutline />
+            <p className="font-semibold">{selectedCourse.type}</p>
+          </div>
+        </div>
+        <div>
+          <div>
+            <img src={selectedCourse.imageUrl} alt="" className="rounded-lg mb-4" />
+          </div>
+          <div className="mb-6">
+            <p className="font-bold text-md">Tentang Kelas</p>
+            <p className="text-sm">{selectedCourse.description}</p>
+            {/* <p>Benefit Course: {selectedCourse.benefits}</p> */}
+          </div>
+          <div>
+            <p className="font-bold text-md mb-2">Harga Kelas</p>
+            <p className="bg-blue-400 text-white rounded-full inline-block px-6 text-sm">Rp : {selectedCourse.price}</p>
+          </div>
+        </div>
       </div>
 
       {selectedCourse?.Chapters?.map((chapter) => (
-        <div key={chapter.id} className="mt-4">
-          <h2>No Chapter : {chapter.noChapter}</h2>
-          <h2>Nama Chapter : {chapter.name}</h2>
+        <div key={chapter.id} className="mb-8">
+          <h2 className="text-xl font-bold mb-2">Chapter {chapter.noChapter}: {chapter.name}</h2>
 
-          <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {chapter?.Modules?.map((module) => (
-              <div key={module.id}>
-                <h2>No Modul : {module.noModule}</h2>
-                <h2>Nama Modul : {module.name}</h2>
-                <h2>Durasi Modul : {module.duration}</h2>
-                <h2>Deskripsi Modul : {module.description}</h2>
+              <div key={module.id} className="bg-white p-4 rounded-lg shadow-md">
+                <h3 className="text-lg font-semibold mb-2">Modul {module.noModule}: {module.name}</h3>
+                <p>Durasi Modul: {module.duration}</p>
+                <p>Deskripsi Modul: {module.description}</p>
               </div>
             ))}
           </div>
