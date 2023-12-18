@@ -80,8 +80,8 @@ const Home = () => {
 
   const filteredPayments = selectedFilters.length
     ? payments.filter((payment) =>
-        selectedFilters.includes(payment.status.toLowerCase())
-      )
+      selectedFilters.includes(payment.status.toLowerCase())
+    )
     : payments;
 
   if (isLoading) return <div className="text-center">Loading...</div>;
@@ -161,43 +161,43 @@ const Home = () => {
           <table className="table-auto w-full">
             <thead className="bg-[#EBF3FC] text-left text-sm font-normal">
               <tr className="h-12">
-                <th className="ps-3">ID</th>
-                <th>Kategori</th>
-                <th>Kelas Premium</th>
-                <th>Status</th>
-                <th>Metode Pembayaran</th>
-                <th>Tanggal Bayar</th>
+                <th className="pl-4 pr-2">ID</th>
+                <th className="pr-2">Kategori</th>
+                <th className="pr-2">Kelas Premium</th>
+                <th className="pr-2">Status</th>
+                <th className="pr-2">Metode Pembayaran</th>
+                <th className="pr-4">Tanggal Bayar</th>
               </tr>
             </thead>
             <tbody>
               {filteredPayments.map((payment) => (
                 <tr className="h-12 text-left" key={payment.id}>
-                  <td className="text-xs font-bold text-[#4E5566] ps-3">
+                  <td className="text-xs font-bold text-[#4E5566] pl-4 pr-2">
                     {payment.User.email}
                   </td>
-                  <td className="text-xs font-bold text-[#4E5566]">
-                    {payment.Course.Category.name}
+                  <td className="text-xs font-bold text-[#4E5566] pr-2">
+                    {/* {payment.Course.Category.name} */}
                   </td>
-                  <td className="text-xs font-bold text-[#202244] py-2">
-                    {payment.Course.type}
+                  <td className="text-xs font-bold text-[#202244] pr-2">
+                    {/* {payment.Course.type} */}
                   </td>
                   {payment.status === "paid" ? (
-                    <td className="text-xs font-bold text-dark-green uppercase">
+                    <td className="text-xs font-bold text-dark-green uppercase pr-2">
                       {payment.status}
                     </td>
                   ) : (
-                    <td className="text-xs font-bold text-dark-red uppercase">
+                    <td className="text-xs font-bold text-dark-red uppercase pr-2">
                       {payment.status}
                     </td>
                   )}
-                  <td className="text-xs font-bold text-[#202244]">
+                  <td className="text-xs font-bold text-[#202244] pr-2">
                     {payment.paymentType ? (
                       <span>{payment.paymentType}</span>
                     ) : (
                       <span>-</span>
                     )}
                   </td>
-                  <td className="text-xs font-bold text-[#4E5566]">
+                  <td className="text-xs font-bold text-[#4E5566] pr-4">
                     {payment.settlementTime ? (
                       <span>{formatDate(payment.settlementTime)}</span>
                     ) : (
@@ -209,6 +209,7 @@ const Home = () => {
             </tbody>
           </table>
         </div>
+
       </div>
     </>
   );
