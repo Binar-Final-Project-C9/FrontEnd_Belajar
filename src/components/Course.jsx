@@ -49,65 +49,66 @@ const Course = () => {
         </div>
         <p className="font-semibold text-md">by {selectedCourse.courseBy}</p>
         <div className="container flex gap-3 mt-4 mb-6">
-        <div className="container flex gap-3 mt-4 mb-6">
-          <div className="flex items-center gap-3 secondary text-white px-3 rounded-full">
-            <FaBookOpen />
-            <p className="font-semibold">{selectedCourse.classCode}</p>
-          </div>
-          <div className="flex items-center bg-emerald-400 px-3 text-white rounded-full gap-3">
-            <FaShieldAlt />
-            <p className="font-semibold">{selectedCourse.level}</p>
-          </div>
-          <div className="flex items-center gap-3 bg-dark-blue px-3 text-white rounded-full">
-            <IoDiamondOutline />
-            <p className="font-semibold">{selectedCourse.type}</p>
-          </div>
-        </div>
-        <div>
-          <div>
-            <img
-              src={selectedCourse.imageUrl}
-              alt=""
-              className="rounded-lg mb-4"
-            />
-          </div>
-          <div className="mb-6">
-            <p className="font-bold text-md">Tentang Kelas</p>
-            <p className="text-sm">{selectedCourse.description}</p>
-            {/* <p>Benefit Course: {selectedCourse.benefits}</p> */}
+          <div className="container flex gap-3 mt-4 mb-6">
+            <div className="flex items-center gap-3 secondary text-white px-3 rounded-full">
+              <FaBookOpen />
+              <p className="font-semibold">{selectedCourse.classCode}</p>
+            </div>
+            <div className="flex items-center bg-emerald-400 px-3 text-white rounded-full gap-3">
+              <FaShieldAlt />
+              <p className="font-semibold">{selectedCourse.level}</p>
+            </div>
+            <div className="flex items-center gap-3 bg-dark-blue px-3 text-white rounded-full">
+              <IoDiamondOutline />
+              <p className="font-semibold">{selectedCourse.type}</p>
+            </div>
           </div>
           <div>
-            <p className="font-bold text-md mb-2">Harga Kelas</p>
-            <p className="bg-blue-400 text-white rounded-full inline-block px-6 text-sm">
-              Rp : {selectedCourse.price}
-            </p>
+            <div>
+              <img
+                src={selectedCourse.imageUrl}
+                alt=""
+                className="rounded-lg mb-4"
+              />
+            </div>
+            <div className="mb-6">
+              <p className="font-bold text-md">Tentang Kelas</p>
+              <p className="text-sm">{selectedCourse.description}</p>
+              {/* <p>Benefit Course: {selectedCourse.benefits}</p> */}
+            </div>
+            <div>
+              <p className="font-bold text-md mb-2">Harga Kelas</p>
+              <p className="bg-blue-400 text-white rounded-full inline-block px-6 text-sm">
+                Rp : {selectedCourse.price}
+              </p>
+            </div>
           </div>
         </div>
+
+        {selectedCourse?.Chapters?.map((chapter) => (
+          <div key={chapter.id} className="mb-8 mt-10">
+            <h2 className="text-xl font-bold mb-2">
+              Chapter {chapter.noChapter}: {chapter.name}
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {chapter?.Modules?.map((module) => (
+                <div
+                  key={module.id}
+                  className="bg-white p-4 rounded-lg shadow-md"
+                >
+                  <h3 className="text-lg font-semibold mb-2">
+                    Modul {module.noModule}: {module.name}
+                  </h3>
+                  <p>Durasi Modul: {module.duration}</p>
+                  <p>Deskripsi Modul: {module.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
-
-      {selectedCourse?.Chapters?.map((chapter) => (
-        <div key={chapter.id} className="mb-8 mt-10">
-          <h2 className="text-xl font-bold mb-2">
-            Chapter {chapter.noChapter}: {chapter.name}
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {chapter?.Modules?.map((module) => (
-              <div
-                key={module.id}
-                className="bg-white p-4 rounded-lg shadow-md"
-              >
-                <h3 className="text-lg font-semibold mb-2">
-                  Modul {module.noModule}: {module.name}
-                </h3>
-                <p>Durasi Modul: {module.duration}</p>
-                <p>Deskripsi Modul: {module.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div >
+    </div>
   );
 };
 
