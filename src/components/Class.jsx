@@ -68,12 +68,6 @@ const Class = () => {
     }
   };
 
-  useEffect(() => {
-    if (courseData) {
-      dispatch(setCourse(courseData));
-    }
-  }, [dispatch, courseData]);
-
   const handleUpdateClick = (courseId) => {
     setCourseIdToUpdate(courseId);
     setUpdateModal(true);
@@ -102,7 +96,6 @@ const Class = () => {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    console.log("Search term:", searchTerm);
   };
 
   const handleSearchClear = () => {
@@ -281,7 +274,6 @@ const Class = () => {
         setShowModal={setUpdateModal}
         courseId={courseIdToUpdate}
       />
-
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-8 rounded-md w-96">
