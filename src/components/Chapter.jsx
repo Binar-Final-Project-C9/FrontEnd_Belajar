@@ -27,9 +27,7 @@ const Chapter = () => {
   return (
     <div>
       <div className="py-3 mx-auto lg:flex text-center items-center justify-between">
-        <h2 className="font-bold text-base mb-4 font-montserrat">
-          Kelola Kelas
-        </h2>
+        <h2 className="font-bold text-base mb-4 font-montserrat">CHAPTER</h2>
         <div className="flex items-center justify-between gap-3">
           <button
             className="flex text-white items-center justify-center primary rounded-full px-3 font-medium gap-2 py-[2px]"

@@ -48,7 +48,7 @@ const Course = () => {
           </div>
         </div>
         <p className="font-semibold text-md">by {selectedCourse.courseBy}</p>
-        <div className="container flex gap-3 mt-4 mb-6">
+        <div className="container gap-3 mt-4 mb-6">
           <div className="container flex gap-3 mt-4 mb-6">
             <div className="flex items-center gap-3 secondary text-white px-3 rounded-full">
               <FaBookOpen />
