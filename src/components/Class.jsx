@@ -25,11 +25,29 @@ const Class = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [courseIdToDelete, setCourseIdToDelete] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
 
   const dispatch = useDispatch();
   const { data: courseData, isError, isLoading } = useFetchCoursesQuery();
   const [deleteCourseMutation] = useDeleteCourseMutation();
   const courses = useSelector((state) => state.course.items);
+
+  useEffect(() => {
+    if (courseData) {
+      dispatch(setCourse(courseData));
+    }
+  }, [dispatch, courseData]);
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setSearchResults([]);
+    } else {
+      const results = courses.filter((course) =>
+        course.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setSearchResults(results);
+    }
+  }, [searchTerm, courses]);
 
   const deleteCourseHandler = async (courseId) => {
     try {
@@ -49,12 +67,6 @@ const Class = () => {
       console.error("Error deleting course:", error);
     }
   };
-
-  useEffect(() => {
-    if (courseData) {
-      dispatch(setCourse(courseData));
-    }
-  }, [dispatch, courseData]);
 
   const handleUpdateClick = (courseId) => {
     setCourseIdToUpdate(courseId);
@@ -84,12 +96,12 @@ const Class = () => {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    console.log("Search term:", searchTerm);
   };
 
   const handleSearchClear = () => {
     setSearchTerm("");
     setIsSearchActive(false);
+    setSearchResults([]);
   };
 
   const filteredCourses = courses.filter((course) => {
@@ -101,6 +113,8 @@ const Class = () => {
     }
     return true;
   });
+
+  const coursesToRender = searchTerm ? searchResults : filteredCourses;
 
   if (isLoading) return <div className="text-center">Loading...</div>;
   if (isError) return <div className="text-center">Error...</div>;
@@ -204,7 +218,7 @@ const Class = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredCourses.map((course, index) => (
+              {coursesToRender.map((course, index) => (
                 <tr className="h-12" key={index}>
                   <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
                     {course.classCode}
@@ -253,7 +267,6 @@ const Class = () => {
             </tbody>
           </table>
         </div>
-
       </div>
       <Modal showModal={showModal} setShowModal={setShowModal} />
       <UpdateCourse
@@ -261,7 +274,6 @@ const Class = () => {
         setShowModal={setUpdateModal}
         courseId={courseIdToUpdate}
       />
-
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-8 rounded-md w-96">
