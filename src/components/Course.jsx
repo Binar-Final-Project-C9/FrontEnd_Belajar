@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IoDiamondOutline } from "react-icons/io5";
-import { FaArrowAltCircleLeft, FaStar, FaShieldAlt, FaBookOpen } from "react-icons/fa";
+import {
+  FaArrowAltCircleLeft,
+  FaStar,
+  FaShieldAlt,
+  FaBookOpen,
+} from "react-icons/fa";
 import { useFetchCourseByIdQuery } from "../service/courseApi";
 import { setCourseById } from "../slices/courseSlice";
 import { useParams, Link } from "react-router-dom";
@@ -25,9 +30,14 @@ const Course = () => {
 
   return (
     <div className="container mx-auto ">
-      <Link to="/course" className="flex primary-text font-medium mb-2 text-lg items-center">
+      <Link
+        to="/course"
+        className="flex primary-text font-medium mb-2 text-lg items-center ms-3"
+      >
         <FaArrowAltCircleLeft className="me-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out" />
-        <button className="primary-text py-2 px-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out">Back to Course</button>
+        <button className="primary-text py-2 px-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out">
+          Back to Course
+        </button>
       </Link>
       <div className="bg-white p-6 rounded-lg shadow-xl">
         <div className="flex justify-between">
@@ -38,7 +48,7 @@ const Course = () => {
           </div>
         </div>
         <p className="font-semibold text-md">by {selectedCourse.courseBy}</p>
-        <div className="flex gap-3 mt-4 mb-6">
+        <div className="container flex gap-3 mt-4 mb-6">
           <div className="flex items-center gap-3 secondary text-white px-3 rounded-full">
             <FaBookOpen />
             <p className="font-semibold">{selectedCourse.classCode}</p>
@@ -54,7 +64,11 @@ const Course = () => {
         </div>
         <div>
           <div>
-            <img src={selectedCourse.imageUrl} alt="" className="rounded-lg mb-4" />
+            <img
+              src={selectedCourse.imageUrl}
+              alt=""
+              className="rounded-lg mb-4"
+            />
           </div>
           <div className="mb-6">
             <p className="font-bold text-md">Tentang Kelas</p>
@@ -63,19 +77,28 @@ const Course = () => {
           </div>
           <div>
             <p className="font-bold text-md mb-2">Harga Kelas</p>
-            <p className="bg-blue-400 text-white rounded-full inline-block px-6 text-sm">Rp : {selectedCourse.price}</p>
+            <p className="bg-blue-400 text-white rounded-full inline-block px-6 text-sm">
+              Rp : {selectedCourse.price}
+            </p>
           </div>
         </div>
       </div>
 
       {selectedCourse?.Chapters?.map((chapter) => (
-        <div key={chapter.id} className="mb-8">
-          <h2 className="text-xl font-bold mb-2">Chapter {chapter.noChapter}: {chapter.name}</h2>
+        <div key={chapter.id} className="mb-8 mt-10">
+          <h2 className="text-xl font-bold mb-2">
+            Chapter {chapter.noChapter}: {chapter.name}
+          </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {chapter?.Modules?.map((module) => (
-              <div key={module.id} className="bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold mb-2">Modul {module.noModule}: {module.name}</h3>
+              <div
+                key={module.id}
+                className="bg-white p-4 rounded-lg shadow-md"
+              >
+                <h3 className="text-lg font-semibold mb-2">
+                  Modul {module.noModule}: {module.name}
+                </h3>
                 <p>Durasi Modul: {module.duration}</p>
                 <p>Deskripsi Modul: {module.description}</p>
               </div>

@@ -25,11 +25,29 @@ const Class = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [courseIdToDelete, setCourseIdToDelete] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
 
   const dispatch = useDispatch();
   const { data: courseData, isError, isLoading } = useFetchCoursesQuery();
   const [deleteCourseMutation] = useDeleteCourseMutation();
   const courses = useSelector((state) => state.course.items);
+
+  useEffect(() => {
+    if (courseData) {
+      dispatch(setCourse(courseData));
+    }
+  }, [dispatch, courseData]);
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setSearchResults([]);
+    } else {
+      const results = courses.filter((course) =>
+        course.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setSearchResults(results);
+    }
+  }, [searchTerm, courses]);
 
   const deleteCourseHandler = async (courseId) => {
     try {
@@ -90,6 +108,7 @@ const Class = () => {
   const handleSearchClear = () => {
     setSearchTerm("");
     setIsSearchActive(false);
+    setSearchResults([]);
   };
 
   const filteredCourses = courses.filter((course) => {
@@ -101,6 +120,8 @@ const Class = () => {
     }
     return true;
   });
+
+  const coursesToRender = searchTerm ? searchResults : filteredCourses;
 
   if (isLoading) return <div className="text-center">Loading...</div>;
   if (isError) return <div className="text-center">Error...</div>;
@@ -204,7 +225,7 @@ const Class = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredCourses.map((course, index) => (
+              {coursesToRender.map((course, index) => (
                 <tr className="h-12" key={index}>
                   <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
                     {course.classCode}
@@ -225,7 +246,7 @@ const Class = () => {
                     Rp {course.price}
                   </td>
                   <td className="text-center text-xs font-bold px-3 py-2">
-                    <Link to={`/course/chapter${course.id}`}>
+                    <Link to={`/course/chapter/${course.id}`}>
                       <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
                         Chapter
                       </button>
@@ -253,7 +274,6 @@ const Class = () => {
             </tbody>
           </table>
         </div>
-
       </div>
       <Modal showModal={showModal} setShowModal={setShowModal} />
       <UpdateCourse

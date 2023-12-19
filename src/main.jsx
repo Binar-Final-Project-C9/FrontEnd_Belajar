@@ -19,6 +19,7 @@ import ResetPassword from "./components/ResetPassword.jsx";
 import { Provider } from "react-redux";
 import store from "./store.jsx";
 import Course from "./components/Course.jsx";
+import Chapter from "./components/Chapter.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
           <Route path="dashboard" element={<Home />} />
           <Route path="course" element={<Class />} />
           <Route path="course/:id" element={<Course />} />
+          <Route path="course/chapter/:id" element={<Chapter />} />
         </Route>
       </Route>
       <Route path="forgot-password" element={<ForgotPassword />} />
