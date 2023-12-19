@@ -14,10 +14,16 @@ export const chapterApi = apiSlice.injectEndpoints({
         Object.entries(newChapter).forEach(([key, value]) => {
           formData.append(key, value);
         });
+        console.log("Data Sebelum Dikirim:", newChapter);
         return {
           url: "/course/chapter",
           method: "POST",
-          body: formData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newChapter),
+          // validateStatus: (response, result) =>
+          //   response.status === 200 && !result.isError,
         };
       },
     }),

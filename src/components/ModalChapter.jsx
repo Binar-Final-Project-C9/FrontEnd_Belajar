@@ -20,7 +20,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   </div>
 );
 
-const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
+const ModalChapter = ({ showModalChapter, setshowModalChapter }) => {
   const initialState = {
     noChapter: "",
     name: "",
@@ -34,11 +34,27 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
 
   const dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   if (data) {
+  //     // Assuming that `data` contains the chapter information
+  //     dispatch(addChapter(data));
+  //     setshowModalChapter(false);
+  //   }
+  // }, [dispatch, data, setshowModalChapter]);
+
   useEffect(() => {
     if (data) {
       dispatch(addChapter(data));
     }
   }, [dispatch, data]);
+
+  // const handleInputChange = (e) => {
+  //   const { id, value } = e.target;
+  //   setChapterData((prevData) => ({
+  //     ...prevData,
+  //     [id]: value,
+  //   }));
+  // };
 
   const handleInputChange = (e) => {
     const { id, value, files } = e.target;
@@ -50,17 +66,20 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    console.log("Submitting chapterData:", chapterData);
     try {
       const res = await createChapter(chapterData).unwrap();
       if (res.status === "success") {
         dispatch(addChapter(res));
-        setShowModalChapter(false);
+        setshowModalChapter(false);
         window.location.reload();
       } else {
         setErrorMessage(res.data.message);
       }
     } catch (error) {
+      // console.error("Error:", error);
       setErrorMessage(error.data.message);
+      setErrorMessage(error.message || "An error occurred");
     }
   };
 
@@ -74,7 +93,7 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
                 <div className="flex items-start justify-between p-2">
                   <button
                     className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
-                    onClick={() => setShowModalChapter(false)}
+                    onClick={() => setshowModalChapter(false)}
                   >
                     <HiX className="text-black" />
                   </button>
