@@ -1,39 +1,52 @@
-import Navbar from './Navbar';
-import appLogo from '../assets/Belajar_white 3.png';
-import { useDispatch } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
-import { removeToken } from '../slices/authSlice';
+import React, { useState } from "react";
+import Navbar from "./Navbar";
+import appLogo from "../assets/appLogo.png";
+import { useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { removeToken } from "../slices/authSlice";
+import colors from "../colors.module.css";
 
 const Sidebar = ({ children }) => {
   const Menus = [
-    { title: 'Dashboard', path: '/dashboard' },
-    { title: 'Kelola Kelas', path: '/course' },
-    { title: 'Keluar', path: '/' },
+    { title: "Dashboard", path: "/dashboard" },
+    { title: "Kelola Kelas", path: "/course" },
+    { title: "Keluar", path: "/" },
   ];
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [activeMenu, setActiveMenu] = useState("");
 
   const logoutHandler = () => {
     dispatch(removeToken());
-    navigate('/');
+    navigate("/");
+    setActiveMenu("");
   };
 
   return (
-    <div className="flex ">
-      <div className="lg:flex flex-col hidden min-h-screen shadow w-60 bg-[#6148FF]">
+    <div className="flex">
+      <div className="lg:flex flex-col hidden min-h-screen w-60 primary">
         <div className="space-y-3">
           <div className="flex items-center ms-6">
-            <img src={appLogo} alt="" className="w-32 h-36" />
+            <img src={appLogo} alt="" className="w-30 h-28" />
           </div>
           <div className="flex-1">
-            <ul className="pt-2 pb-4 space-y-1 text-sm font-semibold text-white">
+            <ul className="pt-2 pb-4 text-sm font-semibold on-tertiary-text">
               {Menus.map((menu, index) => (
-                <li key={index} className="hover:bg-[#489CFF]">
-                  {menu.title === 'Keluar' ? (
+                <li
+                  key={index}
+                  className={`${
+                    activeMenu === menu.title ? "bg-[#9ed67c] rounded-md" : ""
+                  } hover:bg-[#9ed67c] transition-all duration-300`}
+                >
+                  {menu.title === "Keluar" ? (
                     <button
-                      onClick={logoutHandler}
-                      className="flex items-center px-8 py-2 space-x-3 rounded-md cursor-pointer">
+                      onClick={() => {
+                        setActiveMenu(menu.title);
+                        logoutHandler();
+                      }}
+                      className="flex items-center px-8 py-2 space-x-3 rounded-md cursor-pointer"
+                    >
                       <span className="text-base font-semibold">
                         {menu.title}
                       </span>
@@ -41,7 +54,9 @@ const Sidebar = ({ children }) => {
                   ) : (
                     <Link
                       to={menu.path}
-                      className="flex items-center px-8 py-2 space-x-3 rounded-md">
+                      onClick={() => setActiveMenu(menu.title)}
+                      className="flex items-center px-8 py-2 space-x-3 rounded-md"
+                    >
                       <span className="text-base font-semibold">
                         {menu.title}
                       </span>
