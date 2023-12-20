@@ -1,8 +1,9 @@
-import { HiX } from "react-icons/hi";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useCreateChapterMutation } from "../service/chapterApi";
-import { addChapter } from "../slices/chapterSlice";
+import { HiX } from 'react-icons/hi';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useCreateChapterMutation } from '../service/chapterApi';
+import { addChapter } from '../slices/chapterSlice';
+import { useParams } from 'react-router-dom';
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   <div>
@@ -21,65 +22,35 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
 );
 
 const ModalChapter = ({ showModalChapter, setshowModalChapter }) => {
-  const initialState = {
-    noChapter: "",
-    name: "",
-    courseId: "",
-  };
-
-  const [chapterData, setChapterData] = useState(initialState);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [createChapter, { data, isLoading, isError }] =
-    useCreateChapterMutation(initialState);
-
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const [chapterData, setChapterData] = useState({
+    noChapter: '',
+    name: '',
+    courseId: id,
+  });
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // useEffect(() => {
-  //   if (data) {
-  //     // Assuming that `data` contains the chapter information
-  //     dispatch(addChapter(data));
-  //     setshowModalChapter(false);
-  //   }
-  // }, [dispatch, data, setshowModalChapter]);
-
-  useEffect(() => {
-    if (data) {
-      dispatch(addChapter(data));
-    }
-  }, [dispatch, data]);
-
-  // const handleInputChange = (e) => {
-  //   const { id, value } = e.target;
-  //   setChapterData((prevData) => ({
-  //     ...prevData,
-  //     [id]: value,
-  //   }));
-  // };
+  const [createChapter, { isError, isLoading }] = useCreateChapterMutation();
 
   const handleInputChange = (e) => {
-    const { id, value, files } = e.target;
-    setChapterData((prevData) => ({
-      ...prevData,
-      [id]: id === "image" ? files[0] : value,
-    }));
+    setChapterData({ ...chapterData, [e.target.id]: e.target.value });
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("Submitting chapterData:", chapterData);
     try {
       const res = await createChapter(chapterData).unwrap();
-      if (res.status === "success") {
-        dispatch(addChapter(res));
-        setshowModalChapter(false);
-        window.location.reload();
-      } else {
-        setErrorMessage(res.data.message);
-      }
+      dispatch(addChapter(res));
+      setshowModalChapter(false);
+      setChapterData({
+        noChapter: '',
+        name: '',
+        courseId: id,
+      });
     } catch (error) {
-      // console.error("Error:", error);
+      console.log(error);
       setErrorMessage(error.data.message);
-      setErrorMessage(error.message || "An error occurred");
     }
   };
 
@@ -93,16 +64,14 @@ const ModalChapter = ({ showModalChapter, setshowModalChapter }) => {
                 <div className="flex items-start justify-between p-2">
                   <button
                     className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
-                    onClick={() => setshowModalChapter(false)}
-                  >
+                    onClick={() => setshowModalChapter(false)}>
                     <HiX className="text-black" />
                   </button>
                 </div>
                 <form
                   className="w-full px-6 space-y-4"
-                  encType="multipart/form-data"
-                  onSubmit={submitHandler}
-                >
+                  encType="application/json"
+                  onSubmit={submitHandler}>
                   <h2 className="text-center font-bold text-gray-800">
                     Tambah Kelas
                   </h2>
@@ -127,22 +96,12 @@ const ModalChapter = ({ showModalChapter, setshowModalChapter }) => {
                     value={chapterData.name}
                     onChange={handleInputChange}
                   />
-                  <InputField
-                    label="Course ID"
-                    id="courseId"
-                    type="number"
-                    placeholder="Course ID"
-                    value={chapterData.courseId}
-                    onChange={handleInputChange}
-                  />
-
                   <div className="flex items-center justify-between p-5 gap-5 w-full">
                     <button
                       className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
                       type="submit"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Loading..." : "Simpan"}
+                      disabled={isLoading}>
+                      {isLoading ? 'Loading...' : 'Simpan'}
                     </button>
                   </div>
                 </form>

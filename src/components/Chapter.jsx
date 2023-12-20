@@ -1,27 +1,31 @@
-import { useState, useEffect } from "react";
-import { FiFilter, FiPlusCircle } from "react-icons/fi";
-import { FaArrowAltCircleLeft } from "react-icons/fa";
-
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, Link } from "react-router-dom";
-import { useFetchCourseByIdQuery } from "../service/courseApi";
-import { setCourseById } from "../slices/courseSlice";
-import ModalChapter from "./ModalChapter";
-import Card from "./Card";
+import { useState, useEffect } from 'react';
+import { FiFilter, FiPlusCircle } from 'react-icons/fi';
+import { FaArrowAltCircleLeft } from 'react-icons/fa';
+import { useFetchChapterByCourseIdQuery } from '../service/chapterApi';
+import { setChapter } from '../slices/chapterSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, Link } from 'react-router-dom';
+import ModalChapter from './ModalChapter';
+import Card from './Card';
 
 const Chapter = () => {
   const [showModalChapter, setshowModalChapter] = useState(false);
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { data: course, isError, isLoading } = useFetchCourseByIdQuery(id);
 
-  const yourChapterDataArray = useSelector((state) => state.course.item);
+  const {
+    data: chapter,
+    isError,
+    isLoading,
+  } = useFetchChapterByCourseIdQuery(id);
+
+  const chapters = useSelector((state) => state.chapter.items);
 
   useEffect(() => {
-    if (course) {
-      dispatch(setCourseById(course));
+    if (chapter) {
+      dispatch(setChapter(chapter));
     }
-  }, [dispatch, course]);
+  }, [dispatch, chapter]);
 
   if (isLoading) return <div className="text-center">Loading...</div>;
   if (isError) return <div className="text-center">Error...</div>;
@@ -30,8 +34,7 @@ const Chapter = () => {
     <>
       <Link
         to="/course"
-        className="flex primary-text font-medium mb-2 text-lg items-center ms-3"
-      >
+        className="flex primary-text font-medium mb-2 text-lg items-center ms-3">
         <FaArrowAltCircleLeft className="me-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out" />
         <button className="primary-text py-2 px-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out">
           Back to Course
@@ -44,8 +47,7 @@ const Chapter = () => {
           <div className="flex items-center justify-between gap-3">
             <button
               className="flex text-white items-center justify-center primary rounded-full px-3 font-medium gap-2 py-[2px]"
-              onClick={() => setshowModalChapter(true)}
-            >
+              onClick={() => setshowModalChapter(true)}>
               <FiPlusCircle />
               Tambah
             </button>
@@ -94,7 +96,7 @@ const Chapter = () => {
               </tr>
             </thead>
             <tbody>
-              {yourChapterDataArray?.Chapters?.map((chapter, index) => (
+              {chapters.map((chapter, index) => (
                 <tr className="h-12" key={index}>
                   <td className="text-center text-xs font-bold text-[#4E5566] px-3 py-2">
                     {index + 1}
@@ -120,8 +122,7 @@ const Chapter = () => {
                     </button>
                     <button
                       className="bg-green-500 px-2 py-1 rounded-md text-white"
-                      onClick={() => handleEditClick(chapter.id)}
-                    >
+                      onClick={() => handleEditClick(chapter.id)}>
                       Ubah
                     </button>
                   </td>

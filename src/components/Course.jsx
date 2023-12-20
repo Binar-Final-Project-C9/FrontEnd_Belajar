@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { IoDiamondOutline } from "react-icons/io5";
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { IoDiamondOutline } from 'react-icons/io5';
 import {
   FaArrowAltCircleLeft,
   FaStar,
   FaShieldAlt,
   FaBookOpen,
-} from "react-icons/fa";
-import { useFetchCourseByIdQuery } from "../service/courseApi";
-import { setCourseById } from "../slices/courseSlice";
-import { useParams, Link } from "react-router-dom";
-import "../colors.module.css";
+} from 'react-icons/fa';
+import { useFetchCourseByIdQuery } from '../service/courseApi';
+import { setCourseById } from '../slices/courseSlice';
+import { useParams, Link } from 'react-router-dom';
+import '../colors.module.css';
 
 const Course = () => {
   const { id } = useParams();
@@ -32,8 +32,7 @@ const Course = () => {
     <div className="container mx-auto ">
       <Link
         to="/course"
-        className="flex primary-text font-medium mb-2 text-lg items-center ms-3"
-      >
+        className="flex primary-text font-medium mb-2 text-lg items-center ms-3">
         <FaArrowAltCircleLeft className="me-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out" />
         <button className="primary-text py-2 px-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out">
           Back to Course
@@ -95,8 +94,7 @@ const Course = () => {
               {chapter?.Modules?.map((module) => (
                 <div
                   key={module.id}
-                  className="bg-white p-4 rounded-lg shadow-md"
-                >
+                  className="bg-white p-4 rounded-lg shadow-md">
                   <h3 className="text-lg font-semibold mb-2">
                     Modul {module.noModule}: {module.name}
                   </h3>

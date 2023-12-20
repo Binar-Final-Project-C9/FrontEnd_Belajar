@@ -1,28 +1,28 @@
-import { useState, useEffect } from "react";
-import { FiFilter, FiPlusCircle } from "react-icons/fi";
-import { FaExclamationTriangle } from "react-icons/fa";
-import { MdOutlineSearch } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from 'react';
+import { FiFilter, FiPlusCircle } from 'react-icons/fi';
+import { FaExclamationTriangle } from 'react-icons/fa';
+import { MdOutlineSearch } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   useFetchCoursesQuery,
   useDeleteCourseMutation,
-} from "../service/courseApi";
-import { setCourse, removeCourse } from "../slices/courseSlice";
-import { Link } from "react-router-dom";
-import Modal from "./Modal";
-import UpdateCourse from "./UpdateCourse";
-import Card from "./Card";
-import "../colors.module.css";
+} from '../service/courseApi';
+import { setCourse, removeCourse } from '../slices/courseSlice';
+import { Link } from 'react-router-dom';
+import Modal from './Modal';
+import UpdateCourse from './UpdateCourse';
+import Card from './Card';
+import '../colors.module.css';
 
 const Class = () => {
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [courseIdToUpdate, setCourseIdToUpdate] = useState(null);
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
-  const [selectedLevel, setSelectedLevel] = useState("");
-  const [selectedClassType, setSelectedClassType] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState('');
+  const [selectedClassType, setSelectedClassType] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [courseIdToDelete, setCourseIdToDelete] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
@@ -39,7 +39,7 @@ const Class = () => {
   }, [dispatch, courseData]);
 
   useEffect(() => {
-    if (searchTerm.trim() === "") {
+    if (searchTerm.trim() === '') {
       setSearchResults([]);
     } else {
       const results = courses.filter((course) =>
@@ -54,7 +54,7 @@ const Class = () => {
       setShowDeleteModal(true);
       setCourseIdToDelete(courseId);
     } catch (error) {
-      console.error("Error opening delete confirmation modal:", error);
+      console.error('Error opening delete confirmation modal:', error);
     }
   };
 
@@ -64,7 +64,7 @@ const Class = () => {
       setShowDeleteModal(false);
       dispatch(removeCourse(courseIdToDelete));
     } catch (error) {
-      console.error("Error deleting course:", error);
+      console.error('Error deleting course:', error);
     }
   };
 
@@ -79,9 +79,9 @@ const Class = () => {
 
   const handleFilterChange = (filterType, value) => {
     setFilterDropdownOpen(false);
-    if (filterType === "level") {
+    if (filterType === 'level') {
       setSelectedLevel(value);
-    } else if (filterType === "classType") {
+    } else if (filterType === 'classType') {
       setSelectedClassType(value);
     }
   };
@@ -99,7 +99,7 @@ const Class = () => {
   };
 
   const handleSearchClear = () => {
-    setSearchTerm("");
+    setSearchTerm('');
     setIsSearchActive(false);
     setSearchResults([]);
   };
@@ -130,15 +130,13 @@ const Class = () => {
           <div className="flex items-center justify-between gap-3">
             <button
               className="flex text-white items-center justify-center primary rounded-full px-3 font-medium gap-2 py-[2px]"
-              onClick={() => setShowModal(true)}
-            >
+              onClick={() => setShowModal(true)}>
               <FiPlusCircle />
               Tambah
             </button>
             <button
               className="flex items-center justify-center primary-text border-[#73daa4] border-2 rounded-full px-6 font-bold gap-2"
-              onClick={handleFilterClick}
-            >
+              onClick={handleFilterClick}>
               <FiFilter className="primary-text" />
               Filter
             </button>
@@ -155,8 +153,7 @@ const Class = () => {
                   <button
                     type="button"
                     onClick={handleSearchClear}
-                    className="text-gray-500 hover:text-gray-700 focus:outline-none right-16 top 1/2 "
-                  >
+                    className="text-gray-500 hover:text-gray-700 focus:outline-none right-16 top 1/2 ">
                     &times;
                   </button>
                 )}
@@ -177,9 +174,8 @@ const Class = () => {
               </label>
               <select
                 className="mt-1 block w-32 border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 rounded-md shadow-sm"
-                onChange={(e) => handleFilterChange("level", e.target.value)}
-                value={selectedLevel}
-              >
+                onChange={(e) => handleFilterChange('level', e.target.value)}
+                value={selectedLevel}>
                 <option value="">All</option>
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -193,10 +189,9 @@ const Class = () => {
               <select
                 className="mt-1 block w-32 border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 rounded-md shadow-sm"
                 onChange={(e) =>
-                  handleFilterChange("classType", e.target.value)
+                  handleFilterChange('classType', e.target.value)
                 }
-                value={selectedClassType}
-              >
+                value={selectedClassType}>
                 <option value="">All</option>
                 <option value="premium">Premium</option>
                 <option value="free">Free</option>
@@ -251,14 +246,12 @@ const Class = () => {
                     </Link>
                     <button
                       className="bg-green-500 px-2 py-1 rounded-md text-white mr-2"
-                      onClick={() => handleUpdateClick(course.id)}
-                    >
+                      onClick={() => handleUpdateClick(course.id)}>
                       Edit
                     </button>
                     <button
                       className="bg-red-500 px-2 py-1 my-2 rounded-md text-white"
-                      onClick={() => deleteCourseHandler(course.id)}
-                    >
+                      onClick={() => deleteCourseHandler(course.id)}>
                       Hapus
                     </button>
                   </td>
@@ -286,14 +279,12 @@ const Class = () => {
             <div className="flex justify-center gap-4">
               <button
                 className="bg-red-500 text-white px-6 py-1 rounded-md transition-all duration-300 hover:bg-opacity-80"
-                onClick={confirmDeleteHandler}
-              >
+                onClick={confirmDeleteHandler}>
                 Hapus
               </button>
               <button
                 className="border border-gray-300 px-6 rounded-md transition-all duration-300 hover:bg-gray-100"
-                onClick={() => setShowDeleteModal(false)}
-              >
+                onClick={() => setShowDeleteModal(false)}>
                 Batal
               </button>
             </div>

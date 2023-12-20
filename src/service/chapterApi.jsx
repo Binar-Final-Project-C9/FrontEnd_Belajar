@@ -1,12 +1,15 @@
-import { apiSlice } from "./api";
+import { apiSlice } from './api';
 
 export const chapterApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchChapters: builder.query({
-      query: () => "/course/chapter",
+      query: () => '/chapter',
     }),
     fetchChapterById: builder.query({
-      query: (id) => `/course/chapter/${id}`,
+      query: (id) => `/chapter/${id}`,
+    }),
+    fetchChapterByCourseId: builder.query({
+      query: (id) => `/chapter/course/${id}`,
     }),
     createChapter: builder.mutation({
       query: (newChapter) => {
@@ -14,16 +17,10 @@ export const chapterApi = apiSlice.injectEndpoints({
         Object.entries(newChapter).forEach(([key, value]) => {
           formData.append(key, value);
         });
-        console.log("Data Sebelum Dikirim:", newChapter);
         return {
-          url: "/course/chapter",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newChapter),
-          // validateStatus: (response, result) =>
-          //   response.status === 200 && !result.isError,
+          url: '/chapter',
+          method: 'POST',
+          body: newChapter,
         };
       },
     }),
@@ -35,7 +32,7 @@ export const chapterApi = apiSlice.injectEndpoints({
         });
         return {
           url: `/course/chapter/${id}`,
-          method: "PATCH",
+          method: 'PATCH',
           body: formData,
         };
       },
@@ -43,7 +40,7 @@ export const chapterApi = apiSlice.injectEndpoints({
     deleteChapter: builder.mutation({
       query: (id) => ({
         url: `/course/chapter/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
     }),
   }),
@@ -52,6 +49,7 @@ export const chapterApi = apiSlice.injectEndpoints({
 export const {
   useFetchChaptersQuery,
   useFetchChapterByIdQuery,
+  useFetchChapterByCourseIdQuery,
   useCreateChapterMutation,
   useUpdateChapterMutation,
   useDeleteChapterMutation,
