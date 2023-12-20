@@ -27,6 +27,8 @@ const Home = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
+  const { token } = useSelector((state) => state.auth);
+  console.log(token);
 
   useEffect(() => {
     if (paymentData) {
@@ -80,8 +82,8 @@ const Home = () => {
 
   const filteredPayments = selectedFilters.length
     ? payments.filter((payment) =>
-      selectedFilters.includes(payment.status.toLowerCase())
-    )
+        selectedFilters.includes(payment.status.toLowerCase())
+      )
     : payments;
 
   if (isLoading) return <div className="text-center">Loading...</div>;
@@ -209,7 +211,6 @@ const Home = () => {
             </tbody>
           </table>
         </div>
-
       </div>
     </>
   );

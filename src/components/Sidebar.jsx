@@ -4,6 +4,8 @@ import appLogo from "../assets/appLogo.png";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { removeToken } from "../slices/authSlice";
+import { FaExclamationTriangle } from "react-icons/fa";
+
 import colors from "../colors.module.css";
 
 const Sidebar = ({ children }) => {
@@ -17,6 +19,14 @@ const Sidebar = ({ children }) => {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState("");
 
+  const [showCloseModal, setShowCloseModal] = useState(false);
+  const showModalLogoutHandler = async () => {
+    try {
+      setShowCloseModal(true);
+    } catch (error) {
+      console.error("Error opening delete confirmation modal:", error);
+    }
+  };
   const logoutHandler = () => {
     dispatch(removeToken());
     navigate("/");
@@ -43,7 +53,7 @@ const Sidebar = ({ children }) => {
                     <button
                       onClick={() => {
                         setActiveMenu(menu.title);
-                        logoutHandler();
+                        showModalLogoutHandler();
                       }}
                       className="flex items-center px-8 py-2 space-x-3 rounded-md cursor-pointer"
                     >
@@ -75,6 +85,33 @@ const Sidebar = ({ children }) => {
           {children}
         </div>
       </div>
+
+      {showCloseModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-md w-96">
+            <div className="flex items-center justify-center mb-2">
+              <FaExclamationTriangle className="text-red-500 w-8 h-8" />
+            </div>
+            <p className="text-md font-medium text-center mb-10">
+              Apakah Anda yakin ingin LogOut?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                className="bg-red-500 text-white px-6 py-1 rounded-md transition-all duration-300 hover:bg-opacity-80"
+                onClick={logoutHandler}
+              >
+                Keluar
+              </button>
+              <button
+                className="border border-gray-300 px-6 rounded-md transition-all duration-300 hover:bg-gray-100"
+                onClick={() => setShowCloseModal(false)}
+              >
+                Batal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
