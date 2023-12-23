@@ -1,17 +1,28 @@
-import { useState, useEffect } from 'react';
-import { FiFilter, FiPlusCircle } from 'react-icons/fi';
-import { FaArrowAltCircleLeft } from 'react-icons/fa';
-import { useFetchChapterByCourseIdQuery } from '../service/chapterApi';
-import { setChapter } from '../slices/chapterSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams, Link } from 'react-router-dom';
-import ModalChapter from './ModalChapter';
-import Card from './Card';
+import { useState, useEffect } from "react";
+import { FiPlusCircle } from "react-icons/fi";
+import { FaArrowAltCircleLeft } from "react-icons/fa";
+import { FaExclamationTriangle } from "react-icons/fa";
+import {
+  useFetchChapterByCourseIdQuery,
+  useDeleteChapterMutation,
+} from "../service/chapterApi";
+import { removeChapter, setChapter } from "../slices/chapterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, Link } from "react-router-dom";
+import ModalChapter from "./ModalChapter";
+import UpdateChapter from "./UpdateChapter";
+import Card from "./Card";
 
 const Chapter = () => {
-  const [showModalChapter, setshowModalChapter] = useState(false);
+  const [showModalChapter, setShowModalChapter] = useState(false);
+  const [updateModalChapter, SetUpdateModalChapter] = useState(false);
+  const [chapterIdToUpdate, setChapterIdToUpdate] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [chapterIdToDelete, setChapterIdToDelete] = useState(null);
+
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [deleteChapterMutation] = useDeleteChapterMutation();
 
   const {
     data: chapter,
@@ -21,11 +32,35 @@ const Chapter = () => {
 
   const chapters = useSelector((state) => state.chapter.items);
 
+  const deleteChapterHandler = async (chapterId) => {
+    try {
+      setShowDeleteModal(true);
+      setChapterIdToDelete(chapterId);
+    } catch (error) {
+      console.error("Error opening delete confirmation modal:", error);
+    }
+  };
+
+  const confirmDeleteHandler = async () => {
+    try {
+      await deleteChapterMutation(chapterIdToDelete).unwrap();
+      setShowDeleteModal(false);
+      dispatch(removeChapter(chapterIdToDelete));
+    } catch (error) {
+      console.error("Error deleting course:", error);
+    }
+  };
+
   useEffect(() => {
     if (chapter) {
       dispatch(setChapter(chapter));
     }
   }, [dispatch, chapter]);
+
+  const handleUpdateClick = (chapterId) => {
+    setChapterIdToUpdate(chapterId);
+    SetUpdateModalChapter(true);
+  };
 
   if (isLoading) return <div className="text-center">Loading...</div>;
   if (isError) return <div className="text-center">Error...</div>;
@@ -34,7 +69,8 @@ const Chapter = () => {
     <>
       <Link
         to="/course"
-        className="flex primary-text font-medium mb-2 text-lg items-center ms-3">
+        className="flex primary-text font-medium mb-2 text-lg items-center ms-3"
+      >
         <FaArrowAltCircleLeft className="me-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out" />
         <button className="primary-text py-2 px-2 hover:text-[#68c092] transition-colors duration-300 ease-in-out">
           Back to Course
@@ -43,11 +79,14 @@ const Chapter = () => {
       <Card />
       <div>
         <div className="py-3 mx-auto lg:flex text-center items-center justify-between">
-          <h2 className="font-bold text-base mb-4 font-montserrat">CHAPTER</h2>
+          <h2 className="font-bold text-base mb-4 font-montserrat">
+            Kelola Chapter
+          </h2>
           <div className="flex items-center justify-between gap-3">
             <button
               className="flex text-white items-center justify-center primary rounded-full px-3 font-medium gap-2 py-[2px]"
-              onClick={() => setshowModalChapter(true)}>
+              onClick={() => setShowModalChapter(true)}
+            >
               <FiPlusCircle />
               Tambah
             </button>
@@ -122,8 +161,15 @@ const Chapter = () => {
                     </button>
                     <button
                       className="bg-green-500 px-2 py-1 rounded-md text-white"
-                      onClick={() => handleEditClick(chapter.id)}>
-                      Ubah
+                      onClick={() => handleUpdateClick(chapter.id)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="bg-red-500 px-2 py-1 rounded-md text-white ml-2"
+                      onClick={() => deleteChapterHandler(chapter.id)}
+                    >
+                      Hapus
                     </button>
                   </td>
                 </tr>
@@ -133,8 +179,39 @@ const Chapter = () => {
         </div>
         <ModalChapter
           showModalChapter={showModalChapter}
-          setshowModalChapter={setshowModalChapter}
+          setShowModalChapter={setShowModalChapter}
         />
+        <UpdateChapter
+          showModalChapter={updateModalChapter}
+          setshowModalChapter={SetUpdateModalChapter}
+          chapterId={chapterIdToUpdate}
+        />
+        {showDeleteModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-8 rounded-md w-96">
+              <div className="flex items-center justify-center mb-2">
+                <FaExclamationTriangle className="text-red-500 w-8 h-8" />
+              </div>
+              <p className="text-md font-medium text-center mb-10">
+                Apakah Anda yakin ingin menghapus kelas ini?
+              </p>
+              <div className="flex justify-center gap-4">
+                <button
+                  className="bg-red-500 text-white px-6 py-1 rounded-md transition-all duration-300 hover:bg-opacity-80"
+                  onClick={confirmDeleteHandler}
+                >
+                  Hapus
+                </button>
+                <button
+                  className="border border-gray-300 px-6 rounded-md transition-all duration-300 hover:bg-gray-100"
+                  onClick={() => setShowDeleteModal(false)}
+                >
+                  Batal
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
