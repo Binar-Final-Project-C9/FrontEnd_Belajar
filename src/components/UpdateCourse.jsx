@@ -1,9 +1,8 @@
-import { HiX } from 'react-icons/hi';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useUpdateCourseMutation } from '../service/courseApi';
-import { updateCourse } from '../slices/courseSlice';
-import { useNavigate } from 'react-router-dom';
+import { HiX } from "react-icons/hi";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useUpdateCourseMutation } from "../service/courseApi";
+import { updateCourse } from "../slices/courseSlice";
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   <div>
@@ -23,16 +22,16 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
 
 const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
   const initialState = {
-    name: '',
-    level: '',
-    categoryId: '',
-    description: '',
-    benefits: '',
-    classCode: '',
-    type: '',
-    price: '',
-    courseBy: '',
-    image: '',
+    name: "",
+    level: "",
+    categoryId: "",
+    description: "",
+    benefits: "",
+    classCode: "",
+    type: "",
+    price: "",
+    courseBy: "",
+    image: "",
   };
   const dispatch = useDispatch();
   const courses = useSelector((state) => state.course.items);
@@ -47,7 +46,7 @@ const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
       const selected = courses.find((course) => course.id === courseId);
       setUpdatedCourse({
         ...selected,
-        image: selected?.imageUrl || '',
+        image: selected?.imageUrl || "",
       });
     }
   }, [courses, courseId]);
@@ -62,7 +61,7 @@ const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
     const { id, value, files } = e.target;
     setUpdatedCourse((prevData) => ({
       ...prevData,
-      [id]: id === 'image' ? files[0] : value,
+      [id]: id === "image" ? files[0] : value,
     }));
   };
 
@@ -73,7 +72,7 @@ const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
         id: courseId,
         updatedCourse,
       }).unwrap();
-      if (res.status === 'success') {
+      if (res.status === "success") {
         setShowModal(false);
         window.location.reload();
       }
@@ -92,16 +91,18 @@ const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
                 <div className="flex items-start justify-between p-2">
                   <button
                     className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
-                    onClick={() => setShowModal(false)}>
+                    onClick={() => setShowModal(false)}
+                  >
                     <HiX className="text-black" />
                   </button>
                 </div>
                 <form
                   className="w-full px-6 space-y-4"
                   encType="multipart/form-data"
-                  onSubmit={submitHandler}>
+                  onSubmit={submitHandler}
+                >
                   <h2 className="text-center font-bold text-gray-800">
-                    Tambah Kelas
+                    Edit Kelas
                   </h2>
                   <InputField
                     label="Name"
@@ -185,7 +186,8 @@ const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
                   <div className="flex items-center justify-between p-5 gap-5 w-full">
                     <button
                       className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
-                      type="submit">
+                      type="submit"
+                    >
                       Simpan
                     </button>
                   </div>

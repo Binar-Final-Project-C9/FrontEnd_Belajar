@@ -27,8 +27,8 @@ const Home = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
-  const { token } = useSelector((state) => state.auth);
-  console.log(token);
+  // const { token } = useSelector((state) => state.auth);
+  // console.log(token);
 
   useEffect(() => {
     if (paymentData) {
@@ -82,8 +82,8 @@ const Home = () => {
 
   const filteredPayments = selectedFilters.length
     ? payments.filter((payment) =>
-        selectedFilters.includes(payment.status.toLowerCase())
-      )
+      selectedFilters.includes(payment.status.toLowerCase())
+    )
     : payments;
 
   if (isLoading) return <div className="text-center">Loading...</div>;
@@ -178,10 +178,10 @@ const Home = () => {
                     {payment.User.email}
                   </td>
                   <td className="text-xs font-bold text-[#4E5566] pr-2">
-                    {/* {payment.Course.Category.name} */}
+                    {payment.Course.Category.name}
                   </td>
                   <td className="text-xs font-bold text-[#202244] pr-2">
-                    {/* {payment.Course.type} */}
+                    {payment.Course.type}
                   </td>
                   {payment.status === "paid" ? (
                     <td className="text-xs font-bold text-dark-green uppercase pr-2">

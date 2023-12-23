@@ -45,9 +45,8 @@ const Sidebar = ({ children }) => {
               {Menus.map((menu, index) => (
                 <li
                   key={index}
-                  className={`${
-                    activeMenu === menu.title ? "bg-[#9ed67c] rounded-md" : ""
-                  } hover:bg-[#9ed67c] transition-all duration-300`}
+                  className={`${activeMenu === menu.title ? "bg-[#9ed67c] rounded-md" : ""
+                    } hover:bg-[#9ed67c] transition-all duration-300`}
                 >
                   {menu.title === "Keluar" ? (
                     <button
@@ -93,7 +92,7 @@ const Sidebar = ({ children }) => {
               <FaExclamationTriangle className="text-red-500 w-8 h-8" />
             </div>
             <p className="text-md font-medium text-center mb-10">
-              Apakah Anda yakin ingin LogOut?
+              Apakah Anda yakin ingin Logout?
             </p>
             <div className="flex justify-center gap-4">
               <button
