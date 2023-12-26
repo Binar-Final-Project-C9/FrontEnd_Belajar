@@ -1,9 +1,9 @@
-import { apiSlice } from './api';
+import { apiSlice } from "./api";
 
 export const chapterApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchChapters: builder.query({
-      query: () => '/chapter',
+      query: () => "/chapter",
     }),
     fetchChapterById: builder.query({
       query: (id) => `/chapter/${id}`,
@@ -18,29 +18,25 @@ export const chapterApi = apiSlice.injectEndpoints({
           formData.append(key, value);
         });
         return {
-          url: '/chapter',
-          method: 'POST',
+          url: "/chapter",
+          method: "POST",
           body: newChapter,
         };
       },
     }),
     updateChapter: builder.mutation({
       query: ({ id, updatedChapter }) => {
-        const formData = new FormData();
-        Object.entries(updatedChapter).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
         return {
-          url: `/course/chapter/${id}`,
-          method: 'PATCH',
-          body: formData,
+          url: `/chapter/${id}`,
+          method: "PATCH",
+          body: updatedChapter,
         };
       },
     }),
     deleteChapter: builder.mutation({
       query: (id) => ({
-        url: `/course/chapter/${id}`,
-        method: 'DELETE',
+        url: `/chapter/${id}`,
+        method: "DELETE",
       }),
     }),
   }),

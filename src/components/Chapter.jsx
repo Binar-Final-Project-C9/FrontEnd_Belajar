@@ -47,7 +47,7 @@ const Chapter = () => {
       setShowDeleteModal(false);
       dispatch(removeChapter(chapterIdToDelete));
     } catch (error) {
-      console.error("Error deleting course:", error);
+      console.error("Error deleting chapter:", error);
     }
   };
 
@@ -193,7 +193,7 @@ const Chapter = () => {
                 <FaExclamationTriangle className="text-red-500 w-8 h-8" />
               </div>
               <p className="text-md font-medium text-center mb-10">
-                Apakah Anda yakin ingin menghapus kelas ini?
+                Apakah Anda yakin ingin menghapus chapter ini?
               </p>
               <div className="flex justify-center gap-4">
                 <button

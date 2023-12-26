@@ -22,7 +22,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
 
 const UpdateChapter = ({
   showModalChapter,
-  setShowModalChapter,
+  setshowModalChapter,
   chapterId,
 }) => {
   const initialState = {
@@ -60,14 +60,15 @@ const UpdateChapter = ({
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    console.log(updatedChapter);
     try {
       const res = await updateDataChapter({
         id: chapterId,
         updatedChapter,
       }).unwrap();
       if (res.status === "success") {
-        dispatch(updateChapter(updatedChapter));
-        setShowModalChapter(false);
+        // dispatch(updateChapter(updatedChapter));
+        setshowModalChapter(false);
         window.location.reload();
       }
     } catch (error) {
@@ -85,7 +86,7 @@ const UpdateChapter = ({
                 <div className="flex items-start justify-between p-2">
                   <button
                     className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
-                    onClick={() => setShowModalChapter(false)}
+                    onClick={() => setshowModalChapter(false)}
                   >
                     <HiX className="text-black" />
                   </button>
@@ -102,7 +103,7 @@ const UpdateChapter = ({
                     label="Name"
                     id="name"
                     type="text"
-                    placeholder="Course Name"
+                    placeholder="Chapter Name"
                     value={updatedChapter.name}
                     onChange={handleInputChange}
                   />
