@@ -140,7 +140,7 @@ const Home = () => {
                   type="text"
                   value={searchTerm}
                   onChange={handleSearchChange}
-                  placeholder="Search..."
+                  placeholder="Search by ID.."
                   className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none"
                 />
                 {searchTerm && (
