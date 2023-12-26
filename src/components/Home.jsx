@@ -174,42 +174,50 @@ const Home = () => {
               </tr>
             </thead>
             <tbody>
-              {searchFilteredPayments.map((payment) => (
-                <tr className="h-12 text-left" key={payment.id}>
-                  <td className="text-xs font-bold text-[#4E5566] pl-4 pr-2">
-                    {payment.User.email}
-                  </td>
-                  <td className="text-xs font-bold text-[#4E5566] pr-2">
-                    {payment.Course.Category.name}
-                  </td>
-                  <td className="text-xs font-bold text-[#202244] pr-2">
-                    {payment.Course.type}
-                  </td>
-                  {payment.status === "paid" ? (
-                    <td className="text-xs font-bold text-dark-green uppercase pr-2">
-                      {payment.status}
-                    </td>
-                  ) : (
-                    <td className="text-xs font-bold text-dark-red uppercase pr-2">
-                      {payment.status}
-                    </td>
-                  )}
-                  <td className="text-xs font-bold text-[#202244] pr-2">
-                    {payment.paymentType ? (
-                      <span>{payment.paymentType}</span>
-                    ) : (
-                      <span>-</span>
-                    )}
-                  </td>
-                  <td className="text-xs font-bold text-[#4E5566] pr-4">
-                    {payment.settlementTime ? (
-                      <span>{formatDate(payment.settlementTime)}</span>
-                    ) : (
-                      <span>-</span>
-                    )}
+              {searchFilteredPayments.length === 0 ? (
+                <tr className="h-12">
+                  <td colSpan="6" className="text-center">
+                    Tidak ada data yang sesuai dengan pencarian.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                searchFilteredPayments.map((payment) => (
+                  <tr className="h-12 text-left" key={payment.id}>
+                    <td className="text-xs font-bold text-[#4E5566] pl-4 pr-2">
+                      {payment.User.email}
+                    </td>
+                    <td className="text-xs font-bold text-[#4E5566] pr-2">
+                      {payment.Course.Category.name}
+                    </td>
+                    <td className="text-xs font-bold text-[#202244] pr-2">
+                      {payment.Course.type}
+                    </td>
+                    {payment.status === "paid" ? (
+                      <td className="text-xs font-bold text-dark-green uppercase pr-2">
+                        {payment.status}
+                      </td>
+                    ) : (
+                      <td className="text-xs font-bold text-dark-red uppercase pr-2">
+                        {payment.status}
+                      </td>
+                    )}
+                    <td className="text-xs font-bold text-[#202244] pr-2">
+                      {payment.paymentType ? (
+                        <span>{payment.paymentType}</span>
+                      ) : (
+                        <span>-</span>
+                      )}
+                    </td>
+                    <td className="text-xs font-bold text-[#4E5566] pr-4">
+                      {payment.settlementTime ? (
+                        <span>{formatDate(payment.settlementTime)}</span>
+                      ) : (
+                        <span>-</span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
