@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import Navbar from "./Navbar";
-import appLogo from "../assets/appLogo.png";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { removeToken } from "../slices/authSlice";
 import { FaExclamationTriangle } from "react-icons/fa";
-
+import appLogo from "../assets/appLogo.png";
+import Navbar from "./Navbar";
 import colors from "../colors.module.css";
 
 const Sidebar = ({ children }) => {
@@ -18,8 +17,16 @@ const Sidebar = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState("");
-
   const [showCloseModal, setShowCloseModal] = useState(false);
+
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    const matchingMenu = Menus.find((menu) => menu.path === currentPath);
+    if (matchingMenu) {
+      setActiveMenu(matchingMenu.title);
+    }
+  }, []);
+
   const showModalLogoutHandler = async () => {
     try {
       setShowCloseModal(true);
@@ -27,6 +34,7 @@ const Sidebar = ({ children }) => {
       console.error("Error opening delete confirmation modal:", error);
     }
   };
+
   const logoutHandler = () => {
     dispatch(removeToken());
     navigate("/");
@@ -45,8 +53,9 @@ const Sidebar = ({ children }) => {
               {Menus.map((menu, index) => (
                 <li
                   key={index}
-                  className={`${activeMenu === menu.title ? "bg-[#9ed67c] rounded-md" : ""
-                    } hover:bg-[#9ed67c] transition-all duration-300`}
+                  className={`${
+                    activeMenu === menu.title ? "bg-[#9ed67c] rounded-md" : ""
+                  } hover:bg-[#9ed67c] transition-all duration-300`}
                 >
                   {menu.title === "Keluar" ? (
                     <button
