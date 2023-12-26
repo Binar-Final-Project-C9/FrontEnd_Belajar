@@ -27,8 +27,6 @@ const Home = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
-  // const { token } = useSelector((state) => state.auth);
-  // console.log(token);
 
   useEffect(() => {
     if (paymentData) {
@@ -56,9 +54,9 @@ const Home = () => {
 
   const handleFilterSelect = (filter) => {
     if (selectedFilters.includes(filter)) {
-      setSelectedFilters(selectedFilters.filter((f) => f !== filter));
+      setSelectedFilters([]);
     } else {
-      setSelectedFilters([...selectedFilters, filter]);
+      setSelectedFilters([filter]);
     }
   };
 
@@ -82,9 +80,13 @@ const Home = () => {
 
   const filteredPayments = selectedFilters.length
     ? payments.filter((payment) =>
-      selectedFilters.includes(payment.status.toLowerCase())
-    )
+        selectedFilters.includes(payment.status.toLowerCase())
+      )
     : payments;
+
+  const searchFilteredPayments = filteredPayments.filter((payment) =>
+    payment.User.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (isLoading) return <div className="text-center">Loading...</div>;
   if (isError) return <div className="text-center">Error...</div>;
@@ -109,7 +111,7 @@ const Home = () => {
               {isFilterOpen && (
                 <div
                   ref={dropdownRef}
-                  className="absolute top-full left-0 mt-2 p-2 pe-6 primary on-tertiary-text rounded-md shadow-md"
+                  className="absolute top-full left-0 mt-2 p-2 pe-6 bg-white on-tertiary-text rounded-md shadow-md"
                 >
                   <label className="flex items-center">
                     <input
@@ -172,7 +174,7 @@ const Home = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredPayments.map((payment) => (
+              {searchFilteredPayments.map((payment) => (
                 <tr className="h-12 text-left" key={payment.id}>
                   <td className="text-xs font-bold text-[#4E5566] pl-4 pr-2">
                     {payment.User.email}
