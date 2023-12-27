@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { removeToken } from "../slices/authSlice";
 import { FaExclamationTriangle } from "react-icons/fa";
 import appLogo from "../assets/appLogo.png";
 import Navbar from "./Navbar";
-import colors from "../colors.module.css";
 
 const Sidebar = ({ children }) => {
   const Menus = [
     { title: "Dashboard", path: "/dashboard" },
     { title: "Kelola Kelas", path: "/course" },
+    { title: "Kelola User", path: "/user" },
     { title: "Keluar", path: "/" },
   ];
 
