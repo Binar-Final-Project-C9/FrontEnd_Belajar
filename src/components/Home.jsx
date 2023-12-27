@@ -135,7 +135,7 @@ const Home = () => {
               )}
             </div>
             {isSearchActive ? (
-              <form onSubmit={handleSearchSubmit}>
+              <form onSubmit={handleSearchSubmit} className="relative">
                 <input
                   type="text"
                   value={searchTerm}
@@ -143,15 +143,14 @@ const Home = () => {
                   placeholder="Search by ID.."
                   className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none"
                 />
-                {searchTerm && (
-                  <button
-                    type="button"
-                    onClick={handleSearchClear}
-                    className="text-gray-500 hover:text-gray-700 focus:outline-none"
-                  >
-                    &times;
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={handleSearchClear}
+                  className="text-gray-500 hover:text-gray-700 focus:outline-none absolute inset-y-0 right-2 my-auto px-2"
+                  style={{ fontSize: "1.2rem" }}
+                >
+                  &times;
+                </button>
               </form>
             ) : (
               <MdOutlineSearch

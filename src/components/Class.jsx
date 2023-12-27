@@ -143,7 +143,7 @@ const Class = () => {
               Filter
             </button>
             {isSearchActive ? (
-              <form onSubmit={handleSearchSubmit}>
+              <form onSubmit={handleSearchSubmit} className="relative">
                 <input
                   type="text"
                   value={searchTerm}
@@ -151,15 +151,14 @@ const Class = () => {
                   placeholder="Search by Name..."
                   className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none"
                 />
-                {searchTerm && (
-                  <button
-                    type="button"
-                    onClick={handleSearchClear}
-                    className="text-gray-500 hover:text-gray-700 focus:outline-none right-16 top 1/2 "
-                  >
-                    &times;
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={handleSearchClear}
+                  className="text-gray-500 hover:text-gray-700 focus:outline-none absolute inset-y-0 right-4 my-auto"
+                  style={{ fontSize: "1.2rem" }}
+                >
+                  &times;
+                </button>
               </form>
             ) : (
               <MdOutlineSearch
