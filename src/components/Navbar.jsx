@@ -33,10 +33,10 @@ const Navbar = () => {
                 className="fixed top-0 left-0 right-0 z-10 lg:hidden w-1/2 h-screen flex flex-col primary"
               >
                 <BiX
-                  className="w-8 h-8 lg:hidden relative top-5 left-5 text-white"
+                  className="w-8 h-8 lg:hidden relative top-5 left-5 text-secondary"
                   onClick={() => setToggle(false)}
                 />
-                <ul className="pt-8 pb-4 space-y-1 text-sm font-semibold text-white">
+                <ul className="pt-8 pb-4 space-y-1 text-sm font-semibold text-secondary">
                   <li className="hover:bg-[#489CFF]">
                     <a
                       href="/dashboard"
@@ -52,6 +52,16 @@ const Navbar = () => {
                     >
                       <span className="text-base font-semibold">
                         Kelola Kelas
+                      </span>
+                    </a>
+                  </li>
+                  <li className="hover:bg-[#489CFF]">
+                    <a
+                      href="/user"
+                      className="flex items-center px-8 py-2 space-x-3 rounded-md"
+                    >
+                      <span className="text-base font-semibold">
+                        Kelola User
                       </span>
                     </a>
                   </li>
