@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FiPlusCircle } from "react-icons/fi";
 import { IoDiamondOutline } from "react-icons/io5";
@@ -52,6 +52,7 @@ const Course = () => {
       await deleteModuleMutation(moduleIdToDelete).unwrap();
       setShowDeleteModal(false);
       dispatch(removeModule(moduleIdToDelete));
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting module:", error);
     }
@@ -62,7 +63,12 @@ const Course = () => {
     SetUpdateModalModule(true);
   };
 
-  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 border-t-blue-500 h-12 w-12"></div>
+      </div>
+    );
   if (isError) return <div className="text-center">Error...</div>;
 
   return (
@@ -79,12 +85,14 @@ const Course = () => {
       <div className="bg-white p-6 rounded-lg shadow-xl">
         <div className="flex justify-between">
           <h3 className="text-3xl font-bold">{selectedCourse.name}</h3>
-          <div className="flex items-center me-4">
-            <FaStar className="text-yellow-300 me-2" />
-            <p className="font-semibold">5.0</p>
-          </div>
         </div>
-        <p className="font-semibold text-md">by {selectedCourse.courseBy}</p>
+        <div className="flex items-center me-4">
+          <p className="font-semibold text-md me-6">
+            by {selectedCourse.courseBy}
+          </p>
+          <FaStar className="text-yellow-300 me-2" />
+          <p className="font-semibold">5.0</p>
+        </div>
         <div className="container gap-3 mt-4 mb-6">
           <div className="container flex gap-3 mt-4 mb-6">
             <div className="flex items-center gap-3 secondary text-white px-3 rounded-full">
@@ -109,9 +117,24 @@ const Course = () => {
               />
             </div>
             <div className="mb-6">
-              <p className="font-bold text-md">Tentang Kelas</p>
-              <p className="text-sm">{selectedCourse.description}</p>
-              {/* <p>Benefit Course: {selectedCourse.benefits}</p> */}
+              <p className="font-medium text-lg">Tentang Kelas</p>
+              <p className="text-sm max-w-4xl">{selectedCourse.description}</p>
+              <p className="text-sm mt-4">
+                <span className="font-medium text-lg">Benefit Course</span>
+                {Array.isArray(selectedCourse.benefits)
+                  ? selectedCourse.benefits.map((benefit, index) => (
+                      <React.Fragment key={index}>
+                        <br />
+                        {benefit}
+                      </React.Fragment>
+                    ))
+                  : typeof selectedCourse.benefits === "string" && (
+                      <React.Fragment>
+                        <br />
+                        {selectedCourse.benefits}
+                      </React.Fragment>
+                    )}
+              </p>
             </div>
             <div>
               <p className="font-bold text-md mb-2">Harga Kelas</p>
@@ -128,36 +151,39 @@ const Course = () => {
               Chapter {chapter.noChapter}: {chapter.name}
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {chapter?.Modules?.map((module) => (
-                <div
-                  key={module.id}
-                  className="bg-white p-4 rounded-lg shadow-md"
-                >
-                  <h3 className="text-md font-semibold mb-2">
-                    Modul {module.noModule} : {module.name}
-                  </h3>
-                  <div className="text-sm mt-5">
-                    <p>Durasi Modul : {module.duration}</p>
-                    <p>Deskripsi Modul : {module.description}</p>
-                  </div>
-                  <div className="mt-6 flex gap-2">
-                    <button
-                      className="bg-red-500 px-3 text-sm py-0.5 rounded-md text-white"
-                      onClick={() => deleteModuleHandler(module.id)}
-                    >
-                      Hapus
-                    </button>
-                    <button
-                      className="bg-green-500 px-3 text-sm rounded-md text-white
+            <div className="flex overflow-x-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-shrink-0">
+                {chapter?.Modules?.map((module) => (
+                  <div
+                    key={module.id}
+                    className="bg-white p-4 rounded-lg shadow-md inline-block"
+                    style={{ minWidth: "300px" }}
+                  >
+                    <h3 className="text-md font-semibold mb-2">
+                      Modul {module.noModule} : {module.name}
+                    </h3>
+                    <div className="text-sm mt-5">
+                      <p>Durasi Modul : {module.duration}</p>
+                      <p>Deskripsi Modul : {module.description}</p>
+                    </div>
+                    <div className="mt-6 flex gap-2">
+                      <button
+                        className="bg-red-500 px-3 text-sm py-0.5 rounded-md text-white"
+                        onClick={() => deleteModuleHandler(module.id)}
+                      >
+                        Hapus
+                      </button>
+                      <button
+                        className="bg-green-500 px-3 text-sm rounded-md text-white
                     "
-                      onClick={() => handleUpdateClick(module.id)}
-                    >
-                      Edit
-                    </button>
+                        onClick={() => handleUpdateClick(module.id)}
+                      >
+                        Edit
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
             <div className="mt-6 flex gap-2">
               <button
