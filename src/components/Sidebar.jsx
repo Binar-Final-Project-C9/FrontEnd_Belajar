@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { removeToken } from "../slices/authSlice";
 import { FaExclamationTriangle } from "react-icons/fa";
 import appLogo from "../assets/appLogo.png";
 import Navbar from "./Navbar";
-import colors from "../colors.module.css";
 
 const Sidebar = ({ children }) => {
   const Menus = [
     { title: "Dashboard", path: "/dashboard" },
     { title: "Kelola Kelas", path: "/course" },
+    { title: "Kelola User", path: "/user" },
     { title: "Keluar", path: "/" },
   ];
 
@@ -46,11 +46,7 @@ const Sidebar = ({ children }) => {
       <div className="lg:flex flex-col hidden min-h-screen w-60 primary">
         <div className="space-y-3">
           <div className="flex items-center ms-6">
-            <img
-              src={appLogo}
-              alt=""
-              className="w-30 h-28  mt-5 bg-white rounded-full"
-            />
+            <img src={appLogo} alt="" className="w-30 h-28  mt-5" />
           </div>
           <div className="flex-1">
             <ul className="pt-2 pb-4 text-xl font-bold on-tertiary-text">

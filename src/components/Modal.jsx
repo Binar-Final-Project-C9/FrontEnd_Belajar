@@ -115,14 +115,23 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                     value={courseData.level}
                     onChange={handleInputChange}
                   />
-                  <InputField
-                    label="Category"
-                    id="categoryId"
-                    type="number"
-                    placeholder="Course Category"
-                    value={courseData.categoryId}
-                    onChange={handleInputChange}
-                  />
+                  <div>
+                    <label
+                      htmlFor="level"
+                      className="block mb-2 text-sm font-medium"
+                    >
+                      Level
+                    </label>
+                    <select
+                      id="level"
+                      onChange={handleInputChange}
+                      className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                    >
+                      <option value="Beginner">Beginner</option>
+                      <option value="Intermediate">Intermediate</option>
+                      <option value="Advanced">Advanced</option>
+                    </select>
+                  </div>
                   <div>
                     <label
                       htmlFor="categoryId"
@@ -137,11 +146,7 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                       className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     >
                       {categories.map((item, index) => (
-                        <option
-                          key={index}
-                          value={item.id}
-                          // selected={item.id == updatedCourse.categoryId}
-                        >
+                        <option key={index} value={item.id}>
                           {item.name}
                         </option>
                       ))}
@@ -171,14 +176,22 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                     value={courseData.classCode}
                     onChange={handleInputChange}
                   />
-                  <InputField
-                    label="Type"
-                    id="type"
-                    type="text"
-                    placeholder="Course Type"
-                    value={courseData.type}
-                    onChange={handleInputChange}
-                  />
+                  <div>
+                    <label
+                      htmlFor="type"
+                      className="block mb-2 text-sm font-medium"
+                    >
+                      Type
+                    </label>
+                    <select
+                      id="type"
+                      onChange={handleInputChange}
+                      className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                    >
+                      <option value="Free">FREE</option>
+                      <option value="Premium">PREMIUM</option>
+                    </select>
+                  </div>
                   <InputField
                     label="Price"
                     id="price"

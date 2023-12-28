@@ -5,6 +5,8 @@ import Card from "./Card";
 import { useDispatch, useSelector } from "react-redux";
 import { useFetchPaymentQuery } from "../service/paymentApi";
 import { setPayment } from "../slices/paymentSlice";
+import Modal from "./Modal";
+import UpdatePayment from "./UpdatePayment";
 import "../colors.module.css";
 
 const formatDate = (isoDate) => {
@@ -25,6 +27,9 @@ const Home = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+  const [paymentIdToUpdate, setPaymentIdToUpdate] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
 
@@ -78,6 +83,11 @@ const Home = () => {
     setIsSearchActive(false);
   };
 
+  const handleUpdateClick = (paymentId) => {
+    setPaymentIdToUpdate(paymentId);
+    setUpdateModal(true);
+  };
+
   const filteredPayments = selectedFilters.length
     ? payments.filter((payment) =>
         selectedFilters.includes(payment.status.toLowerCase())
@@ -97,7 +107,7 @@ const Home = () => {
       <div>
         <div className="py-3 mx-auto lg:flex items-center text-center justify-between">
           <h2 className="font-bold text-base mb-4 font-montserrat">
-            Status Pembayaran
+            Kelola Status Pembayaran
           </h2>
           <div className="flex items-center gap-3 relative">
             <div className="relative inline-block">
@@ -165,11 +175,11 @@ const Home = () => {
             <thead className="bg-[#EBF3FC] text-left text-sm font-normal">
               <tr className="h-12">
                 <th className="pl-4 pr-2">ID</th>
-                <th className="pr-2">Kategori</th>
-                <th className="pr-2">Kelas Premium</th>
+                {/* <th className="pr-2">Kelas Premium</th> */}
                 <th className="pr-2">Status</th>
                 <th className="pr-2">Metode Pembayaran</th>
                 <th className="pr-4">Tanggal Bayar</th>
+                <th className="pr-4">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -185,12 +195,9 @@ const Home = () => {
                     <td className="text-xs font-bold text-[#4E5566] pl-4 pr-2">
                       {payment.User.email}
                     </td>
-                    <td className="text-xs font-bold text-[#4E5566] pr-2">
-                      {payment.Course.Category.name}
-                    </td>
-                    <td className="text-xs font-bold text-[#202244] pr-2">
+                    {/* <td className="text-xs font-bold text-[#202244] pr-2">
                       {payment.Course.type}
-                    </td>
+                    </td> */}
                     {payment.status === "paid" ? (
                       <td className="text-xs font-bold text-dark-green uppercase pr-2">
                         {payment.status}
@@ -214,12 +221,26 @@ const Home = () => {
                         <span>-</span>
                       )}
                     </td>
+                    <td>
+                      <button
+                        className="bg-green-500 py-1 px-3 text-sm rounded-md transition-all duration-300 text-white hover:bg-opacity-80"
+                        onClick={() => handleUpdateClick(payment.id)}
+                      >
+                        Update
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}
             </tbody>
           </table>
         </div>
+        <Modal showModal={showModal} setShowModal={setShowModal} />
+        <UpdatePayment
+          showModal={updateModal}
+          setShowModal={setUpdateModal}
+          paymentId={paymentIdToUpdate}
+        />
       </div>
     </>
   );
