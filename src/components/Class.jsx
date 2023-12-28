@@ -26,6 +26,7 @@ const Class = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [courseIdToDelete, setCourseIdToDelete] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+  const [category, setCategory] = useState([]);
 
   const dispatch = useDispatch();
   const { data: courseData, isError, isLoading } = useFetchCoursesQuery();
@@ -33,9 +34,15 @@ const Class = () => {
   const courses = useSelector((state) => state.course.items);
 
   useEffect(() => {
+    const fetchCategory = async () => {
+      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/category");
+      const data = await res.json();
+      setCategory(data.data.categories);
+    };
     if (courseData) {
       dispatch(setCourse(courseData));
     }
+    fetchCategory();
   }, [dispatch, courseData]);
 
   useEffect(() => {
@@ -239,7 +246,7 @@ const Class = () => {
                     Rp {course.price}
                   </td>
                   <td className="text-center text-xs font-bold px-3 py-2">
-                    <Link to={`/course/chapter/${course.id}`}>
+                    <Link to={`/course/${course.id}/chapter`}>
                       <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
                         Chapter
                       </button>
@@ -268,11 +275,16 @@ const Class = () => {
           </table>
         </div>
       </div>
-      <Modal showModal={showModal} setShowModal={setShowModal} />
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        categories={category}
+      />
       <UpdateCourse
         showModal={updateModal}
         setShowModal={setUpdateModal}
         courseId={courseIdToUpdate}
+        categories={category}
       />
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">

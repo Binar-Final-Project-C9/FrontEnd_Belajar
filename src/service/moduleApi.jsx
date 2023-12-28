@@ -3,30 +3,35 @@ import { apiSlice } from "./api";
 export const moduleApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createModule: builder.mutation({
-      query: ({ id, newModule }) => {
+      query: (newModule) => {
+        console.log(newModule);
         const formData = new FormData();
         Object.entries(newModule).forEach(([key, value]) => {
           formData.append(key, value);
         });
         return {
-          url: `/course/${id}`,
+          url: `/module`,
           method: "POST",
-          body: newModule,
+          body: formData,
         };
       },
     }),
     updateModule: builder.mutation({
       query: ({ id, updatedModule }) => {
+        const formData = new FormData();
+        Object.entries(updatedModule).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
         return {
-          url: `/chapter/${id}`,
+          url: `/module/${id}`,
           method: "PATCH",
-          body: updatedModule,
+          body: formData,
         };
       },
     }),
     deleteModule: builder.mutation({
       query: (id) => ({
-        url: `/course/${id}`,
+        url: `/module/${id}`,
         method: "DELETE",
       }),
     }),

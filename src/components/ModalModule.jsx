@@ -23,20 +23,25 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
 
 const ModalModule = ({ showModalModule, setShowModalModule }) => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { idChapter } = useParams();
   const [moduleData, setModuleData] = useState({
     noModule: "",
     name: "",
-    duration: "",
     description: "",
-    courseId: id,
+    videoUrl: "",
+    isUnlocked: "true",
+    chapterId: idChapter,
   });
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [typeVideo, setTypeVideo] = useState("file");
   const [createModule, { isError, isLoading }] = useCreateModuleMutation();
 
   const handleInputChange = (e) => {
     setModuleData({ ...moduleData, [e.target.id]: e.target.value });
+  };
+  const handleInputFile = (e) => {
+    const file = e.target.files[0];
+    setModuleData({ ...moduleData, [e.target.id]: file });
   };
 
   const submitHandler = async (e) => {
@@ -50,10 +55,12 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
       setModuleData({
         noModule: "",
         name: "",
-        duration: "",
         description: "",
-        courseId: id,
+        videoUrl: "",
+        isUnlocked: "true",
+        chapterId: idChapter,
       });
+      window.location.reload();
     } catch (error) {
       console.log(error);
       setErrorMessage(error.data.message);
@@ -105,14 +112,6 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
                     onChange={handleInputChange}
                   />
                   <InputField
-                    label="Duration"
-                    id="duration"
-                    type="number"
-                    placeholder="Module Duration"
-                    value={moduleData.duration}
-                    onChange={handleInputChange}
-                  />
-                  <InputField
                     label="Description"
                     id="description"
                     type="text"
@@ -120,6 +119,78 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
                     value={moduleData.description}
                     onChange={handleInputChange}
                   />
+                  <div className="flex">
+                    <div className="flex items-center me-4">
+                      <input
+                        id="inline-radio"
+                        checked={typeVideo == "file"}
+                        type="radio"
+                        value="file"
+                        name="inline-radio-group"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                        onChange={(e) => setTypeVideo("file")}
+                      />
+                      <label
+                        htmlFor="inline-radio"
+                        className="ms-2 text-sm font-medium text-gray-900 "
+                      >
+                        File
+                      </label>
+                    </div>
+                    <div className="flex items-center me-4">
+                      <input
+                        id="inline-2-radio"
+                        checked={typeVideo == "link"}
+                        type="radio"
+                        value="link"
+                        name="inline-radio-group"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                        onChange={(e) => setTypeVideo("link")}
+                      />
+                      <label
+                        htmlFor="inline-2-radio"
+                        className="ms-2 text-sm font-medium text-gray-900"
+                      >
+                        Link Youtube
+                      </label>
+                    </div>
+                  </div>
+                  {typeVideo == "link" ? (
+                    <InputField
+                      label="Vidio"
+                      id="videoUrl"
+                      type="text"
+                      placeholder="Module Vidio"
+                      value={moduleData.duration}
+                      onChange={handleInputChange}
+                    />
+                  ) : (
+                    <InputField
+                      label="Vidio"
+                      id="video"
+                      type="file"
+                      placeholder="Module Vidio"
+                      value={moduleData.duration}
+                      onChange={handleInputFile}
+                    />
+                  )}
+                  <div>
+                    <label
+                      htmlFor="isUnlocked"
+                      className="block mb-2 text-sm font-medium"
+                    >
+                      Select Type Module
+                    </label>
+                    <select
+                      id="isUnlocked"
+                      onChange={handleInputChange}
+                      className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                    >
+                      <option value="true">Unlocked</option>
+                      <option value="false">Locked</option>
+                    </select>
+                  </div>
+
                   <div className="flex items-center justify-between p-5 gap-5 w-full">
                     <button
                       className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"

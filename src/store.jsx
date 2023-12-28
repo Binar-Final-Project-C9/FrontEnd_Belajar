@@ -1,15 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './slices/authSlice';
-import courseReducer from './slices/courseSlice';
-import paymentReducer from './slices/paymentSlice';
-import userReducer from './slices/userSlice';
-import chapterReducer from './slices/chapterSlice';
-import { apiSlice } from './service/api';
-import { authApi } from './service/authApi';
-import { courseApi } from './service/courseApi';
-import { paymentApi } from './service/paymentApi';
-import { userApi } from './service/userApi';
-import { chapterApi } from './service/chapterApi';
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./slices/authSlice";
+import courseReducer from "./slices/courseSlice";
+import paymentReducer from "./slices/paymentSlice";
+import userReducer from "./slices/userSlice";
+import chapterReducer from "./slices/chapterSlice";
+import moduleReducer from "./slices/moduleSlice";
+import { apiSlice } from "./service/api";
+import { authApi } from "./service/authApi";
+import { courseApi } from "./service/courseApi";
+import { paymentApi } from "./service/paymentApi";
+import { userApi } from "./service/userApi";
+import { chapterApi } from "./service/chapterApi";
+import { moduleApi } from "./service/moduleApi";
 
 const store = configureStore({
   reducer: {
@@ -18,12 +20,14 @@ const store = configureStore({
     payment: paymentReducer,
     user: userReducer,
     chapter: chapterReducer,
+    module: moduleReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [courseApi.reducerPath]: courseApi.reducer,
     [paymentApi.reducerPath]: paymentApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [chapterApi.reducerPath]: chapterApi.reducer,
+    [moduleApi.reducerPath]: moduleApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -32,7 +36,8 @@ const store = configureStore({
       courseApi.middleware,
       paymentApi.middleware,
       userApi.middleware,
-      chapterApi.middleware
+      chapterApi.middleware,
+      moduleApi.middleware
     ),
   devTools: true,
 });

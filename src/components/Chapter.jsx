@@ -156,9 +156,11 @@ const Chapter = () => {
                 </a>
               </td> */}
                   <td className="text-center text-xs font-bold px-3 py-2">
-                    <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
-                      Video
-                    </button>
+                    <Link to={`/course/${id}/chapter/${chapter.id}`}>
+                      <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
+                        Module
+                      </button>
+                    </Link>
                     <button
                       className="bg-green-500 px-2 py-1 rounded-md text-white"
                       onClick={() => handleUpdateClick(chapter.id)}

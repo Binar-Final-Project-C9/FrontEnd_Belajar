@@ -20,7 +20,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   </div>
 );
 
-const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
+const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
   const initialState = {
     name: "",
     level: "",
@@ -120,14 +120,31 @@ const UpdateCourse = ({ showModal, setShowModal, courseId }) => {
                     value={updatedCourse.level}
                     onChange={handleInputChange}
                   />
-                  <InputField
-                    label="Category"
-                    id="categoryId"
-                    type="number"
-                    placeholder="Course Category"
-                    value={updatedCourse.categoryId}
-                    onChange={handleInputChange}
-                  />
+
+                  <div>
+                    <label
+                      htmlFor="categoryId"
+                      className="block mb-2 text-sm font-medium"
+                    >
+                      Select Kategori
+                    </label>
+                    <select
+                      id="categoryId"
+                      value={updatedCourse.categoryId}
+                      onChange={handleInputChange}
+                      className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                    >
+                      {categories.map((item, index) => (
+                        <option
+                          key={index}
+                          value={item.id}
+                          // selected={item.id == updatedCourse.categoryId}
+                        >
+                          {item.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <InputField
                     label="Description"
                     id="description"
