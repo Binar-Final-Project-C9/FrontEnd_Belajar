@@ -18,7 +18,7 @@ const Class = () => {
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [courseIdToUpdate, setCourseIdToUpdate] = useState(null);
-  const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
+  const [filterDropdownVisible, setFilterDropdownVisible] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedClassType, setSelectedClassType] = useState("");
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -70,6 +70,7 @@ const Class = () => {
       await deleteCourseMutation(courseIdToDelete).unwrap();
       setShowDeleteModal(false);
       dispatch(removeCourse(courseIdToDelete));
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting course:", error);
     }
@@ -81,16 +82,16 @@ const Class = () => {
   };
 
   const handleFilterClick = () => {
-    setFilterDropdownOpen((prev) => !prev);
+    setFilterDropdownVisible((prev) => !prev);
   };
 
   const handleFilterChange = (filterType, value) => {
-    setFilterDropdownOpen(false);
     if (filterType === "level") {
       setSelectedLevel(value);
     } else if (filterType === "classType") {
       setSelectedClassType(value);
     }
+    setFilterDropdownVisible(true);
   };
 
   const handleSearchClick = () => {
@@ -112,18 +113,25 @@ const Class = () => {
   };
 
   const filteredCourses = courses.filter((course) => {
-    if (selectedLevel && course.level !== selectedLevel) {
-      return false;
-    }
-    if (selectedClassType && course.type !== selectedClassType) {
-      return false;
-    }
-    return true;
+    const levelMatch =
+      !selectedLevel ||
+      course.level.toLowerCase() === selectedLevel.toLowerCase();
+
+    const typeMatch =
+      !selectedClassType ||
+      course.type.toLowerCase() === selectedClassType.toLowerCase();
+
+    return levelMatch && typeMatch;
   });
 
-  const coursesToRender = searchTerm ? searchResults : filteredCourses;
+  const searchFilteredCourses = searchTerm ? searchResults : filteredCourses;
 
-  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 border-t-blue-500 h-12 w-12"></div>
+      </div>
+    );
   if (isError) return <div className="text-center">Error...</div>;
 
   return (
@@ -150,7 +158,7 @@ const Class = () => {
               Filter
             </button>
             {isSearchActive ? (
-              <form onSubmit={handleSearchSubmit}>
+              <form onSubmit={handleSearchSubmit} className="relative">
                 <input
                   type="text"
                   value={searchTerm}
@@ -158,15 +166,14 @@ const Class = () => {
                   placeholder="Search by Name..."
                   className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none"
                 />
-                {searchTerm && (
-                  <button
-                    type="button"
-                    onClick={handleSearchClear}
-                    className="text-gray-500 hover:text-gray-700 focus:outline-none right-16 top 1/2 "
-                  >
-                    &times;
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={handleSearchClear}
+                  className="text-gray-500 hover:text-gray-700 focus:outline-none absolute inset-y-0 right-4 my-auto"
+                  style={{ fontSize: "1.2rem" }}
+                >
+                  &times;
+                </button>
               </form>
             ) : (
               <MdOutlineSearch
@@ -176,41 +183,41 @@ const Class = () => {
             )}
           </div>
         </div>
-        {filterDropdownOpen && (
-          <div className="flex justify-end gap-4 mb-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Level:
-              </label>
-              <select
-                className="mt-1 block w-32 border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 rounded-md shadow-sm"
-                onChange={(e) => handleFilterChange("level", e.target.value)}
-                value={selectedLevel}
-              >
-                <option value="">All</option>
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advance">Advance</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Class Type:
-              </label>
-              <select
-                className="mt-1 block w-32 border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 rounded-md shadow-sm"
-                onChange={(e) =>
-                  handleFilterChange("classType", e.target.value)
-                }
-                value={selectedClassType}
-              >
-                <option value="">All</option>
-                <option value="premium">Premium</option>
-                <option value="free">Free</option>
-              </select>
-            </div>
+        <div
+          className={`flex justify-end gap-4 mb-4 ${
+            filterDropdownVisible ? "" : "hidden"
+          }`}
+        >
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Level:
+            </label>
+            <select
+              className="mt-1 block w-32 border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 rounded-md shadow-sm"
+              onChange={(e) => handleFilterChange("level", e.target.value)}
+              value={selectedLevel}
+            >
+              <option value="">All</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advance">Advance</option>
+            </select>
           </div>
-        )}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Class Type:
+            </label>
+            <select
+              className="mt-1 block w-32 border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 rounded-md shadow-sm"
+              onChange={(e) => handleFilterChange("classType", e.target.value)}
+              value={selectedClassType}
+            >
+              <option value="">All</option>
+              <option value="premium">Premium</option>
+              <option value="free">Free</option>
+            </select>
+          </div>
+        </div>
         <div className="overflow-x-auto">
           <table className="table-auto w-full border-collapse">
             <thead className="bg-[#EBF3FC] on-primary-text text-sm font-normal">
@@ -225,52 +232,60 @@ const Class = () => {
               </tr>
             </thead>
             <tbody>
-              {coursesToRender.map((course, index) => (
-                <tr className="h-12" key={index}>
-                  <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
-                    {course.classCode}
-                  </td>
-                  <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
-                    {course?.Category?.name}
-                  </td>
-                  <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
-                    {course.name}
-                  </td>
-                  <td className="text-center text-xs font-bold text-dark-green uppercase px-3 py-2">
-                    {course.type}
-                  </td>
-                  <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
-                    {course.level}
-                  </td>
-                  <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
-                    Rp {course.price}
-                  </td>
-                  <td className="text-center text-xs font-bold px-3 py-2">
-                    <Link to={`/course/${course.id}/chapter`}>
-                      <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
-                        Chapter
-                      </button>
-                    </Link>
-                    <Link to={`/course/${course.id}`}>
-                      <button className="bg-gray-400 px-2 py-1 rounded-md text-white mr-2">
-                        Detail
-                      </button>
-                    </Link>
-                    <button
-                      className="bg-green-500 px-2 py-1 rounded-md text-white mr-2"
-                      onClick={() => handleUpdateClick(course.id)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="bg-red-500 px-2 py-1 my-2 rounded-md text-white"
-                      onClick={() => deleteCourseHandler(course.id)}
-                    >
-                      Hapus
-                    </button>
+              {searchFilteredCourses.length === 0 ? (
+                <tr className="h-12">
+                  <td colSpan="7" className="text-center text-red-500 mt-4">
+                    Tidak ada data yang sesuai dengan pencarian.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                searchFilteredCourses.map((course) => (
+                  <tr className="h-12 text-left" key={course.id}>
+                    <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
+                      {course.classCode}
+                    </td>
+                    <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
+                      {course?.Category?.name}
+                    </td>
+                    <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
+                      {course.name}
+                    </td>
+                    <td className="text-center text-xs font-bold text-dark-green uppercase px-3 py-2">
+                      {course.type}
+                    </td>
+                    <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
+                      {course.level}
+                    </td>
+                    <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
+                      Rp {course.price}
+                    </td>
+                    <td className="text-center text-xs font-bold px-3 py-2">
+                      <Link to={`/course/${course.id}/chapter`}>
+                        <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
+                          Chapter
+                        </button>
+                      </Link>
+                      <Link to={`/course/${course.id}`}>
+                        <button className="bg-gray-400 px-3 py-1 rounded-md text-white mr-2">
+                          Detail
+                        </button>
+                      </Link>
+                      <button
+                        className="bg-green-500 px-5 py-1 rounded-md text-white mr-2"
+                        onClick={() => handleUpdateClick(course.id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="bg-red-500 px-3 py-1 my-2 rounded-md text-white"
+                        onClick={() => deleteCourseHandler(course.id)}
+                      >
+                        Hapus
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

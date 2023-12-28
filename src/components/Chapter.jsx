@@ -90,38 +90,6 @@ const Chapter = () => {
               <FiPlusCircle />
               Tambah
             </button>
-            {/* <button
-            className="flex items-center justify-center primary-text border-[#73daa4] border-2 rounded-full px-6 font-bold gap-2"
-            onClick={handleFilterClick}
-          >
-            <FiFilter className="primary-text" />
-            Filter
-          </button>
-          {isSearchActive ? (
-            <form onSubmit={handleSearchSubmit}>
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                placeholder="Search..."
-                className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none"
-              />
-              {searchTerm && (
-                <button
-                  type="button"
-                  onClick={handleSearchClear}
-                  className="text-gray-500 hover:text-gray-700 focus:outline-none right-16 top 1/2 "
-                >
-                  &times;
-                </button>
-              )}
-            </form>
-          ) : (
-            <MdOutlineSearch
-              className="w-6 h-6 primary-text cursor-pointer"
-              onClick={handleSearchClick}
-            />
-          )} */}
           </div>
         </div>
         <div className="overflow-x-auto">

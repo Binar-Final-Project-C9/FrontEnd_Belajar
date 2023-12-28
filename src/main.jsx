@@ -20,6 +20,7 @@ import { Provider } from "react-redux";
 import store from "./store.jsx";
 import Course from "./components/Course.jsx";
 import Chapter from "./components/Chapter.jsx";
+import User from "./components/User.jsx";
 import Module from "./components/Module.jsx";
 
 const router = createBrowserRouter(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
         <Route path="" element={<Layout />}>
           <Route path="dashboard" element={<Home />} />
           <Route path="course" element={<Class />} />
+          <Route path="user" element={<User />} />
           <Route path="course/:id" element={<Course />} />
           <Route path="course/:id/chapter" element={<Chapter />} />
           <Route path="course/:id/chapter/:idChapter" element={<Module />} />
