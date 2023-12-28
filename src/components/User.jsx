@@ -127,23 +127,23 @@ const User = () => {
                   ref={dropdownRef}
                   className="absolute top-full left-0 mt-2 p-2 pe-6 bg-white on-tertiary-text rounded-md shadow-md"
                 >
-                  <label className="flex items-center">
+                  <label className="flex items-center font-semibold">
                     <input
                       type="checkbox"
                       checked={selectedFilters.includes("paid")}
                       onChange={() => handleFilterSelect("paid")}
                       className="mr-4"
                     />
-                    Paid
+                    PAID
                   </label>
-                  <label className="flex items-center">
+                  <label className="flex items-center font-semibold">
                     <input
                       type="checkbox"
                       checked={selectedFilters.includes("unpaid")}
                       onChange={() => handleFilterSelect("unpaid")}
                       className="mr-4"
                     />
-                    Unpaid
+                    UNPAID
                   </label>
                 </div>
               )}
@@ -178,12 +178,12 @@ const User = () => {
           <table className="table-auto w-full">
             <thead className="bg-[#EBF3FC] text-left text-sm font-normal">
               <tr className="h-12">
-                <th className="pl-4 pr-2">ID</th>
+                <th className="pl-4 pr-2 text-center">ID</th>
                 {/* <th className="pr-2">Kelas Premium</th> */}
-                <th className="pr-2">Status</th>
-                <th className="pr-2">Metode Pembayaran</th>
-                <th className="pr-4">Tanggal Bayar</th>
-                <th className="pr-4">Aksi</th>
+                <th className="pr-2 text-center">Status</th>
+                <th className="pr-2 text-center">Metode Pembayaran</th>
+                <th className="pr-4 text-center">Tanggal Bayar</th>
+                <th className="pr-4 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -196,29 +196,29 @@ const User = () => {
               ) : (
                 searchFilteredPayments.map((payment) => (
                   <tr className="h-12 text-left" key={payment.id}>
-                    <td className="text-xs font-bold text-[#4E5566] pl-4 pr-2">
+                    <td className="text-xs text-center font-bold text-[#4E5566] pl-4 pr-2">
                       {payment.User.email}
                     </td>
                     {/* <td className="text-xs font-bold text-[#202244] pr-2">
                       {payment.Course.type}
                     </td> */}
                     {payment.status === "paid" ? (
-                      <td className="text-xs font-bold text-dark-green uppercase pr-2">
+                      <td className="text-xs text-center font-bold text-dark-green uppercase pr-2">
                         {payment.status}
                       </td>
                     ) : (
-                      <td className="text-xs font-bold text-dark-red uppercase pr-2">
+                      <td className="text-xs text-center font-bold text-dark-red uppercase pr-2">
                         {payment.status}
                       </td>
                     )}
-                    <td className="text-xs font-bold text-[#202244] pr-2">
+                    <td className="text-xs text-center font-bold text-[#202244] pr-2">
                       {payment.paymentType ? (
                         <span>{payment.paymentType}</span>
                       ) : (
                         <span>-</span>
                       )}
                     </td>
-                    <td className="text-xs font-bold text-[#4E5566] pr-4">
+                    <td className="text-xs text-center font-bold text-[#4E5566] pr-4">
                       {payment.settlementTime ? (
                         <span>{formatDate(payment.settlementTime)}</span>
                       ) : (
