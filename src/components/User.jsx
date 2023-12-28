@@ -20,7 +20,7 @@ const formatDate = (isoDate) => {
   return new Date(isoDate).toLocaleString("en-US", options);
 };
 
-const Home = () => {
+const User = () => {
   const dispatch = useDispatch();
   const { data: paymentData, isError, isLoading } = useFetchPaymentQuery();
   const payments = useSelector((state) => state.payment.items);
@@ -75,7 +75,6 @@ const Home = () => {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    console.log("Search term:", searchTerm);
   };
 
   const handleSearchClear = () => {
@@ -98,7 +97,12 @@ const Home = () => {
     payment.User.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 border-t-blue-500 h-12 w-12"></div>
+      </div>
+    );
   if (isError) return <div className="text-center">Error...</div>;
 
   return (
@@ -107,7 +111,7 @@ const Home = () => {
       <div>
         <div className="py-3 mx-auto lg:flex items-center text-center justify-between">
           <h2 className="font-bold text-base mb-4 font-montserrat">
-            Kelola Status Pembayaran
+            Kelola Pembayaran
           </h2>
           <div className="flex items-center gap-3 relative">
             <div className="relative inline-block">
@@ -185,7 +189,7 @@ const Home = () => {
             <tbody>
               {searchFilteredPayments.length === 0 ? (
                 <tr className="h-12">
-                  <td colSpan="6" className="text-center">
+                  <td colSpan="6" className="text-center text-red-500 mt-4">
                     Tidak ada data yang sesuai dengan pencarian.
                   </td>
                 </tr>
@@ -246,4 +250,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default User;

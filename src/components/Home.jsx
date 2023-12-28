@@ -88,7 +88,12 @@ const Home = () => {
     payment.User.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 border-t-blue-500 h-12 w-12"></div>
+      </div>
+    );
   if (isError) return <div className="text-center">Error...</div>;
 
   return (
@@ -113,23 +118,23 @@ const Home = () => {
                   ref={dropdownRef}
                   className="absolute top-full left-0 mt-2 p-2 pe-6 bg-white on-tertiary-text rounded-md shadow-md"
                 >
-                  <label className="flex items-center">
+                  <label className="flex items-center font-semibold">
                     <input
                       type="checkbox"
                       checked={selectedFilters.includes("paid")}
                       onChange={() => handleFilterSelect("paid")}
                       className="mr-4"
                     />
-                    Paid
+                    PAID
                   </label>
-                  <label className="flex items-center">
+                  <label className="flex items-center font-semibold">
                     <input
                       type="checkbox"
                       checked={selectedFilters.includes("unpaid")}
                       onChange={() => handleFilterSelect("unpaid")}
                       className="mr-4"
                     />
-                    Unpaid
+                    UNPAID
                   </label>
                 </div>
               )}
@@ -175,7 +180,7 @@ const Home = () => {
             <tbody>
               {searchFilteredPayments.length === 0 ? (
                 <tr className="h-12">
-                  <td colSpan="6" className="text-center">
+                  <td colSpan="6" className="text-center text-red-500 mt-4">
                     Tidak ada data yang sesuai dengan pencarian.
                   </td>
                 </tr>
