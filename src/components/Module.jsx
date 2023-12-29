@@ -103,8 +103,8 @@ const Module = () => {
                 <th className="px-3 py-2">No</th>
                 <th className="px-3 py-2">Nama Chapter</th>
                 <th className="px-3 py-2">Deskripsi</th>
-                <th className="px-3 py-2">Vidio URL</th>
-                <th className="px-3 py-2">isUnlocked</th>
+                <th className="px-3 py-2">Video URL</th>
+                <th className="px-3 py-2">Tipe Modul</th>
                 <th className="px-3 py-2">Aksi</th>
               </tr>
             </thead>
@@ -137,9 +137,9 @@ const Module = () => {
                         <span className="text-red-500">TERKUNCI</span>
                       )}
                     </td>
-                    <td className="text-center text-xs font-bold px-3 py-2">
+                    <td className="flex text-center text-xs font-bold px-3 py-2">
                       <button
-                        className="bg-green-500 px-2 py-1 rounded-md text-white"
+                        className="bg-green-500 px-4 py-1 mx-1 rounded-md text-white"
                         onClick={() => handleUpdateClick(module.id)}
                       >
                         Edit

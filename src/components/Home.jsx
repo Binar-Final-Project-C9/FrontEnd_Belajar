@@ -88,7 +88,12 @@ const Home = () => {
     payment.User.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 border-t-blue-500 h-12 w-12"></div>
+      </div>
+    );
   if (isError) return <div className="text-center">Error...</div>;
 
   return (
@@ -113,23 +118,23 @@ const Home = () => {
                   ref={dropdownRef}
                   className="absolute top-full left-0 mt-2 p-2 pe-6 bg-white on-tertiary-text rounded-md shadow-md"
                 >
-                  <label className="flex items-center">
+                  <label className="flex items-center font-semibold">
                     <input
                       type="checkbox"
                       checked={selectedFilters.includes("paid")}
                       onChange={() => handleFilterSelect("paid")}
                       className="mr-4"
                     />
-                    Paid
+                    PAID
                   </label>
-                  <label className="flex items-center">
+                  <label className="flex items-center font-semibold">
                     <input
                       type="checkbox"
                       checked={selectedFilters.includes("unpaid")}
                       onChange={() => handleFilterSelect("unpaid")}
                       className="mr-4"
                     />
-                    Unpaid
+                    UNPAID
                   </label>
                 </div>
               )}
@@ -164,50 +169,50 @@ const Home = () => {
           <table className="table-auto w-full">
             <thead className="bg-[#EBF3FC] text-left text-sm font-normal">
               <tr className="h-12">
-                <th className="pl-4 pr-2">ID</th>
-                <th className="pr-2">Kategori</th>
-                <th className="pr-2">Kelas Premium</th>
-                <th className="pr-2">Status</th>
-                <th className="pr-2">Metode Pembayaran</th>
-                <th className="pr-4">Tanggal Bayar</th>
+                <th className="pl-4 pr-2 text-center">ID</th>
+                <th className="pr-2 text-center">Kategori</th>
+                <th className="pr-2 text-center">Kelas Premium</th>
+                <th className="pr-2 text-center">Status</th>
+                <th className="pr-2 text-center">Metode Pembayaran</th>
+                <th className="pr-4 text-center">Tanggal Bayar</th>
               </tr>
             </thead>
             <tbody>
               {searchFilteredPayments.length === 0 ? (
                 <tr className="h-12">
-                  <td colSpan="6" className="text-center">
+                  <td colSpan="6" className="text-center text-red-500 mt-4">
                     Tidak ada data yang sesuai dengan pencarian.
                   </td>
                 </tr>
               ) : (
                 searchFilteredPayments.map((payment) => (
                   <tr className="h-12 text-left" key={payment.id}>
-                    <td className="text-xs font-bold text-[#4E5566] pl-4 pr-2">
+                    <td className="text-xs text-center font-bold text-[#4E5566] pl-4 pr-2">
                       {payment.User.email}
                     </td>
-                    <td className="text-xs font-bold text-[#4E5566] pr-2">
+                    <td className="text-xs text-center font-bold text-[#4E5566] pr-2">
                       {payment.Course.Category.name}
                     </td>
-                    <td className="text-xs font-bold text-[#202244] pr-2">
+                    <td className="text-xs text-center font-bold text-[#202244] pr-2">
                       {payment.Course.type}
                     </td>
                     {payment.status === "paid" ? (
-                      <td className="text-xs font-bold text-dark-green uppercase pr-2">
+                      <td className="text-xs text-center font-bold text-dark-green uppercase pr-2">
                         {payment.status}
                       </td>
                     ) : (
-                      <td className="text-xs font-bold text-dark-red uppercase pr-2">
+                      <td className="text-xs text-center font-bold text-dark-red uppercase pr-2">
                         {payment.status}
                       </td>
                     )}
-                    <td className="text-xs font-bold text-[#202244] pr-2">
+                    <td className="text-xs text-center font-bold text-[#202244] pr-2">
                       {payment.paymentType ? (
                         <span>{payment.paymentType}</span>
                       ) : (
                         <span>-</span>
                       )}
                     </td>
-                    <td className="text-xs font-bold text-[#4E5566] pr-4">
+                    <td className="text-xs text-center font-bold text-[#4E5566] pr-4">
                       {payment.settlementTime ? (
                         <span>{formatDate(payment.settlementTime)}</span>
                       ) : (

@@ -10,7 +10,7 @@ const Sidebar = ({ children }) => {
   const Menus = [
     { title: "Dashboard", path: "/dashboard" },
     { title: "Kelola Kelas", path: "/course" },
-    { title: "Kelola User", path: "/user" },
+    { title: "Kelola Pembayaran", path: "/user" },
     { title: "Keluar", path: "/" },
   ];
 
@@ -46,7 +46,7 @@ const Sidebar = ({ children }) => {
       <div className="lg:flex flex-col hidden min-h-screen w-60 primary">
         <div className="space-y-3">
           <div className="flex items-center ms-6">
-            <img src={appLogo} alt="" className="w-30 h-28  mt-5" />
+            <img src={appLogo} alt="" className="w-30 h-28 mt-5" />
           </div>
           <div className="flex-1">
             <ul className="pt-2 pb-4 text-xl font-bold on-tertiary-text">
@@ -54,8 +54,8 @@ const Sidebar = ({ children }) => {
                 <li
                   key={index}
                   className={`${
-                    activeMenu === menu.title ? "bg-white rounded-full" : ""
-                  } hover:bg-green-500 hover:rounded-full transition-all duration-300`}
+                    activeMenu === menu.title ? "bg-[#ccdcc3]" : ""
+                  } hover:bg-[#9ed67c] transition-all duration-300`}
                 >
                   {menu.title === "Keluar" ? (
                     <button

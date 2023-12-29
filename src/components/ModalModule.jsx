@@ -23,14 +23,14 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
 
 const ModalModule = ({ showModalModule, setShowModalModule }) => {
   const dispatch = useDispatch();
-  const { idChapter } = useParams();
+  const { id } = useParams();
   const [moduleData, setModuleData] = useState({
     noModule: "",
     name: "",
     description: "",
     videoUrl: "",
     isUnlocked: "true",
-    chapterId: idChapter,
+    chapterId: id,
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [typeVideo, setTypeVideo] = useState("file");
@@ -58,7 +58,7 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
         description: "",
         videoUrl: "",
         isUnlocked: "true",
-        chapterId: idChapter,
+        chapterId: id,
       });
       window.location.reload();
     } catch (error) {
@@ -128,7 +128,7 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
                         value="file"
                         name="inline-radio-group"
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                        onChange={(e) => setTypeVideo("file")}
+                        onChange={(e) => setTypeVideo(e.target.value)}
                       />
                       <label
                         htmlFor="inline-radio"
@@ -145,7 +145,7 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
                         value="link"
                         name="inline-radio-group"
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                        onChange={(e) => setTypeVideo("link")}
+                        onChange={(e) => setTypeVideo(e.target.value)}
                       />
                       <label
                         htmlFor="inline-2-radio"
@@ -157,19 +157,19 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
                   </div>
                   {typeVideo == "link" ? (
                     <InputField
-                      label="Vidio"
+                      label="Video"
                       id="videoUrl"
                       type="text"
-                      placeholder="Module Vidio"
-                      value={moduleData.duration}
+                      placeholder="Module Video"
+                      value={moduleData.videoUrl}
                       onChange={handleInputChange}
                     />
                   ) : (
                     <InputField
-                      label="Vidio"
+                      label="Video"
                       id="video"
                       type="file"
-                      placeholder="Module Vidio"
+                      placeholder="Module Video"
                       value={moduleData.duration}
                       onChange={handleInputFile}
                     />

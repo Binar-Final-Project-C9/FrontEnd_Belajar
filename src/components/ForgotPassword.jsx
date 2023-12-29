@@ -12,16 +12,13 @@ const ForgotPassword = () => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
 
-    // Trim whitespaces from the email
     const trimmedEmail = email.trim();
 
-    // Check if the email is empty
     if (!trimmedEmail) {
       setEmailError("Email is required");
       return;
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(trimmedEmail)) {
       setEmailError("Invalid email format");
@@ -39,7 +36,6 @@ const ForgotPassword = () => {
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
-    // Clear email error when the user starts typing
     if (emailError && newEmail.trim()) {
       setEmailError("");
     }
