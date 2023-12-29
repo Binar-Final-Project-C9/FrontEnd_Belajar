@@ -112,14 +112,40 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
                     value={updatedCourse.name}
                     onChange={handleInputChange}
                   />
-                  <InputField
-                    label="Level"
-                    id="level"
-                    type="text"
-                    placeholder="Course Level"
-                    value={updatedCourse.level}
-                    onChange={handleInputChange}
-                  />
+
+                  <div>
+                    <label
+                      htmlFor="level"
+                      className="block mb-2 text-sm font-medium"
+                    >
+                      Level
+                    </label>
+                    <select
+                      id="level"
+                      value={updatedCourse.value}
+                      onChange={handleInputChange}
+                      className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                    >
+                      <option
+                        value="Beginner"
+                        selected={updatedCourse.level == "Beginner"}
+                      >
+                        Beginner
+                      </option>
+                      <option
+                        value="Intermediate"
+                        selected={updatedCourse.level == "Intermediate"}
+                      >
+                        Intermediate
+                      </option>
+                      <option
+                        value="Advanced"
+                        selected={updatedCourse.level == "Advanced"}
+                      >
+                        Advanced
+                      </option>
+                    </select>
+                  </div>
 
                   <div>
                     <label
@@ -135,11 +161,7 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
                       className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     >
                       {categories.map((item, index) => (
-                        <option
-                          key={index}
-                          value={item.id}
-                          // selected={item.id == updatedCourse.categoryId}
-                        >
+                        <option key={index} value={item.id}>
                           {item.name}
                         </option>
                       ))}
@@ -169,14 +191,34 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
                     value={updatedCourse.classCode}
                     onChange={handleInputChange}
                   />
-                  <InputField
-                    label="Type"
-                    id="type"
-                    type="text"
-                    placeholder="Course Type"
-                    value={updatedCourse.type}
-                    onChange={handleInputChange}
-                  />
+
+                  <div>
+                    <label
+                      htmlFor="type"
+                      className="block mb-2 text-sm font-medium"
+                    >
+                      Type
+                    </label>
+                    <select
+                      id="type"
+                      value={updatedCourse.value}
+                      onChange={handleInputChange}
+                      className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                    >
+                      <option
+                        value="Free"
+                        selected={updatedCourse.type == "Free"}
+                      >
+                        FREE
+                      </option>
+                      <option
+                        value="Premium"
+                        selected={updatedCourse.type == "Premium"}
+                      >
+                        PREMIUM
+                      </option>
+                    </select>
+                  </div>
                   <InputField
                     label="Price"
                     id="price"

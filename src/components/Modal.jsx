@@ -70,7 +70,6 @@ const Modal = ({ showModal, setShowModal, categories }) => {
       setErrorMessage(error.data.message);
     }
   };
-  console.log(categories);
   return (
     <>
       {showModal && (
@@ -107,14 +106,7 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                     value={courseData.name}
                     onChange={handleInputChange}
                   />
-                  <InputField
-                    label="Level"
-                    id="level"
-                    type="text"
-                    placeholder="Course Level"
-                    value={courseData.level}
-                    onChange={handleInputChange}
-                  />
+
                   <div>
                     <label
                       htmlFor="level"
@@ -124,14 +116,19 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                     </label>
                     <select
                       id="level"
+                      defaultValue={"none"}
                       onChange={handleInputChange}
                       className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     >
+                      <option value="none" selected disabled hidden>
+                        Pilih Level
+                      </option>
                       <option value="Beginner">Beginner</option>
                       <option value="Intermediate">Intermediate</option>
                       <option value="Advanced">Advanced</option>
                     </select>
                   </div>
+
                   <div>
                     <label
                       htmlFor="categoryId"
@@ -141,10 +138,15 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                     </label>
                     <select
                       id="categoryId"
-                      value={courseData.categoryId}
+                      defaultValue={"none"}
                       onChange={handleInputChange}
                       className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     >
+                      (
+                      <option value="none" selected disabled hidden>
+                        Pilih Kategori
+                      </option>
+                      ),
                       {categories.map((item, index) => (
                         <option key={index} value={item.id}>
                           {item.name}
@@ -185,9 +187,13 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                     </label>
                     <select
                       id="type"
+                      defaultValue={"none"}
                       onChange={handleInputChange}
                       className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     >
+                      <option value="none" selected disabled hidden>
+                        Pilih Type
+                      </option>
                       <option value="Free">FREE</option>
                       <option value="Premium">PREMIUM</option>
                     </select>
