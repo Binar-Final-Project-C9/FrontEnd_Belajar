@@ -14,7 +14,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
       id={id}
       value={value}
       onChange={onChange}
-      className="mt-1 w-full p-2 border rounded-md lg:w-[500px]"
+      className="mt-1 w-full p-2 text-sm font-semibold border rounded-md lg:w-[px] placeholder:text-sm"
       placeholder={placeholder}
     />
   </div>
@@ -70,12 +70,17 @@ const Modal = ({ showModal, setShowModal, categories }) => {
       setErrorMessage(error.data.message);
     }
   };
+
+  const handleCancelClick = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
       {showModal && (
         <>
           <div className="justify-center items-center flex fixed inset-0 z-50 overflow-y-auto">
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-auto mx-auto max-w-6xl max-h-screen">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] mx-auto max-h-[80vh]">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white">
                 <div className="flex items-start justify-between p-2">
                   <button
@@ -99,10 +104,10 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                     </h2>
                   )}
                   <InputField
-                    label="Name"
+                    label="Nama Kelas"
                     id="name"
                     type="text"
-                    placeholder="Course Name"
+                    placeholder="Nama Kelas"
                     value={courseData.name}
                     onChange={handleInputChange}
                   />
@@ -112,13 +117,13 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                       htmlFor="level"
                       className="block mb-2 text-sm font-medium"
                     >
-                      Level
+                      Level Kelas
                     </label>
                     <select
                       id="level"
                       defaultValue={"none"}
                       onChange={handleInputChange}
-                      className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                      className="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     >
                       <option value="none" selected disabled hidden>
                         Pilih Level
@@ -134,7 +139,7 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                       htmlFor="categoryId"
                       className="block mb-2 text-sm font-medium"
                     >
-                      Select Kategori
+                      Kategori Kelas
                     </label>
                     <select
                       id="categoryId"
@@ -155,26 +160,26 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                     </select>
                   </div>
                   <InputField
-                    label="Description"
+                    label="Deskripsi"
                     id="description"
                     type="text"
-                    placeholder="Course Description"
+                    placeholder="Deskripsi Kelas"
                     value={courseData.description}
                     onChange={handleInputChange}
                   />
                   <InputField
-                    label="Benefits"
+                    label="Benefit Kelas"
                     id="benefits"
                     type="text"
-                    placeholder="Course Benefits"
+                    placeholder="Benefit Kelas"
                     value={courseData.benefits}
                     onChange={handleInputChange}
                   />
                   <InputField
-                    label="Class Code"
+                    label="Kode Kelas"
                     id="classCode"
                     type="text"
-                    placeholder="Class Code"
+                    placeholder="Kode Kelas"
                     value={courseData.classCode}
                     onChange={handleInputChange}
                   />
@@ -183,7 +188,7 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                       htmlFor="type"
                       className="block mb-2 text-sm font-medium"
                     >
-                      Type
+                      Tipe Kelas
                     </label>
                     <select
                       id="type"
@@ -192,25 +197,25 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                       className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     >
                       <option value="none" selected disabled hidden>
-                        Pilih Type
+                        Pilih Tipe
                       </option>
                       <option value="Free">FREE</option>
                       <option value="Premium">PREMIUM</option>
                     </select>
                   </div>
                   <InputField
-                    label="Price"
+                    label="Harga"
                     id="price"
                     type="number"
-                    placeholder="Course Price"
+                    placeholder="Harga Kelas"
                     value={courseData.price}
                     onChange={handleInputChange}
                   />
                   <InputField
-                    label="Course By"
+                    label="Fasilitator"
                     id="courseBy"
                     type="text"
-                    placeholder="Course By"
+                    placeholder="Nama Fasilitator"
                     value={courseData.courseBy}
                     onChange={handleInputChange}
                   />
@@ -221,13 +226,21 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                     placeholder="Course Image"
                     onChange={handleInputChange}
                   />
-                  <div className="flex items-center justify-between p-5 gap-5 w-full">
+                  <div className="flex justify-center p-5 gap-3">
                     <button
-                      className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
+                      className="primary text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
                       type="submit"
                       disabled={isLoading}
                     >
                       {isLoading ? "Loading..." : "Simpan"}
+                    </button>
+                    <button
+                      className="bg-dark-red text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
+                      type="submit"
+                      onClick={handleCancelClick}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Loading..." : "Batal"}
                     </button>
                   </div>
                 </form>

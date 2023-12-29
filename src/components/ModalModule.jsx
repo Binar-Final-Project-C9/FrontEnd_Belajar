@@ -15,7 +15,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
       id={id}
       value={value}
       onChange={onChange}
-      className="mt-1 w-full p-2 border rounded-md lg:w-[500px]"
+      className="mt-1 w-full p-2 text-sm font-semibold border rounded-md lg:w-[500px] placeholder:text-sm"
       placeholder={placeholder}
     />
   </div>
@@ -67,6 +67,9 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
     }
   };
 
+  const handleCancelClick = () => {
+    setShowModalModule(false);
+  };
   return (
     <>
       {showModalModule && (
@@ -96,26 +99,26 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
                     </h2>
                   )}
                   <InputField
-                    label="No"
+                    label="No Modul"
                     id="noModule"
                     type="number"
-                    placeholder="No Module"
+                    placeholder="No Modul"
                     value={moduleData.noModule}
                     onChange={handleInputChange}
                   />
                   <InputField
-                    label="Name"
+                    label="Nama Modul"
                     id="name"
                     type="text"
-                    placeholder="Module Name"
+                    placeholder="Nama Modul"
                     value={moduleData.name}
                     onChange={handleInputChange}
                   />
                   <InputField
-                    label="Description"
+                    label="Deskripsi Modul"
                     id="description"
                     type="text"
-                    placeholder="Module Description"
+                    placeholder="Deskripsi Modul"
                     value={moduleData.description}
                     onChange={handleInputChange}
                   />
@@ -160,7 +163,7 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
                       label="Video"
                       id="videoUrl"
                       type="text"
-                      placeholder="Module Video"
+                      placeholder="Link Video"
                       value={moduleData.videoUrl}
                       onChange={handleInputChange}
                     />
@@ -179,7 +182,7 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
                       htmlFor="isUnlocked"
                       className="block mb-2 text-sm font-medium"
                     >
-                      Select Type Module
+                      Pilih Tipe Modul
                     </label>
                     <select
                       id="isUnlocked"
@@ -191,13 +194,21 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
                     </select>
                   </div>
 
-                  <div className="flex items-center justify-between p-5 gap-5 w-full">
+                  <div className="flex justify-center p-5 gap-3">
                     <button
-                      className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
+                      className="primary text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
                       type="submit"
                       disabled={isLoading}
                     >
                       {isLoading ? "Loading..." : "Simpan"}
+                    </button>
+                    <button
+                      className="bg-dark-red text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
+                      type="submit"
+                      onClick={handleCancelClick}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Loading..." : "Batal"}
                     </button>
                   </div>
                 </form>

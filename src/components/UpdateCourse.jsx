@@ -14,7 +14,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
       id={id}
       value={value}
       onChange={onChange}
-      className="mt-1 w-full p-2 border rounded-md lg:w-[500px]"
+      className="mt-1 w-full p-2 text-sm font-semibold border rounded-md lg:w-[500px] placeholder:text-sm"
       placeholder={placeholder}
     />
   </div>
@@ -79,6 +79,10 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
     } catch (error) {
       console.log(error.data);
     }
+  };
+
+  const handleCancelClick = () => {
+    setShowModal(false);
   };
 
   return (
@@ -242,12 +246,21 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
                     placeholder="Course Image"
                     onChange={handleInputChange}
                   />
-                  <div className="flex items-center justify-between p-5 gap-5 w-full">
+                  <div className="flex justify-center p-5 gap-3">
                     <button
-                      className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
+                      className="primary text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
                       type="submit"
+                      disabled={isLoading}
                     >
-                      Simpan
+                      {isLoading ? "Loading..." : "Simpan"}
+                    </button>
+                    <button
+                      className="bg-dark-red text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
+                      type="submit"
+                      onClick={handleCancelClick}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Loading..." : "Batal"}
                     </button>
                   </div>
                 </form>

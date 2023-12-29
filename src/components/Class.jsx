@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FiFilter, FiPlusCircle } from "react-icons/fi";
-import { FaExclamationTriangle } from "react-icons/fa";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { FaExclamationTriangle, FaRegEye, FaRegTrashAlt } from "react-icons/fa";
 import { MdOutlineSearch } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -27,6 +28,8 @@ const Class = () => {
   const [courseIdToDelete, setCourseIdToDelete] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [category, setCategory] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
   const dispatch = useDispatch();
   const { data: courseData, isError, isLoading } = useFetchCoursesQuery();
@@ -55,6 +58,14 @@ const Class = () => {
       setSearchResults(results);
     }
   }, [searchTerm, courses]);
+
+  useEffect(() => {
+    if (showModal || updateModal || showDeleteModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "visible";
+    }
+  }, [showModal, updateModal, showDeleteModal]);
 
   const deleteCourseHandler = async (courseId) => {
     try {
@@ -126,6 +137,23 @@ const Class = () => {
 
   const searchFilteredCourses = searchTerm ? searchResults : filteredCourses;
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = searchFilteredCourses.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const totalPages = Math.ceil(searchFilteredCourses.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
   if (isLoading)
     return (
       <div className="flex items-center justify-center h-screen">
@@ -164,7 +192,7 @@ const Class = () => {
                   value={searchTerm}
                   onChange={handleSearchChange}
                   placeholder="Search by Name..."
-                  className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none"
+                  className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none placeholder:text-sm font-semibold"
                 />
                 <button
                   type="button"
@@ -205,7 +233,7 @@ const Class = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Class Type:
+              Tipe Kelas:
             </label>
             <select
               className="mt-1 block w-32 border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 rounded-md shadow-sm"
@@ -227,19 +255,19 @@ const Class = () => {
                 <th className="px-3 py-2">Nama Kelas</th>
                 <th className="px-3 py-2">Tipe Kelas</th>
                 <th className="px-3 py-2">Level</th>
-                <th className="px-3 py-2">Harga Kelas</th>
+                <th className="px-4 py-2">Harga Kelas</th>
                 <th className="px-3 py-2">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {searchFilteredCourses.length === 0 ? (
+              {currentItems.length === 0 ? (
                 <tr className="h-12">
                   <td colSpan="7" className="text-center text-red-500 mt-4">
                     Tidak ada data yang sesuai dengan pencarian.
                   </td>
                 </tr>
               ) : (
-                searchFilteredCourses.map((course) => (
+                currentItems.map((course) => (
                   <tr className="h-12 text-left" key={course.id}>
                     <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
                       {course.classCode}
@@ -250,38 +278,46 @@ const Class = () => {
                     <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
                       {course.name}
                     </td>
-                    <td className="text-center text-xs font-bold text-dark-green uppercase px-3 py-2">
-                      {course.type}
-                    </td>
+                    {course.type === "Free" ? (
+                      <td className="text-xs text-center font-bold text-dark-green uppercase pr-2">
+                        {course.type}
+                      </td>
+                    ) : (
+                      <td className="text-xs text-center font-bold text-dark-blue uppercase pr-2">
+                        {course.type}
+                      </td>
+                    )}
                     <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
                       {course.level}
                     </td>
                     <td className="text-center text-xs font-medium text-[#4E5566] px-3 py-2">
                       Rp {course.price}
                     </td>
-                    <td className="text-center text-xs font-bold px-3 py-2">
-                      <Link to={`/course/${course.id}/chapter`}>
-                        <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
-                          Chapter
+                    <td className="text-center text-xs font-bold px-10">
+                      <div className="flex gap-2">
+                        <Link to={`/course/${course.id}/chapter`}>
+                          <button className="bg-blue-500 px-2 py-1 rounded-md text-white mb-1">
+                            Chapter
+                          </button>
+                        </Link>
+                        <button
+                          className="primary px-2 py-1 rounded-md text-white mb-1"
+                          onClick={() => handleUpdateClick(course.id)}
+                        >
+                          Edit
                         </button>
-                      </Link>
-                      <Link to={`/course/${course.id}`}>
-                        <button className="bg-gray-400 px-3 py-1 rounded-md text-white mr-2">
-                          Detail
+                        <Link to={`/course/${course.id}`}>
+                          <button className="bg-gray-400 py-1.5 px-2 rounded-md text-white mb-1">
+                            <FaRegEye />
+                          </button>
+                        </Link>
+                        <button
+                          className="bg-red-500 px-2 rounded-md text-white"
+                          onClick={() => deleteCourseHandler(course.id)}
+                        >
+                          <FaRegTrashAlt />
                         </button>
-                      </Link>
-                      <button
-                        className="bg-green-500 px-5 py-1 rounded-md text-white mr-2"
-                        onClick={() => handleUpdateClick(course.id)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="bg-red-500 px-3 py-1 my-2 rounded-md text-white"
-                        onClick={() => deleteCourseHandler(course.id)}
-                      >
-                        Hapus
-                      </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -289,6 +325,33 @@ const Class = () => {
             </tbody>
           </table>
         </div>
+      </div>
+      {/* Pagination */}
+      <div className="flex justify-center mt-7 gap-4">
+        <button
+          className={`flex items-center px-2 py-1 mx-1 rounded-md text-sm font-semibold ${
+            currentPage === 1
+              ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-600"
+          }`}
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+        >
+          <IoIosArrowBack className="inline-block mr-4" />
+          Previous
+        </button>
+        <button
+          className={`flex items-center px-2 py-1 mx-1 rounded-md text-sm font-semibold ${
+            currentPage === totalPages
+              ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-600"
+          }`}
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          Next
+          <IoIosArrowForward className="inline-block ml-4" />
+        </button>
       </div>
       <Modal
         showModal={showModal}

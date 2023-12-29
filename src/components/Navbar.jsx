@@ -1,8 +1,14 @@
 import { useState } from "react";
-import { BiSearchAlt, BiMenu, BiX } from "react-icons/bi";
+import { BiMenu, BiX } from "react-icons/bi";
+import {
+  FaTachometerAlt,
+  FaChalkboard,
+  FaMoneyBill,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { removeToken } from "../slices/authSlice";
 import "../colors.module.css";
 
@@ -42,6 +48,7 @@ const Navbar = () => {
                       href="/dashboard"
                       className="flex items-center px-8 py-2 space-x-3 rounded-md"
                     >
+                      <FaTachometerAlt className="me-6" />
                       <span className="text-base font-semibold">Dashboard</span>
                     </a>
                   </li>
@@ -50,6 +57,7 @@ const Navbar = () => {
                       href="/course"
                       className="flex items-center px-8 py-2 space-x-3 rounded-md"
                     >
+                      <FaChalkboard className="me-6" />
                       <span className="text-base font-semibold">
                         Kelola Kelas
                       </span>
@@ -60,6 +68,7 @@ const Navbar = () => {
                       href="/user"
                       className="flex items-center px-8 py-2 space-x-3 rounded-md"
                     >
+                      <FaMoneyBill className="me-6" />
                       <span className="text-base font-semibold">
                         Kelola User
                       </span>
@@ -71,6 +80,7 @@ const Navbar = () => {
                       onClick={logoutHandler}
                       className="flex items-center px-8 py-2 space-x-3 rounded-md"
                     >
+                      <FaSignOutAlt className="me-6" />
                       <span className="text-base font-semibold">Keluar</span>
                     </a>
                   </li>

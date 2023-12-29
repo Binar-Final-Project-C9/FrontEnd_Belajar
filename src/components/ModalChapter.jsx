@@ -1,9 +1,9 @@
-import { HiX } from 'react-icons/hi';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useCreateChapterMutation } from '../service/chapterApi';
-import { addChapter } from '../slices/chapterSlice';
-import { useParams } from 'react-router-dom';
+import { HiX } from "react-icons/hi";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useCreateChapterMutation } from "../service/chapterApi";
+import { addChapter } from "../slices/chapterSlice";
+import { useParams } from "react-router-dom";
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   <div>
@@ -15,7 +15,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
       id={id}
       value={value}
       onChange={onChange}
-      className="mt-1 w-full p-2 border rounded-md lg:w-[500px]"
+      className="mt-1 w-full p-2 text-sm font-semibold border rounded-md lg:w-[500px] placeholder:text-sm"
       placeholder={placeholder}
     />
   </div>
@@ -25,11 +25,11 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [chapterData, setChapterData] = useState({
-    noChapter: '',
-    name: '',
+    noChapter: "",
+    name: "",
     courseId: id,
   });
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [createChapter, { isError, isLoading }] = useCreateChapterMutation();
 
@@ -44,14 +44,18 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
       dispatch(addChapter(res));
       setShowModalChapter(false);
       setChapterData({
-        noChapter: '',
-        name: '',
+        noChapter: "",
+        name: "",
         courseId: id,
       });
     } catch (error) {
       console.log(error);
       setErrorMessage(error.data.message);
     }
+  };
+
+  const handleCancelClick = () => {
+    setShowModalChapter(false);
   };
 
   return (
@@ -64,14 +68,16 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
                 <div className="flex items-start justify-between p-2">
                   <button
                     className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
-                    onClick={() => setShowModalChapter(false)}>
+                    onClick={() => setShowModalChapter(false)}
+                  >
                     <HiX className="text-black" />
                   </button>
                 </div>
                 <form
                   className="w-full px-6 space-y-4"
                   encType="application/json"
-                  onSubmit={submitHandler}>
+                  onSubmit={submitHandler}
+                >
                   <h2 className="text-center font-bold text-gray-800">
                     Tambah Chapter
                   </h2>
@@ -89,19 +95,28 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
                     onChange={handleInputChange}
                   />
                   <InputField
-                    label="Name"
+                    label="Nama Chapter"
                     id="name"
                     type="text"
-                    placeholder="Chapter Name"
+                    placeholder="Nama Chapter"
                     value={chapterData.name}
                     onChange={handleInputChange}
                   />
-                  <div className="flex items-center justify-between p-5 gap-5 w-full">
+                  <div className="flex justify-center p-5 gap-3">
                     <button
-                      className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
+                      className="primary text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
                       type="submit"
-                      disabled={isLoading}>
-                      {isLoading ? 'Loading...' : 'Simpan'}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Loading..." : "Simpan"}
+                    </button>
+                    <button
+                      className="bg-dark-red text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
+                      type="submit"
+                      onClick={handleCancelClick}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Loading..." : "Batal"}
                     </button>
                   </div>
                 </form>
