@@ -74,6 +74,7 @@ const Modal = ({ showModal, setShowModal, categories }) => {
   const handleCancelClick = () => {
     setShowModal(false);
   };
+
   return (
     <>
       {showModal && (
