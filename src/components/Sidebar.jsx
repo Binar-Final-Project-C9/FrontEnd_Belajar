@@ -2,16 +2,22 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { removeToken } from "../slices/authSlice";
-import { FaExclamationTriangle } from "react-icons/fa";
+import {
+  FaExclamationTriangle,
+  FaTachometerAlt,
+  FaChalkboard,
+  FaMoneyBill,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import appLogo from "../assets/appLogo.png";
 import Navbar from "./Navbar";
 
 const Sidebar = ({ children }) => {
   const Menus = [
-    { title: "Dashboard", path: "/dashboard" },
-    { title: "Kelola Kelas", path: "/course" },
-    { title: "Kelola Pembayaran", path: "/user" },
-    { title: "Keluar", path: "/" },
+    { title: "Dashboard", path: "/dashboard", icon: FaTachometerAlt },
+    { title: "Kelola Kelas", path: "/course", icon: FaChalkboard },
+    { title: "Kelola Pembayaran", path: "/user", icon: FaMoneyBill },
+    { title: "Keluar", path: "/", icon: FaSignOutAlt },
   ];
 
   const dispatch = useDispatch();
@@ -54,7 +60,7 @@ const Sidebar = ({ children }) => {
                 <li
                   key={index}
                   className={`${
-                    activeMenu === menu.title ? "bg-[#ccdcc3]" : ""
+                    activeMenu === menu.title ? "bg-[#ccdcc3] shadow-md" : ""
                   } hover:bg-[#9ed67c] transition-all duration-300`}
                 >
                   {menu.title === "Keluar" ? (
@@ -63,9 +69,10 @@ const Sidebar = ({ children }) => {
                         setActiveMenu(menu.title);
                         showModalLogoutHandler();
                       }}
-                      className="flex items-center px-8 py-2 space-x-3 rounded-md cursor-pointer"
+                      className="flex items-center px-8 py-2 space-x-3 rounded-md cursor-pointer mt-12"
                     >
-                      <span className="text-base font-semibold">
+                      <span className="flex items-center text-sm font-bold font-montserrat">
+                        <menu.icon className="text-base me-6" />
                         {menu.title}
                       </span>
                     </button>
@@ -75,7 +82,8 @@ const Sidebar = ({ children }) => {
                       onClick={() => setActiveMenu(menu.title)}
                       className="flex items-center px-8 py-2 space-x-3 rounded-md"
                     >
-                      <span className="text-base font-semibold">
+                      <span className="flex items-center justify-between text-sm font-bold font-montserrat">
+                        <menu.icon className="text-base me-6" />
                         {menu.title}
                       </span>
                     </Link>
