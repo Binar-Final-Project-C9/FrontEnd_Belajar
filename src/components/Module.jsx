@@ -115,6 +115,9 @@ const Module = () => {
                     <td className="text-center text-xs font-bold text-[#4E5566] px-3 py-2">
                       {module.noModule}
                     </td>
+                    {/* <td className="text-center text-xs font-bold text-[#4E5566] px-3 py-2">
+                      {index + 1}
+                    </td> */}
                     <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
                       {module.name}
                     </td>
@@ -192,74 +195,6 @@ const Module = () => {
           </div>
         )}
       </div>
-      {/* {showModal && (
-        <>
-          <div className="justify-center items-center flex fixed inset-0 z-50 overflow-y-auto">
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-auto mx-auto max-w-6xl max-h-screen">
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white">
-                <div className="flex items-start justify-between p-2">
-                  <button
-                    className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
-                    onClick={() => setShowModal(false)}>
-                    <HiX className="text-black" />
-                  </button>
-                </div>
-                <form
-                  className="w-full px-6 space-y-4"
-                  onSubmit={submitHandler}>
-                  <h2 className="text-center font-bold text-gray-800">
-                    Tambah Kelas
-                  </h2>
-                  <InputField
-                    label="Video"
-                    value={
-                      videoOption === 'file'
-                        ? courseData.video
-                        : courseData.videoUrl
-                    }
-                    id="video"
-                    type={videoOption === 'file' ? 'file' : 'text'}
-                    placeholder={
-                      videoOption === 'file'
-                        ? 'Upload Video File'
-                        : 'Enter Video URL'
-                    }
-                    onChange={handleInputChange}
-                  />
-                  <div className="flex items-center space-x-2">
-                    <label>
-                      <input
-                        type="radio"
-                        value="file"
-                        checked={videoOption === 'file'}
-                        onChange={handleVideoOptionChange}
-                      />
-                      Upload File
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="url"
-                        checked={videoOption === 'url'}
-                        onChange={handleVideoOptionChange}
-                      />
-                      Video URL
-                    </label>
-                  </div>
-                </form>
-                <div className="flex items-center justify-between p-5 gap-5 w-full">
-                  <button
-                    className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
-                    type="submit">
-                    Simpan
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-        </>
-      )} */}
     </>
   );
 };

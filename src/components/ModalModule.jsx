@@ -60,7 +60,7 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
         isUnlocked: "true",
         chapterId: id,
       });
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
       setErrorMessage(error.data.message);

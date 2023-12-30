@@ -98,7 +98,6 @@ const Chapter = () => {
               <tr className="h-12">
                 <th className="px-3 py-2">No</th>
                 <th className="px-3 py-2">Nama Chapter</th>
-                {/* <th className="px-3 py-2">Total Durasi</th> */}
                 <th className="px-3 py-2">Aksi</th>
               </tr>
             </thead>
@@ -111,18 +110,6 @@ const Chapter = () => {
                   <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
                     {chapter.name}
                   </td>
-                  {/* <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
-                {chapter.totalDuration}
-              </td> */}
-                  {/* <td className="text-center text-xs font-bold text-[#4E5566] px-3 py-2">
-                <a
-                  href={chapter.videoLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {chapter.videoLink}
-                </a>
-              </td> */}
                   <td className="text-center text-xs font-bold px-3 py-2">
                     <Link to={`/course/${id}/chapter/${chapter.id}`}>
                       <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
