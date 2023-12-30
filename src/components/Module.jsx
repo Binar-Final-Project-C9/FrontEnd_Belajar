@@ -66,7 +66,12 @@ const Module = () => {
     SetUpdateModalModule(true);
   };
 
-  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 border-t-blue-500 h-12 w-12"></div>
+      </div>
+    );
   if (isError) return <div className="text-center">Error...</div>;
 
   return (

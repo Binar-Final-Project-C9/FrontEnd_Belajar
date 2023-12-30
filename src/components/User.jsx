@@ -127,7 +127,7 @@ const User = () => {
                   ref={dropdownRef}
                   className="absolute top-full left-0 mt-2 p-2 pe-6 bg-white on-tertiary-text rounded-md shadow-md"
                 >
-                  <label className="flex items-center font-semibold">
+                  <label className="flex items-center font-md font-poppins">
                     <input
                       type="checkbox"
                       checked={selectedFilters.includes("paid")}
@@ -136,7 +136,7 @@ const User = () => {
                     />
                     PAID
                   </label>
-                  <label className="flex items-center font-semibold">
+                  <label className="flex items-center font-md font-poppins">
                     <input
                       type="checkbox"
                       checked={selectedFilters.includes("unpaid")}
@@ -155,7 +155,7 @@ const User = () => {
                   value={searchTerm}
                   onChange={handleSearchChange}
                   placeholder="Search by ID.."
-                  className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none"
+                  className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none placeholder:text-sm font-semibold"
                 />
                 <button
                   type="button"
@@ -180,10 +180,10 @@ const User = () => {
               <tr className="h-12">
                 <th className="pl-4 pr-2 text-center">ID</th>
                 {/* <th className="pr-2">Kelas Premium</th> */}
-                <th className="pr-2 text-center">Status</th>
-                <th className="pr-2 text-center">Metode Pembayaran</th>
-                <th className="pr-4 text-center">Tanggal Bayar</th>
-                <th className="pr-4 text-center">Aksi</th>
+                <th className="text-center">Status</th>
+                <th className="text-center">Metode Pembayaran</th>
+                <th className="text-center">Tanggal Bayar</th>
+                <th className="ps-4 text-left">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -213,7 +213,7 @@ const User = () => {
                     )}
                     <td className="text-xs text-center font-bold text-[#202244] pr-2">
                       {payment.paymentType ? (
-                        <span>{payment.paymentType}</span>
+                        <span>{payment.paymentType.toUpperCase()}</span>
                       ) : (
                         <span>-</span>
                       )}
@@ -227,7 +227,7 @@ const User = () => {
                     </td>
                     <td>
                       <button
-                        className="bg-green-500 py-1 px-3 text-sm rounded-md transition-all duration-300 text-white hover:bg-opacity-80"
+                        className="primary py-1 px-3 text-sm rounded-md transition-all duration-300 text-white hover:bg-opacity-80"
                         onClick={() => handleUpdateClick(payment.id)}
                       >
                         Update

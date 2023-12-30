@@ -15,10 +15,10 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
         name={id}
         value={value}
         onChange={onChange}
-        className="mt-1 p-2 block w-full border border-gray-300 rounded-md lg:w-[500px]"
+        className="mt-1 p-2 block w-full border border-gray-300 rounded-md lg:w-[500px] placeholder:text-sm"
       >
-        <option value="paid">Paid</option>
-        <option value="unpaid">Unpaid</option>
+        <option value="paid">PAID</option>
+        <option value="unpaid">UNPAID</option>
       </select>
     ) : (
       <input
@@ -85,6 +85,10 @@ const UpdatePaymentStatus = ({ showModal, setShowModal, paymentId }) => {
     }
   };
 
+  const handleCancelClick = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
       {showModal && (
@@ -116,12 +120,21 @@ const UpdatePaymentStatus = ({ showModal, setShowModal, paymentId }) => {
                     value={updatedPayment.status}
                     onChange={handleInputChange}
                   />
-                  <div className="flex items-center justify-between p-5 gap-5 w-full">
+                  <div className="flex justify-center p-5 gap-3">
                     <button
-                      className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
+                      className="primary text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
                       type="submit"
+                      disabled={isLoading}
                     >
-                      Simpan
+                      {isLoading ? "Loading..." : "Simpan"}
+                    </button>
+                    <button
+                      className="bg-dark-red text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
+                      type="submit"
+                      onClick={handleCancelClick}
+                      disabled={isLoading}
+                    >
+                      Batal
                     </button>
                   </div>
                 </form>

@@ -43,7 +43,7 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="lg:flex hidden items-center justify-center w-2/5 primary h-full">
-        <img src={appLogo} alt="" className="w-[200px] h-[150px]" />
+        <img src={appLogo} alt="" className="w-[400px] h-[330px]" />
       </div>
       <div className="flex items-center justify-center w-3/5">
         <form action="" onSubmit={submitHandler}>

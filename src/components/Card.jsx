@@ -10,7 +10,8 @@ import "../colors.module.css";
 const StatCard = ({ color, value, label }) => {
   return (
     <div
-      className={`min-w-full h-24 mx-auto flex items-center justify-center ${color} text-white gap-4 rounded-2xl`}
+      className={`min-w-full mx-auto flex items-center justify-center ${color} text-white gap-4 rounded-2xl`}
+      style={{ height: "120px" }}
     >
       <div className="flex items-center justify-center">
         <BiGroup className="w-12 h-12 bg-white rounded-2xl text-[#6148FF] p-1" />

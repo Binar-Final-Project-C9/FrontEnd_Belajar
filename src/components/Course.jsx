@@ -1,34 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FiPlusCircle } from "react-icons/fi";
 import { IoDiamondOutline } from "react-icons/io5";
 import {
   FaArrowAltCircleLeft,
   FaStar,
   FaShieldAlt,
   FaBookOpen,
-  FaExclamationTriangle,
 } from "react-icons/fa";
 import { useFetchCourseByIdQuery } from "../service/courseApi";
-import { useDeleteModuleMutation } from "../service/moduleApi";
 import { setCourseById } from "../slices/courseSlice";
-import { removeModule } from "../slices/moduleSlice";
-import ModalModule from "./ModalModule";
-import UpdateModule from "./UpdateModule";
 import { useParams, Link } from "react-router-dom";
 import "../colors.module.css";
 
 const Course = () => {
-  const [showModalModule, setShowModalModule] = useState(false);
-  const [updateModalModule, SetUpdateModalModule] = useState(false);
-  const [moduleIdToUpdate, setModuleIdToUpdate] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [moduleIdToDelete, setModuleIdToDelete] = useState(null);
-
   const { id } = useParams();
   const dispatch = useDispatch();
   const { data: course, isError, isLoading } = useFetchCourseByIdQuery(id);
-  const [deleteModuleMutation] = useDeleteModuleMutation();
 
   const selectedCourse = useSelector((state) => state.course.item);
 
@@ -37,31 +24,6 @@ const Course = () => {
       dispatch(setCourseById(course));
     }
   }, [dispatch, course]);
-
-  const deleteModuleHandler = async (moduleId) => {
-    try {
-      setShowDeleteModal(true);
-      setModuleIdToDelete(moduleId);
-    } catch (error) {
-      console.error("Error opening delete confirmation modal:", error);
-    }
-  };
-
-  const confirmDeleteHandler = async () => {
-    try {
-      await deleteModuleMutation(moduleIdToDelete).unwrap();
-      setShowDeleteModal(false);
-      dispatch(removeModule(moduleIdToDelete));
-      window.location.reload();
-    } catch (error) {
-      console.error("Error deleting module:", error);
-    }
-  };
-
-  const handleUpdateClick = (moduleId) => {
-    setModuleIdToUpdate(moduleId);
-    SetUpdateModalModule(true);
-  };
 
   if (isLoading)
     return (
@@ -157,7 +119,7 @@ const Course = () => {
                   <div
                     key={module.id}
                     className="bg-white p-4 rounded-lg shadow-md inline-block"
-                    style={{ minWidth: "300px" }}
+                    style={{ minWidth: "100px" }}
                   >
                     <h3 className="text-md font-semibold mb-2">
                       Modul {module.noModule} : {module.name}
@@ -166,72 +128,13 @@ const Course = () => {
                       <p>Durasi Modul : {module.duration}</p>
                       <p>Deskripsi Modul : {module.description}</p>
                     </div>
-                    <div className="mt-6 flex gap-2">
-                      <button
-                        className="bg-red-500 px-3 text-sm py-0.5 rounded-md text-white"
-                        onClick={() => deleteModuleHandler(module.id)}
-                      >
-                        Hapus
-                      </button>
-                      <button
-                        className="bg-green-500 px-3 text-sm rounded-md text-white
-                    "
-                        onClick={() => handleUpdateClick(module.id)}
-                      >
-                        Edit
-                      </button>
-                    </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="mt-6 flex gap-2">
-              <button
-                className="flex text-white items-center justify-center primary rounded-full px-3 font-medium gap-2 py-[2px]"
-                onClick={() => setShowModalModule(true)}
-              >
-                <FiPlusCircle />
-                Tambah Modul
-              </button>
-            </div>
           </div>
         ))}
       </div>
-      <ModalModule
-        showModalModule={showModalModule}
-        setShowModalModule={setShowModalModule}
-      />
-      <UpdateModule
-        showModalModule={updateModalModule}
-        setshowModalModule={SetUpdateModalModule}
-        moduleId={moduleIdToUpdate}
-      />
-      {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-md w-96">
-            <div className="flex items-center justify-center mb-2">
-              <FaExclamationTriangle className="text-red-500 w-8 h-8" />
-            </div>
-            <p className="text-md font-medium text-center mb-10">
-              Apakah Anda yakin ingin menghapus modul ini?
-            </p>
-            <div className="flex justify-center gap-4">
-              <button
-                className="bg-red-500 text-white px-6 py-1 rounded-md transition-all duration-300 hover:bg-opacity-80"
-                onClick={confirmDeleteHandler}
-              >
-                Hapus
-              </button>
-              <button
-                className="border border-gray-300 px-6 rounded-md transition-all duration-300 hover:bg-gray-100"
-                onClick={() => setShowDeleteModal(false)}
-              >
-                Batal
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -4,7 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useUpdateCourseMutation } from "../service/courseApi";
 import { updateCourse } from "../slices/courseSlice";
 
-const InputField = ({ label, id, type, placeholder, value, onChange }) => (
+const InputField = ({
+  label,
+  id,
+  type,
+  placeholder,
+  value,
+  onChange,
+  disabled,
+}) => (
   <div>
     <label htmlFor={id} className="block text-sm font-medium text-gray-700">
       {label}
@@ -14,8 +22,9 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
       id={id}
       value={value}
       onChange={onChange}
-      className="mt-1 w-full p-2 border rounded-md lg:w-[500px]"
+      className="mt-1 w-full p-2 text-sm font-md border rounded-md placeholder:text-sm"
       placeholder={placeholder}
+      disabled={disabled}
     />
   </div>
 );
@@ -59,6 +68,11 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
 
   const handleInputChange = (e) => {
     const { id, value, files } = e.target;
+
+    if (id === "price" && parseFloat(value) < 0) {
+      return;
+    }
+
     setUpdatedCourse((prevData) => ({
       ...prevData,
       [id]: id === "image" ? files[0] : value,
@@ -81,13 +95,17 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
     }
   };
 
+  const handleCancelClick = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
       {showModal && (
         <>
-          <div className="justify-center items-center flex fixed inset-0 z-50 overflow-y-auto">
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-auto mx-auto max-w-6xl max-h-screen">
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white">
+          <div className="justify-center items-center flex fixed inset-0 z-50">
+            <div className="absolute sm:w-[40%] mx-auto max-h-[700px]">
+              <div className="border-0 rounded-lg shadow-lg relative h-[700px] flex flex-col bg-white">
                 <div className="flex items-start justify-between p-2">
                   <button
                     className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
@@ -97,99 +115,147 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
                   </button>
                 </div>
                 <form
-                  className="w-full px-6 space-y-4"
+                  className="w-full px-4 md:px-10 space-y-1.5"
                   encType="multipart/form-data"
+                  style={{ maxWidth: "100%", maxHeight: "80vh" }}
                   onSubmit={submitHandler}
                 >
                   <h2 className="text-center font-bold text-gray-800">
                     Edit Kelas
                   </h2>
                   <InputField
-                    label="Name"
+                    label="Kode Kelas"
+                    id="classCode"
+                    type="text"
+                    placeholder="Kode Kelas"
+                    value={updatedCourse.classCode}
+                    onChange={handleInputChange}
+                  />
+                  <div className="flex gap-6 items-center">
+                    <div className="flex flex-col w-1/2">
+                      <label
+                        htmlFor="level"
+                        className="block mb-2 text-sm font-medium"
+                      >
+                        Level Kelas
+                      </label>
+                      <select
+                        id="level"
+                        value={updatedCourse.value}
+                        onChange={handleInputChange}
+                        className=" border h-10 pl-3 border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                      >
+                        <option
+                          value="Beginner"
+                          selected={updatedCourse.level == "Beginner"}
+                        >
+                          Beginner
+                        </option>
+                        <option
+                          value="Intermediate"
+                          selected={updatedCourse.level == "Intermediate"}
+                        >
+                          Intermediate
+                        </option>
+                        <option
+                          value="Advanced"
+                          selected={updatedCourse.level == "Advanced"}
+                        >
+                          Advanced
+                        </option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col w-1/2">
+                      <label
+                        htmlFor="categoryId"
+                        className="block mb-2 text-sm font-medium"
+                      >
+                        Kategori Kelas
+                      </label>
+                      <select
+                        id="categoryId"
+                        value={updatedCourse.categoryId}
+                        onChange={handleInputChange}
+                        className=" border h-10 pl-3 border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                      >
+                        {categories.map((item, index) => (
+                          <option key={index} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <InputField
+                    label="Nama Kelas"
                     id="name"
                     type="text"
-                    placeholder="Course Name"
+                    placeholder="Nama Kelas"
                     value={updatedCourse.name}
                     onChange={handleInputChange}
                   />
-                  <InputField
-                    label="Level"
-                    id="level"
-                    type="text"
-                    placeholder="Course Level"
-                    value={updatedCourse.level}
-                    onChange={handleInputChange}
-                  />
 
-                  <div>
-                    <label
-                      htmlFor="categoryId"
-                      className="block mb-2 text-sm font-medium"
-                    >
-                      Select Kategori
-                    </label>
-                    <select
-                      id="categoryId"
-                      value={updatedCourse.categoryId}
-                      onChange={handleInputChange}
-                      className=" border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                    >
-                      {categories.map((item, index) => (
-                        <option
-                          key={index}
-                          value={item.id}
-                          // selected={item.id == updatedCourse.categoryId}
-                        >
-                          {item.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
                   <InputField
-                    label="Description"
+                    label="Deskripsi"
                     id="description"
                     type="text"
-                    placeholder="Course Description"
+                    placeholder="Deskripsi Kelas"
                     value={updatedCourse.description}
                     onChange={handleInputChange}
                   />
                   <InputField
-                    label="Benefits"
+                    label="Benefit Kelas"
                     id="benefits"
                     type="text"
-                    placeholder="Course Benefits"
+                    placeholder="Benefit Kelas"
                     value={updatedCourse.benefits}
                     onChange={handleInputChange}
                   />
+                  <div className="flex gap-6 items-center">
+                    <div className="flex flex-col w-1/2">
+                      <label
+                        htmlFor="type"
+                        className="block mb-1 text-sm font-medium"
+                      >
+                        Tipe Kelas
+                      </label>
+                      <select
+                        id="type"
+                        value={updatedCourse.value}
+                        onChange={handleInputChange}
+                        className=" border border-gray-300 h-10 pl-3  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                      >
+                        <option
+                          value="Free"
+                          selected={updatedCourse.type == "Free"}
+                        >
+                          FREE
+                        </option>
+                        <option
+                          value="Premium"
+                          selected={updatedCourse.type == "Premium"}
+                        >
+                          PREMIUM
+                        </option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col w-1/2">
+                      <InputField
+                        label="Harga"
+                        id="price"
+                        type="number"
+                        placeholder="Harga Kelas"
+                        value={updatedCourse.price}
+                        onChange={handleInputChange}
+                        disabled={updateCourse.type === "Free"}
+                      />
+                    </div>
+                  </div>
                   <InputField
-                    label="Class Code"
-                    id="classCode"
-                    type="text"
-                    placeholder="Class Code"
-                    value={updatedCourse.classCode}
-                    onChange={handleInputChange}
-                  />
-                  <InputField
-                    label="Type"
-                    id="type"
-                    type="text"
-                    placeholder="Course Type"
-                    value={updatedCourse.type}
-                    onChange={handleInputChange}
-                  />
-                  <InputField
-                    label="Price"
-                    id="price"
-                    type="number"
-                    placeholder="Course Price"
-                    value={updatedCourse.price}
-                    onChange={handleInputChange}
-                  />
-                  <InputField
-                    label="Course By"
+                    label="Fasilitator"
                     id="courseBy"
                     type="text"
-                    placeholder="Course By"
+                    placeholder="Nama Fasilitator"
                     value={updatedCourse.courseBy}
                     onChange={handleInputChange}
                   />
@@ -197,15 +263,24 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
                     label="Image"
                     type="file"
                     id="image"
-                    placeholder="Course Image"
+                    placeholder="Image Kelas"
                     onChange={handleInputChange}
                   />
-                  <div className="flex items-center justify-between p-5 gap-5 w-full">
+                  <div className="flex justify-center p-5 gap-3">
                     <button
-                      className="bg-dark-blue text-white w-full font-bold text-sm h-[50px] rounded-3xl"
+                      className="primary text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
                       type="submit"
+                      disabled={isLoading}
                     >
-                      Simpan
+                      {isLoading ? "Loading..." : "Simpan"}
+                    </button>
+                    <button
+                      className="bg-dark-red text-white w-[100px] font-bold text-sm h-[30px] rounded-2xl"
+                      type="submit"
+                      onClick={handleCancelClick}
+                      disabled={isLoading}
+                    >
+                      Batal
                     </button>
                   </div>
                 </form>

@@ -118,7 +118,7 @@ const Home = () => {
                   ref={dropdownRef}
                   className="absolute top-full left-0 mt-2 p-2 pe-6 bg-white on-tertiary-text rounded-md shadow-md"
                 >
-                  <label className="flex items-center font-semibold">
+                  <label className="flex items-center font-md font-poppins">
                     <input
                       type="checkbox"
                       checked={selectedFilters.includes("paid")}
@@ -127,7 +127,7 @@ const Home = () => {
                     />
                     PAID
                   </label>
-                  <label className="flex items-center font-semibold">
+                  <label className="flex items-center font-md font-poppins">
                     <input
                       type="checkbox"
                       checked={selectedFilters.includes("unpaid")}
@@ -146,7 +146,7 @@ const Home = () => {
                   value={searchTerm}
                   onChange={handleSearchChange}
                   placeholder="Search by ID.."
-                  className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none"
+                  className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none placeholder:text-sm font-semibold"
                 />
                 <button
                   type="button"
@@ -171,7 +171,7 @@ const Home = () => {
               <tr className="h-12">
                 <th className="pl-4 pr-2 text-center">ID</th>
                 <th className="pr-2 text-center">Kategori</th>
-                <th className="pr-2 text-center">Kelas Premium</th>
+                <th className="pr-2 text-center">Tipe Kelas</th>
                 <th className="pr-2 text-center">Status</th>
                 <th className="pr-2 text-center">Metode Pembayaran</th>
                 <th className="pr-4 text-center">Tanggal Bayar</th>
@@ -193,9 +193,15 @@ const Home = () => {
                     <td className="text-xs text-center font-bold text-[#4E5566] pr-2">
                       {payment.Course.Category.name}
                     </td>
-                    <td className="text-xs text-center font-bold text-[#202244] pr-2">
-                      {payment.Course.type}
-                    </td>
+                    {payment.Course.type === "Free" ? (
+                      <td className="text-xs text-center font-bold text-dark-green uppercase pr-2">
+                        {payment.Course.type}
+                      </td>
+                    ) : (
+                      <td className="text-xs text-center font-bold text-dark-blue uppercase pr-2">
+                        {payment.Course.type}
+                      </td>
+                    )}
                     {payment.status === "paid" ? (
                       <td className="text-xs text-center font-bold text-dark-green uppercase pr-2">
                         {payment.status}
@@ -207,7 +213,7 @@ const Home = () => {
                     )}
                     <td className="text-xs text-center font-bold text-[#202244] pr-2">
                       {payment.paymentType ? (
-                        <span>{payment.paymentType}</span>
+                        <span>{payment.paymentType.toUpperCase()}</span>
                       ) : (
                         <span>-</span>
                       )}
