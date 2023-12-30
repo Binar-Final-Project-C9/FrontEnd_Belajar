@@ -134,7 +134,7 @@ const UpdatePaymentStatus = ({ showModal, setShowModal, paymentId }) => {
                       onClick={handleCancelClick}
                       disabled={isLoading}
                     >
-                      {isLoading ? "Loading..." : "Batal"}
+                      Batal
                     </button>
                   </div>
                 </form>

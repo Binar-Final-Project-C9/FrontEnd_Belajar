@@ -14,7 +14,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
       id={id}
       value={value}
       onChange={onChange}
-      className="mt-1 w-full p-2 text-sm font-semibold border rounded-md lg:w-[500px] placeholder:text-sm"
+      className="mt-1 w-full p-2 text-sm font-md border rounded-md lg:w-[500px] placeholder:text-sm"
       placeholder={placeholder}
     />
   </div>
@@ -125,7 +125,7 @@ const UpdateChapter = ({
                       onClick={handleCancelClick}
                       disabled={isLoading}
                     >
-                      {isLoading ? "Loading..." : "Batal"}
+                      Batal
                     </button>
                   </div>
                 </form>

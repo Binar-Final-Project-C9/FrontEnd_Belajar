@@ -15,7 +15,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
       id={id}
       value={value}
       onChange={onChange}
-      className="mt-1 w-full p-2 text-sm font-semibold border rounded-md lg:w-[500px] placeholder:text-sm"
+      className="mt-1 w-full p-2 text-sm font-md border rounded-md lg:w-[500px] placeholder:text-sm"
       placeholder={placeholder}
     />
   </div>
@@ -46,6 +46,11 @@ const UpdateModule = ({ showModalModule, setShowModalModule, moduleId }) => {
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
+
+    if (id === "noModule" && parseFloat(value) < 0) {
+      return;
+    }
+
     setUpdatedModule((prevData) => ({
       ...prevData,
       [id]: value,
@@ -108,26 +113,26 @@ const UpdateModule = ({ showModalModule, setShowModalModule, moduleId }) => {
                     </h2>
                   )}
                   <InputField
-                    label="No"
+                    label="Nomor Modul"
                     id="noModule"
                     type="number"
-                    placeholder="No Module"
+                    placeholder="No Modul"
                     value={updatedModule.noModule}
                     onChange={handleInputChange}
                   />
                   <InputField
-                    label="Name"
+                    label="Nama Modul"
                     id="name"
                     type="text"
-                    placeholder="Module Name"
+                    placeholder="Nama Modul"
                     value={updatedModule.name}
                     onChange={handleInputChange}
                   />
                   <InputField
-                    label="Description"
+                    label="Deskripsi Modul"
                     id="description"
                     type="text"
-                    placeholder="Module Description"
+                    placeholder="Deskripsi Modul"
                     value={updatedModule.description}
                     onChange={handleInputChange}
                   />
@@ -169,16 +174,16 @@ const UpdateModule = ({ showModalModule, setShowModalModule, moduleId }) => {
                   </div>
                   {typeVideo == "link" ? (
                     <InputField
-                      label="Vidio"
+                      label="Link Video"
                       id="videoUrl"
                       type="text"
-                      placeholder="Module Vidio"
+                      placeholder="URL Video"
                       // value={updatedModule.videoUrl}
                       onChange={handleInputChange}
                     />
                   ) : (
                     <InputField
-                      label="Vidio"
+                      label="Upload Video"
                       id="video"
                       type="file"
                       placeholder="Module Vidio"
@@ -191,7 +196,7 @@ const UpdateModule = ({ showModalModule, setShowModalModule, moduleId }) => {
                       htmlFor="isUnlocked"
                       className="block mb-2 text-sm font-medium"
                     >
-                      Select Type Module
+                      Tipe Modul
                     </label>
                     <select
                       id="isUnlocked"
@@ -227,7 +232,7 @@ const UpdateModule = ({ showModalModule, setShowModalModule, moduleId }) => {
                       onClick={handleCancelClick}
                       disabled={isLoading}
                     >
-                      {isLoading ? "Loading..." : "Batal"}
+                      Batal
                     </button>
                   </div>
                 </form>

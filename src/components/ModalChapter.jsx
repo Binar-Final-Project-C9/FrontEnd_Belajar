@@ -15,7 +15,7 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
       id={id}
       value={value}
       onChange={onChange}
-      className="mt-1 w-full p-2 text-sm font-semibold border rounded-md lg:w-[500px] placeholder:text-sm"
+      className="mt-1 w-full p-2 text-sm font-md border rounded-md lg:w-[500px] placeholder:text-sm"
       placeholder={placeholder}
     />
   </div>
@@ -34,7 +34,19 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
   const [createChapter, { isError, isLoading }] = useCreateChapterMutation();
 
   const handleInputChange = (e) => {
-    setChapterData({ ...chapterData, [e.target.id]: e.target.value });
+    const { id, value } = e.target;
+
+    if (id === "noChapter" && parseInt(value) < 0) {
+      setChapterData((prevData) => ({
+        ...prevData,
+        [id]: 0,
+      }));
+    } else {
+      setChapterData((prevData) => ({
+        ...prevData,
+        [id]: value,
+      }));
+    }
   };
 
   const submitHandler = async (e) => {
@@ -116,7 +128,7 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
                       onClick={handleCancelClick}
                       disabled={isLoading}
                     >
-                      {isLoading ? "Loading..." : "Batal"}
+                      Batal
                     </button>
                   </div>
                 </form>
