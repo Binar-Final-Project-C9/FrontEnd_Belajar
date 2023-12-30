@@ -23,14 +23,14 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
 
 const ModalModule = ({ showModalModule, setShowModalModule }) => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { idChapter } = useParams();
   const [moduleData, setModuleData] = useState({
     noModule: "",
     name: "",
     description: "",
     videoUrl: "",
     isUnlocked: "true",
-    chapterId: id,
+    chapterId: idChapter,
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [typeVideo, setTypeVideo] = useState("file");
@@ -183,7 +183,7 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
                       id="video"
                       type="file"
                       placeholder="Module Video"
-                      value={moduleData.duration}
+                      // value={moduleData.duration}
                       onChange={handleInputFile}
                     />
                   )}

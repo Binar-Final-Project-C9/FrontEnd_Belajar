@@ -34,6 +34,7 @@ const UpdateModule = ({ showModalModule, setShowModalModule, moduleId }) => {
     chapterId: idChapter,
   });
   const [typeVideo, setTypeVideo] = useState("file");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [updatedDataModule, { isError, isLoading }] = useUpdateModuleMutation();
 
@@ -77,6 +78,7 @@ const UpdateModule = ({ showModalModule, setShowModalModule, moduleId }) => {
       }
     } catch (error) {
       console.log(error.data);
+      setErrorMessage(error.data.message);
     }
   };
 
