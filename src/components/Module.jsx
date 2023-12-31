@@ -28,7 +28,6 @@ const Module = () => {
   } = useFetchChapterByIdQuery(idChapter);
 
   const modules = useSelector((state) => state.module.items);
-  // const modules = [];
   const deleteChapterHandler = async (moduleId) => {
     try {
       setShowDeleteModal(true);
@@ -42,8 +41,8 @@ const Module = () => {
     try {
       await deleteModuleMutation(moduleIdToDelete).unwrap();
       setShowDeleteModal(false);
-      // window.location.reload();
       dispatch(removeModule(moduleIdToDelete));
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting module:", error);
     }
