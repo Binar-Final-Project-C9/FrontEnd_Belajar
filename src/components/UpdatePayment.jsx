@@ -1,8 +1,10 @@
 import { HiX } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import { useUpdatePaymentStatusMutation } from "../service/paymentApi";
 import { updatePaymentStatus } from "../slices/paymentSlice";
+import "react-toastify/dist/ReactToastify.css";
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   <div>
@@ -33,6 +35,17 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
     )}
   </div>
 );
+
+const notifySuccess = (message) => {
+  toast.success(message, {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: false,
+  });
+};
 
 const UpdatePaymentStatus = ({ showModal, setShowModal, paymentId }) => {
   const initialState = {
@@ -69,8 +82,6 @@ const UpdatePaymentStatus = ({ showModal, setShowModal, paymentId }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(updatedPayment);
-    console.log("Payment ID:", paymentId);
     try {
       const res = await updateDataPayment({
         id: paymentId,
@@ -78,7 +89,10 @@ const UpdatePaymentStatus = ({ showModal, setShowModal, paymentId }) => {
       }).unwrap();
       if (res.status === "success") {
         setShowModal(false);
-        window.location.reload();
+        notifySuccess("Berhasil update data payment!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       }
     } catch (error) {
       console.error(error.data);
@@ -91,6 +105,7 @@ const UpdatePaymentStatus = ({ showModal, setShowModal, paymentId }) => {
 
   return (
     <>
+      <ToastContainer />
       {showModal && (
         <>
           <div className="justify-center items-center flex fixed inset-0 z-50 overflow-y-auto">

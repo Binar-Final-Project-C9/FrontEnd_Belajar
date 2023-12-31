@@ -16,7 +16,6 @@ const Course = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { data: course, isError, isLoading } = useFetchCourseByIdQuery(id);
-
   const selectedCourse = useSelector((state) => state.course.item);
 
   useEffect(() => {

@@ -10,7 +10,7 @@ import "../colors.module.css";
 const StatCard = ({ color, value, label }) => {
   return (
     <div
-      className={`min-w-full mx-auto flex items-center justify-center ${color} text-white gap-4 rounded-2xl`}
+      className={`min-w-full mx-auto flex items-center justify-center ${color} text-white gap-6 rounded-2xl`}
       style={{ height: "120px" }}
     >
       <div className="flex items-center justify-center">
@@ -27,7 +27,7 @@ const StatCard = ({ color, value, label }) => {
 const Card = () => {
   const dispatch = useDispatch();
 
-  const { data: courseData, isError, isLoading } = useFetchCoursesQuery();
+  const { data: courseData } = useFetchCoursesQuery();
 
   const { data: userData } = useFetchUserQuery();
 
@@ -56,17 +56,17 @@ const Card = () => {
       <StatCard
         color="bg-light-blue"
         value={activeUSer.length}
-        label="Active Users"
+        label="User Aktif"
       />
       <StatCard
         color="bg-dark-green"
         value={courses.length}
-        label="Active Class"
+        label="Kelas Aktif"
       />
       <StatCard
         color="bg-dark-blue"
         value={premiumClasses.length}
-        label="Premium Class"
+        label="Kelas Premium"
       />
     </div>
   );

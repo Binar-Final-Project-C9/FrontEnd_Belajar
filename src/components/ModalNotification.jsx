@@ -2,9 +2,8 @@ import { HiX } from "react-icons/hi";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import { useCreateChapterMutation } from "../service/chapterApi";
-import { addChapter } from "../slices/chapterSlice";
-import { useParams } from "react-router-dom";
+import { useCreateNotificationMutation } from "../service/notificationApi";
+import { addNotification } from "../slices/notificationSlice";
 import "react-toastify/dist/ReactToastify.css";
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
@@ -17,22 +16,25 @@ const InputField = ({ label, id, type, placeholder, value, onChange }) => (
       id={id}
       value={value}
       onChange={onChange}
-      className="mt-1 w-full p-2 text-sm font-md border rounded-md lg:w-[500px] placeholder:text-sm"
+      className="mt-1 p-2 w-full text-sm font-md border rounded-md placeholder:text-sm"
       placeholder={placeholder}
     />
   </div>
 );
 
-const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
+const ModalNotification = ({
+  showModalNotification,
+  setShowModalNotification,
+}) => {
   const dispatch = useDispatch();
-  const { id } = useParams();
-  const [chapterData, setChapterData] = useState({
-    noChapter: "",
-    name: "",
-    courseId: id,
+  const [notification, setNotification] = useState({
+    category: "",
+    title: "",
+    description: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
-  const [createChapter, { isError, isLoading }] = useCreateChapterMutation();
+  const [createNotification, { isError, isLoading }] =
+    useCreateNotificationMutation();
 
   const notifySuccess = (message) => {
     toast.success(message, {
@@ -46,33 +48,21 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
   };
 
   const handleInputChange = (e) => {
-    const { id, value } = e.target;
-
-    if (id === "noChapter" && parseInt(value) < 0) {
-      setChapterData((prevData) => ({
-        ...prevData,
-        [id]: 0,
-      }));
-    } else {
-      setChapterData((prevData) => ({
-        ...prevData,
-        [id]: value,
-      }));
-    }
+    setNotification({ ...notification, [e.target.id]: e.target.value });
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await createChapter(chapterData).unwrap();
-      notifySuccess("Berhasil membuat chapter baru!");
-      dispatch(addChapter(res));
+      const res = await createNotification(notification).unwrap();
+      notifySuccess("Berhasil membuat notifikasi baru!");
+      dispatch(addNotification(res));
       setTimeout(() => {
-        setShowModalChapter(false);
-        setChapterData({
-          noChapter: "",
-          name: "",
-          courseId: id,
+        setShowModalNotification(false);
+        setNotification({
+          category: "",
+          title: "",
+          description: "",
         });
       }, 1000);
     } catch (error) {
@@ -82,21 +72,21 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
   };
 
   const handleCancelClick = () => {
-    setShowModalChapter(false);
+    setShowModalNotification(false);
   };
 
   return (
     <>
       <ToastContainer />
-      {showModalChapter && (
+      {showModalNotification && (
         <>
           <div className="justify-center items-center flex fixed inset-0 z-50 overflow-y-auto">
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-auto mx-auto max-w-6xl max-h-screen">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-[520px] mx-auto max-w-6xl max-h-screen">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white">
                 <div className="flex items-start justify-between p-2">
                   <button
                     className="p-1 ml-auto border-0 float-right text-3xl leading-none font-semibold"
-                    onClick={() => setShowModalChapter(false)}
+                    onClick={() => setShowModalNotification(false)}
                   >
                     <HiX className="text-black" />
                   </button>
@@ -107,27 +97,51 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
                   onSubmit={submitHandler}
                 >
                   <h2 className="text-center font-bold text-gray-800">
-                    Tambah Chapter
+                    Tambah Notifikasi
                   </h2>
                   {isError && (
                     <h2 className="text-center font-bold text-dark-red">
                       {errorMessage}
                     </h2>
                   )}
+                  <div className="flex items-center gap-3">
+                    <div className="flex flex-col w-1/2">
+                      <label
+                        htmlFor="level"
+                        className="block mb-1 text-sm font-medium"
+                      >
+                        Kategori Notifikasi
+                      </label>
+                      <select
+                        id="category"
+                        defaultValue={""}
+                        onChange={handleInputChange}
+                        className="border border-gray-300 h-10 pl-3 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block"
+                      >
+                        <option value="" selected disabled hidden>
+                          Pilih Kategori
+                        </option>
+                        <option value="Notifikasi">Notifikasi</option>
+                        <option value="Promosi">Promosi</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col w-1/2">
+                      <InputField
+                        label="Judul Notifikasi"
+                        id="title"
+                        type="text"
+                        placeholder="Judul Notifikasi"
+                        value={notification.title}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
                   <InputField
-                    label="No"
-                    id="noChapter"
-                    type="number"
-                    placeholder="No Chapter"
-                    value={chapterData.noChapter}
-                    onChange={handleInputChange}
-                  />
-                  <InputField
-                    label="Nama Chapter"
-                    id="name"
+                    label="Deskripsi"
+                    id="description"
                     type="text"
-                    placeholder="Nama Chapter"
-                    value={chapterData.name}
+                    placeholder="Deskripsi Notifikasi"
+                    value={notification.description}
                     onChange={handleInputChange}
                   />
                   <div className="flex justify-center p-5 gap-3">
@@ -158,4 +172,4 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
   );
 };
 
-export default ModalChapter;
+export default ModalNotification;

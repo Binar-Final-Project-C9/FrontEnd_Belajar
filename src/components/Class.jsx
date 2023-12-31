@@ -4,6 +4,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { FaExclamationTriangle, FaRegEye, FaRegTrashAlt } from "react-icons/fa";
 import { MdOutlineSearch } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import {
   useFetchCoursesQuery,
   useDeleteCourseMutation,
@@ -14,6 +15,7 @@ import Modal from "./Modal";
 import UpdateCourse from "./UpdateCourse";
 import Card from "./Card";
 import "../colors.module.css";
+import "react-toastify/dist/ReactToastify.css";
 
 const Class = () => {
   const [showModal, setShowModal] = useState(false);
@@ -29,12 +31,23 @@ const Class = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [category, setCategory] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(6);
 
   const dispatch = useDispatch();
   const { data: courseData, isError, isLoading } = useFetchCoursesQuery();
   const [deleteCourseMutation] = useDeleteCourseMutation();
   const courses = useSelector((state) => state.course.items);
+
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+    });
+  };
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -81,7 +94,10 @@ const Class = () => {
       await deleteCourseMutation(courseIdToDelete).unwrap();
       setShowDeleteModal(false);
       dispatch(removeCourse(courseIdToDelete));
-      window.location.reload();
+      notifySuccess("Berhasil menghapus course!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     } catch (error) {
       console.error("Error deleting course:", error);
     }
@@ -164,6 +180,7 @@ const Class = () => {
 
   return (
     <>
+      <ToastContainer />
       <Card />
       <div>
         <div className="py-3 mx-auto lg:flex text-center items-center justify-between">

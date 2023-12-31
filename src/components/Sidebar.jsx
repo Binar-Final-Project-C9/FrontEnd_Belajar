@@ -8,6 +8,7 @@ import {
   FaChalkboard,
   FaMoneyBill,
   FaSignOutAlt,
+  FaRegBell,
 } from "react-icons/fa";
 import appLogo from "../assets/appLogo.png";
 import Navbar from "./Navbar";
@@ -17,6 +18,7 @@ const Sidebar = ({ children }) => {
     { title: "Dashboard", path: "/dashboard", icon: FaTachometerAlt },
     { title: "Kelola Kelas", path: "/course", icon: FaChalkboard },
     { title: "Kelola Pembayaran", path: "/user", icon: FaMoneyBill },
+    { title: "Kelola Notifikasi", path: "/notification", icon: FaRegBell },
     { title: "Keluar", path: "/", icon: FaSignOutAlt },
   ];
 
