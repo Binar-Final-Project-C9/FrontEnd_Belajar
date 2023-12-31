@@ -1,8 +1,10 @@
 import { HiX } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import { useUpdateChapterMutation } from "../service/chapterApi";
 import { updateChapter } from "../slices/chapterSlice";
+import "react-toastify/dist/ReactToastify.css";
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   <div>
@@ -34,8 +36,19 @@ const UpdateChapter = ({
 
   const [updatedChapter, setUpdatedChapter] = useState(initialState);
 
-  const [updateDataChapter, { data, isLoading, isError }] =
+  const [updateDataChapter, { data, isLoading }] =
     useUpdateChapterMutation(initialState);
+
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+    });
+  };
 
   useEffect(() => {
     if (chapters && chapterId) {
@@ -67,9 +80,11 @@ const UpdateChapter = ({
         updatedChapter,
       }).unwrap();
       if (res.status === "success") {
-        // dispatch(updateChapter(updatedChapter));
         setshowModalChapter(false);
-        window.location.reload();
+        notifySuccess("Berhasil edit chapter!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       }
     } catch (error) {
       console.log(error.data);
@@ -82,6 +97,7 @@ const UpdateChapter = ({
 
   return (
     <>
+      <ToastContainer />
       {showModalChapter && (
         <>
           <div className="justify-center items-center flex fixed inset-0 z-50 overflow-y-auto">

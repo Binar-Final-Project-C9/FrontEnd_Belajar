@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FiPlusCircle } from "react-icons/fi";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import { FaExclamationTriangle } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
 import { useFetchChapterByIdQuery } from "../service/chapterApi";
 import { useDeleteModuleMutation } from "../service/moduleApi";
 import { removeModule, setModule } from "../slices/moduleSlice";
@@ -10,6 +11,7 @@ import { useParams, Link } from "react-router-dom";
 import Card from "./Card";
 import ModalModule from "./ModalModule";
 import UpdateModule from "./UpdateModule";
+import "react-toastify/dist/ReactToastify.css";
 
 const Module = () => {
   const [showModalModule, setShowModalModule] = useState(false);
@@ -27,6 +29,17 @@ const Module = () => {
     isLoading,
   } = useFetchChapterByIdQuery(idChapter);
 
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+    });
+  };
+
   const modules = useSelector((state) => state.module.items);
   const deleteChapterHandler = async (moduleId) => {
     try {
@@ -42,7 +55,10 @@ const Module = () => {
       await deleteModuleMutation(moduleIdToDelete).unwrap();
       setShowDeleteModal(false);
       dispatch(removeModule(moduleIdToDelete));
-      window.location.reload();
+      notifySuccess("Modul berhasil dihapus!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     } catch (error) {
       console.error("Error deleting module:", error);
     }
@@ -75,6 +91,7 @@ const Module = () => {
 
   return (
     <>
+      <ToastContainer />
       <Link
         to={`/course/${id}/chapter`}
         className="flex primary-text font-medium mb-2 text-lg items-center ms-3"

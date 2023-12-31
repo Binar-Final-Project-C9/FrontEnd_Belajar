@@ -55,7 +55,7 @@ const ModalNotification = ({
     e.preventDefault();
     try {
       const res = await createNotification(notification).unwrap();
-      notifySuccess("Notification created successfully!");
+      notifySuccess("Berhasil membuat notifikasi baru!");
       dispatch(addNotification(res));
       setTimeout(() => {
         setShowModalNotification(false);

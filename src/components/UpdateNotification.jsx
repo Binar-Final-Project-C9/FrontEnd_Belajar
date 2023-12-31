@@ -84,7 +84,7 @@ const UpdateNotification = ({
       }).unwrap();
       if (res.status === "success") {
         setShowModalNotification(false);
-        notifySuccess("Berhasil update notifikasi!");
+        notifySuccess("Berhasil edit notifikasi!");
         setTimeout(() => {
           window.location.reload();
         }, 3000);

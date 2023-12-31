@@ -1,18 +1,12 @@
 import { HiX } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import { useCreateCourseMutation } from "../service/courseApi";
 import { addCourse } from "../slices/courseSlice";
+import "react-toastify/dist/ReactToastify.css";
 
-const InputField = ({
-  label,
-  id,
-  type,
-  placeholder,
-  value,
-  onChange,
-  disabled,
-}) => (
+const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   <div>
     <label htmlFor={id} className="block text-sm font-medium text-gray-700">
       {label}
@@ -24,7 +18,6 @@ const InputField = ({
       onChange={onChange}
       className="mt-1 w-full p-2 text-sm font-md border rounded-md placeholder:text-sm"
       placeholder={placeholder}
-      disabled={disabled}
     />
   </div>
 );
@@ -50,6 +43,17 @@ const Modal = ({ showModal, setShowModal, categories }) => {
 
   const dispatch = useDispatch();
 
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+    });
+  };
+
   useEffect(() => {
     if (data) {
       dispatch(addCourse(data));
@@ -73,13 +77,11 @@ const Modal = ({ showModal, setShowModal, categories }) => {
     e.preventDefault();
     try {
       const res = await createCourse(courseData).unwrap();
-      if (res.status === "success") {
-        dispatch(addCourse(res));
+      notifySuccess("Berhasil membuat course baru!");
+      dispatch(addCourse(res));
+      setTimeout(() => {
         setShowModal(false);
-        window.location.reload();
-      } else {
-        setErrorMessage(res.data.message);
-      }
+      }, 3000);
     } catch (error) {
       setErrorMessage(error.data.message);
     }
@@ -90,11 +92,12 @@ const Modal = ({ showModal, setShowModal, categories }) => {
   };
   return (
     <>
+      <ToastContainer />
       {showModal && (
         <>
           <div className="justify-center items-center flex fixed inset-0 z-50">
             <div className="absolute sm:w-[40%] mx-auto max-h-[700px]">
-              <div className="border-0 rounded-lg shadow-lg relative h-[700px] flex flex-col bg-white">
+              <div className="border-0 rounded-lg shadow-lg relative h-[720px] flex flex-col bg-white">
                 <div className="flex items-start justify-between p-2">
                   <button
                     className="p-1 mt-2 mr-2 ml-auto border-0 float-right text-3xl leading-none font-semibold"
@@ -226,7 +229,6 @@ const Modal = ({ showModal, setShowModal, categories }) => {
                         placeholder="Harga Kelas"
                         value={courseData.price}
                         onChange={handleInputChange}
-                        disabled={courseData.type === "Free"}
                       />
                     </div>
                   </div>

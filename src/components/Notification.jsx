@@ -74,7 +74,7 @@ const Notification = () => {
       await deleteNotifMutation(notificationIdToDelete).unwrap();
       setShowDeleteModal(false);
       dispatch(removeNotification(notificationIdToDelete));
-      notifySuccess("Promo berhasil dihapus!");
+      notifySuccess("Notifikasi berhasil dihapus!");
       setTimeout(() => {
         window.location.reload();
       }, 3000);
@@ -116,12 +116,10 @@ const Notification = () => {
   };
 
   if (promoNotificationStatus === "success") {
-    // You may want to handle success feedback to the user here
     dispatch(resetPromoNotificationStatus());
   }
 
   if (promoNotificationStatus === "failure") {
-    // You may want to handle failure feedback to the user here
     dispatch(resetPromoNotificationStatus());
   }
 

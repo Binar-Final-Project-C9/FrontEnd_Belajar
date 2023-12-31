@@ -1,9 +1,11 @@
 import { HiX } from "react-icons/hi";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import { useCreateChapterMutation } from "../service/chapterApi";
 import { addChapter } from "../slices/chapterSlice";
 import { useParams } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   <div>
@@ -30,8 +32,18 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
     courseId: id,
   });
   const [errorMessage, setErrorMessage] = useState("");
-
   const [createChapter, { isError, isLoading }] = useCreateChapterMutation();
+
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+    });
+  };
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -53,13 +65,16 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
     e.preventDefault();
     try {
       const res = await createChapter(chapterData).unwrap();
+      notifySuccess("Berhasil membuat chapter baru!");
       dispatch(addChapter(res));
-      setShowModalChapter(false);
-      setChapterData({
-        noChapter: "",
-        name: "",
-        courseId: id,
-      });
+      setTimeout(() => {
+        setShowModalChapter(false);
+        setChapterData({
+          noChapter: "",
+          name: "",
+          courseId: id,
+        });
+      }, 1000);
     } catch (error) {
       console.log(error);
       setErrorMessage(error.data.message);
@@ -72,6 +87,7 @@ const ModalChapter = ({ showModalChapter, setShowModalChapter }) => {
 
   return (
     <>
+      <ToastContainer />
       {showModalChapter && (
         <>
           <div className="justify-center items-center flex fixed inset-0 z-50 overflow-y-auto">
