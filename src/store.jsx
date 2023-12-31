@@ -5,6 +5,7 @@ import paymentReducer from "./slices/paymentSlice";
 import userReducer from "./slices/userSlice";
 import chapterReducer from "./slices/chapterSlice";
 import moduleReducer from "./slices/moduleSlice";
+import notificationReducer from "./slices/notificationSlice";
 import { apiSlice } from "./service/api";
 import { authApi } from "./service/authApi";
 import { courseApi } from "./service/courseApi";
@@ -12,6 +13,7 @@ import { paymentApi } from "./service/paymentApi";
 import { userApi } from "./service/userApi";
 import { chapterApi } from "./service/chapterApi";
 import { moduleApi } from "./service/moduleApi";
+import { notificationApi } from "./service/notificationApi";
 
 const store = configureStore({
   reducer: {
@@ -21,6 +23,7 @@ const store = configureStore({
     user: userReducer,
     chapter: chapterReducer,
     module: moduleReducer,
+    notification: notificationReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [courseApi.reducerPath]: courseApi.reducer,
@@ -28,6 +31,7 @@ const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [chapterApi.reducerPath]: chapterApi.reducer,
     [moduleApi.reducerPath]: moduleApi.reducer,
+    [notificationApi.reducerPath]: notificationApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -37,7 +41,8 @@ const store = configureStore({
       paymentApi.middleware,
       userApi.middleware,
       chapterApi.middleware,
-      moduleApi.middleware
+      moduleApi.middleware,
+      notificationApi.middleware
     ),
   devTools: true,
 });
