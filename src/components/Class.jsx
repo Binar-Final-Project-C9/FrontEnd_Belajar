@@ -29,7 +29,7 @@ const Class = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [category, setCategory] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(6);
 
   const dispatch = useDispatch();
   const { data: courseData, isError, isLoading } = useFetchCoursesQuery();
