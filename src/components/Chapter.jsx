@@ -9,9 +9,11 @@ import {
 import { removeChapter, setChapter } from "../slices/chapterSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import ModalChapter from "./ModalChapter";
 import UpdateChapter from "./UpdateChapter";
 import Card from "./Card";
+import "react-toastify/dist/ReactToastify.css";
 
 const Chapter = () => {
   const [showModalChapter, setShowModalChapter] = useState(false);
@@ -32,6 +34,17 @@ const Chapter = () => {
 
   const chapters = useSelector((state) => state.chapter.items);
 
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+    });
+  };
+
   const deleteChapterHandler = async (chapterId) => {
     try {
       setShowDeleteModal(true);
@@ -46,6 +59,7 @@ const Chapter = () => {
       await deleteChapterMutation(chapterIdToDelete).unwrap();
       setShowDeleteModal(false);
       dispatch(removeChapter(chapterIdToDelete));
+      notifySuccess("Chapter berhasil dihapus!");
     } catch (error) {
       console.error("Error deleting chapter:", error);
     }
@@ -72,6 +86,7 @@ const Chapter = () => {
 
   return (
     <>
+      <ToastContainer />
       <Link
         to="/course"
         className="flex primary-text font-medium mb-2 text-lg items-center ms-3"

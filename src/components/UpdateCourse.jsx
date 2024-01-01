@@ -1,8 +1,10 @@
 import { HiX } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import { useUpdateCourseMutation } from "../service/courseApi";
 import { updateCourse } from "../slices/courseSlice";
+import "react-toastify/dist/ReactToastify.css";
 
 const InputField = ({
   label,
@@ -47,8 +49,19 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
 
   const [updatedCourse, setUpdatedCourse] = useState(initialState);
 
-  const [updateDataCourse, { data, isLoading, isError }] =
+  const [updateDataCourse, { data, isLoading }] =
     useUpdateCourseMutation(initialState);
+
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+    });
+  };
 
   useEffect(() => {
     if (courses && courseId) {
@@ -88,7 +101,10 @@ const UpdateCourse = ({ showModal, setShowModal, courseId, categories }) => {
       }).unwrap();
       if (res.status === "success") {
         setShowModal(false);
-        window.location.reload();
+        notifySuccess("Berhasil edit course!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       }
     } catch (error) {
       console.log(error.data);

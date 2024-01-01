@@ -2,8 +2,10 @@ import { HiX } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import { useUpdateModuleMutation } from "../service/moduleApi";
 import { updateModule } from "../slices/moduleSlice";
+import "react-toastify/dist/ReactToastify.css";
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   <div>
@@ -35,8 +37,18 @@ const UpdateModule = ({ showModalModule, setShowModalModule, moduleId }) => {
   });
   const [typeVideo, setTypeVideo] = useState("file");
   const [errorMessage, setErrorMessage] = useState("");
-
   const [updatedDataModule, { isError, isLoading }] = useUpdateModuleMutation();
+
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+    });
+  };
 
   useEffect(() => {
     if (modules && moduleId) {
@@ -74,7 +86,10 @@ const UpdateModule = ({ showModalModule, setShowModalModule, moduleId }) => {
       if (res.status === "success") {
         dispatch(updateModule(res.data));
         setShowModalModule(false);
-        window.location.reload();
+        notifySuccess("Berhasil edit modul!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       }
     } catch (error) {
       console.log(error.data);

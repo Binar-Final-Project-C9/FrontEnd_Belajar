@@ -1,9 +1,11 @@
 import { HiX } from "react-icons/hi";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import { useCreateModuleMutation } from "../service/moduleApi";
 import { addModule } from "../slices/moduleSlice";
 import { useParams } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 
 const InputField = ({ label, id, type, placeholder, value, onChange }) => (
   <div>
@@ -36,6 +38,17 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
   const [typeVideo, setTypeVideo] = useState("file");
   const [createModule, { isError, isLoading }] = useCreateModuleMutation();
 
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+    });
+  };
+
   const handleInputChange = (e) => {
     const { id, value } = e.target;
 
@@ -60,16 +73,19 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
     e.preventDefault();
     try {
       const res = await createModule(moduleData).unwrap();
+      notifySuccess("Berhasil membuat modul baru!");
       dispatch(addModule(res));
-      setShowModalModule(false);
-      setModuleData({
-        noModule: "",
-        name: "",
-        description: "",
-        videoUrl: "",
-        isUnlocked: "true",
-        chapterId: id,
-      });
+      setTimeout(() => {
+        setShowModalModule(false);
+        setModuleData({
+          noModule: "",
+          name: "",
+          description: "",
+          videoUrl: "",
+          isUnlocked: "true",
+          chapterId: id,
+        });
+      }, 1000);
       // window.location.reload();
     } catch (error) {
       console.log(error);
@@ -82,6 +98,7 @@ const ModalModule = ({ showModalModule, setShowModalModule }) => {
   };
   return (
     <>
+      <ToastContainer />
       {showModalModule && (
         <>
           <div className="justify-center items-center flex fixed inset-0 z-50 overflow-y-auto">
