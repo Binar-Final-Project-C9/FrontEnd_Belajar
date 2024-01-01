@@ -250,7 +250,7 @@ const Class = () => {
           <table className="table-auto w-full border-collapse">
             <thead className="bg-[#EBF3FC] on-primary-text text-sm font-normal">
               <tr className="h-12">
-                <th className="px-3 py-2">ID</th>
+                <th className="px-3 py-2">Kode Kelas</th>
                 <th className="px-3 py-2">Kategori</th>
                 <th className="px-3 py-2">Nama Kelas</th>
                 <th className="px-3 py-2">Tipe Kelas</th>

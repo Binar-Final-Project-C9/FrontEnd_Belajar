@@ -16,7 +16,6 @@ const Course = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { data: course, isError, isLoading } = useFetchCourseByIdQuery(id);
-
   const selectedCourse = useSelector((state) => state.course.item);
 
   useEffect(() => {
@@ -24,6 +23,13 @@ const Course = () => {
       dispatch(setCourseById(course));
     }
   }, [dispatch, course]);
+
+  const formatDuration = (durationInSeconds) => {
+    const minutes = Math.floor(durationInSeconds / 60);
+    const seconds = durationInSeconds % 60;
+
+    return `${minutes} menit ${seconds} detik`;
+  };
 
   if (isLoading)
     return (
@@ -125,7 +131,7 @@ const Course = () => {
                       Modul {module.noModule} : {module.name}
                     </h3>
                     <div className="text-sm mt-5">
-                      <p>Durasi Modul : {module.duration}</p>
+                      <p>Durasi Modul : {formatDuration(module.duration)}</p>
                       <p>Deskripsi Modul : {module.description}</p>
                     </div>
                   </div>

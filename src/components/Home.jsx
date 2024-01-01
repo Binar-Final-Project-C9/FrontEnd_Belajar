@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { FiFilter } from "react-icons/fi";
-import { MdOutlineSearch } from "react-icons/md";
-import Card from "./Card";
 import { useDispatch, useSelector } from "react-redux";
+import Card from "./Card";
 import { useFetchPaymentQuery } from "../service/paymentApi";
 import { setPayment } from "../slices/paymentSlice";
+import { FiFilter } from "react-icons/fi";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { MdOutlineSearch } from "react-icons/md";
 import "../colors.module.css";
 
 const formatDate = (isoDate) => {
@@ -26,6 +27,8 @@ const Home = () => {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -88,6 +91,23 @@ const Home = () => {
     payment.User.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = searchFilteredPayments.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const totalPages = Math.ceil(searchFilteredPayments.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
   if (isLoading)
     return (
       <div className="flex items-center justify-center h-screen">
@@ -145,7 +165,7 @@ const Home = () => {
                   type="text"
                   value={searchTerm}
                   onChange={handleSearchChange}
-                  placeholder="Search by ID.."
+                  placeholder="Search by email.."
                   className="border-2 rounded-full border-[#73daa4] p-0 ps-4 me-1 focus:outline-none placeholder:text-sm font-semibold"
                 />
                 <button
@@ -169,8 +189,8 @@ const Home = () => {
           <table className="table-auto w-full">
             <thead className="bg-[#EBF3FC] text-left text-sm font-normal">
               <tr className="h-12">
-                <th className="pl-4 pr-2 text-center">ID</th>
-                <th className="pr-2 text-center">Kategori</th>
+                <th className="pl-4 pr-2 text-center">Email</th>
+                <th className="pr-2 text-center">Kode Kelas</th>
                 <th className="pr-2 text-center">Tipe Kelas</th>
                 <th className="pr-2 text-center">Status</th>
                 <th className="pr-2 text-center">Metode Pembayaran</th>
@@ -178,20 +198,20 @@ const Home = () => {
               </tr>
             </thead>
             <tbody>
-              {searchFilteredPayments.length === 0 ? (
+              {currentItems.length === 0 ? (
                 <tr className="h-12">
                   <td colSpan="6" className="text-center text-red-500 mt-4">
                     Tidak ada data yang sesuai dengan pencarian.
                   </td>
                 </tr>
               ) : (
-                searchFilteredPayments.map((payment) => (
+                currentItems.map((payment) => (
                   <tr className="h-12 text-left" key={payment.id}>
-                    <td className="text-xs text-center font-bold text-[#4E5566] pl-4 pr-2">
+                    <td className="text-xs text-center font-bold text-[#202244] pl-4 pr-2">
                       {payment.User.email}
                     </td>
                     <td className="text-xs text-center font-bold text-[#4E5566] pr-2">
-                      {payment.Course.Category.name}
+                      {payment.Course.classCode}
                     </td>
                     {payment.Course.type === "Free" ? (
                       <td className="text-xs text-center font-bold text-dark-green uppercase pr-2">
@@ -230,6 +250,32 @@ const Home = () => {
               )}
             </tbody>
           </table>
+        </div>
+        <div className="flex justify-center mt-7 gap-4">
+          <button
+            className={`flex items-center px-2 py-1 mx-1 rounded-md text-sm font-semibold ${
+              currentPage === 1
+                ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+          >
+            <IoIosArrowBack className="inline-block mr-4" />
+            Previous
+          </button>
+          <button
+            className={`flex items-center px-2 py-1 mx-1 rounded-md text-sm font-semibold ${
+              currentPage === totalPages
+                ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+            <IoIosArrowForward className="inline-block ml-4" />
+          </button>
         </div>
       </div>
     </>
