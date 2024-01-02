@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { FiPlusCircle } from "react-icons/fi";
-import { FaArrowAltCircleLeft } from "react-icons/fa";
-import { FaExclamationTriangle } from "react-icons/fa";
+import {
+  FaArrowAltCircleLeft,
+  FaExclamationTriangle,
+  FaRegTrashAlt,
+} from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import { useFetchChapterByIdQuery } from "../service/chapterApi";
 import { useDeleteModuleMutation } from "../service/moduleApi";
@@ -163,16 +166,16 @@ const Module = () => {
                     </td>
                     <td className="flex text-center text-xs font-bold px-3 py-2">
                       <button
-                        className="bg-green-500 px-4 py-1 mx-1 rounded-md text-white"
+                        className="primary px-4 py-1 mx-1 rounded-md text-white"
                         onClick={() => handleUpdateClick(module.id)}
                       >
                         Edit
                       </button>
                       <button
-                        className="bg-red-500 px-2 py-1 rounded-md text-white ml-2"
+                        className="bg-red-500 px-2 py-1.5 ml-2 rounded-md text-white"
                         onClick={() => deleteChapterHandler(module.id)}
                       >
-                        Hapus
+                        <FaRegTrashAlt />
                       </button>
                     </td>
                   </tr>

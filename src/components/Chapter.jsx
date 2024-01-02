@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { FiPlusCircle } from "react-icons/fi";
-import { FaArrowAltCircleLeft } from "react-icons/fa";
-import { FaExclamationTriangle } from "react-icons/fa";
+import {
+  FaArrowAltCircleLeft,
+  FaExclamationTriangle,
+  FaRegTrashAlt,
+} from "react-icons/fa";
 import {
   useFetchChapterByCourseIdQuery,
   useDeleteChapterMutation,
@@ -130,24 +133,26 @@ const Chapter = () => {
                   <td className="text-center text-xs font-bold text-[#202244] px-3 py-2">
                     {chapter.name}
                   </td>
-                  <td className="text-center text-xs font-bold px-3 py-2">
-                    <Link to={`/course/${id}/chapter/${chapter.id}`}>
-                      <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
-                        Module
+                  <td className="text-center text-xs font-bold px-10">
+                    <div className="justify-center flex gap-1">
+                      <Link to={`/course/${id}/chapter/${chapter.id}`}>
+                        <button className="bg-blue-500 px-2 py-1 rounded-md text-white mr-2">
+                          Module
+                        </button>
+                      </Link>
+                      <button
+                        className="primary px-2 py-1 rounded-md text-white"
+                        onClick={() => handleUpdateClick(chapter.id)}
+                      >
+                        Edit
                       </button>
-                    </Link>
-                    <button
-                      className="primary px-2 py-1 rounded-md text-white"
-                      onClick={() => handleUpdateClick(chapter.id)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="bg-red-500 px-2 py-1 rounded-md text-white ml-2"
-                      onClick={() => deleteChapterHandler(chapter.id)}
-                    >
-                      Hapus
-                    </button>
+                      <button
+                        className="bg-red-500 px-2 py-1.5 ml-2 rounded-md text-white"
+                        onClick={() => deleteChapterHandler(chapter.id)}
+                      >
+                        <FaRegTrashAlt />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
